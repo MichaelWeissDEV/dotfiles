@@ -1,17 +1,48 @@
-# Browser-Profile, Caches & Laufzeitdaten ignorieren
-mozilla/
-chromium/
-google-chrome/
-BraveSoftware/
-vivaldi/
-dconf/
-pulse/
-Code/
-discord/
-Electron/
-libreoffice/
-htop/
-btop/
+# ============================================================================
+# ~/.config/.gitignore - Whitelist-Prinzip für sauberes Dotfile-Management
+# ============================================================================
+# Standardmäßig ALLES in ~/.config ignorieren (inkl. mozilla/, dconf/, Caches
+# und sämtlicher Ordner, die fremde Programme zur Laufzeit anlegen).
+*
+
+# Dotfile-Metadaten & Installationsskripte im Root-Verzeichnis erlauben
+!.gitignore
+!.gitmodules
+!README.md
+!install.sh
+!install-links.sh
+
+# Explizit verwaltete Konfigurationsordner freigeben
+!foot/
+!foot/**
+!fuzzel/
+!fuzzel/**
+!gtk-3.0/
+!gtk-3.0/**
+!gtk-4.0/
+!gtk-4.0/**
+!hypr/
+!hypr/**
+!kitty/
+!kitty/**
+!libfm/
+!libfm/**
+!nvim
+!nvim/**
+!pcmanfm/
+!pcmanfm/**
+!tmux
+!tmux/**
+!vim/
+!vim/**
+!waybar/
+!waybar/**
+!yazi/
+!yazi/**
+!zsh/
+!zsh/**
+
+# Temporäre Editor-, Log- & Backup-Dateien immer ausschließen
 *.log
 *.bak
 *.swp

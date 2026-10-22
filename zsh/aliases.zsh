@@ -4,6 +4,11 @@
 
 # Editor-Aliases
 alias nv='nvim'
+alias v='vim'
+
+# Dotfiles & System-Wartung
+alias cfg-update='~/.config/install.sh update'
+alias cfg-links='~/.config/install.sh links'
 
 # Datei- & System-Aliases mit Farbunterstützung
 alias ls='ls --color=auto'

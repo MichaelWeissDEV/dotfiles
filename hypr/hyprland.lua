@@ -26,13 +26,14 @@ hl.monitor({
 ---------------------
 ---- MY PROGRAMS ----
 ---------------------
+local home        = os.getenv("HOME") or "/home/mweiss"
 local terminal    = "kitty"
 local menu        = "pkill -x fuzzel || fuzzel"
 local browser     = "firefox"
 local fileManager = "pcmanfm"
 local tuiFiles    = "kitty -e yazi"
 local lock        = "hyprlock"
-local powermenu   = "/home/mweiss/.config/hypr/powermenu.sh"
+local powermenu   = home .. "/.config/hypr/powermenu.sh"
 
 
 -------------------
