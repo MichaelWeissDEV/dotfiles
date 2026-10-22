@@ -1,0 +1,23 @@
+# Every push and pull request runs the quality gate.
+#
+# The gate itself lives in quality.yml and is shared verbatim with
+# release.yml, so a release can never be cut against a weaker set of checks
+# than a normal push had to satisfy.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    uses: ./.github/workflows/quality.yml
