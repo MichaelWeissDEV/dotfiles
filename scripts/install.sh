@@ -33,6 +33,7 @@ error() { printf "${RED}[ERROR]${RESET} %s\n" "$*" >&2; }
 CONFIG_DIRS=(
     foot
     fuzzel
+    ghostty
     gtk-3.0
     gtk-4.0
     hypr
@@ -77,6 +78,7 @@ PACMAN_PACKAGES=(
     bluez-utils
 
     # Terminals & Shell-Umgebung
+    ghostty
     kitty
     foot
     zsh

@@ -16,7 +16,7 @@ Alle Konfigurationsordner werden per Symlink sauber nach `~/.config/<modul>` (so
 | **`vim/`** | Standalone Vim-Konfiguration (`vimrc`) im Catppuccin Mocha Design mit dynamischer Statuszeile (`NORMAL`/`INSERT`/`VISUAL`, `NUM:REL`/`NUM:ABS`) und Zeilennummern-Toggle (`<Space>un`, `<Space>rn`, `<Space>n`, `<F3>`) | `~/.config/vim`, `~/.vimrc` |
 | **`hypr/`** | Hyprland, Hyprlock, Powermenu & Askpass | `~/.config/hypr` |
 | **`waybar/`** | Waybar Statusleiste (`config.jsonc`, `style.css`, `power_menu.xml`) | `~/.config/waybar` |
-| **`foot/` & `kitty/`** | Terminal-Emulatoren im Catppuccin Mocha Farbschema | `~/.config/foot`, `~/.config/kitty` |
+| **`foot/`, `ghostty/` & `kitty/`** | Terminal-Emulatoren im Catppuccin Mocha Farbschema (transparent `0.90`, `JetBrainsMono Nerd Font`) | `~/.config/foot`, `~/.config/ghostty`, `~/.config/kitty` |
 | **`fuzzel/`** | Wayland Application Launcher | `~/.config/fuzzel` |
 | **`yazi/`** | Terminal-Dateimanager inkl. `catppuccin-mocha.yazi` Flavor | `~/.config/yazi` |
 | **`gtk-3.0/`, `gtk-4.0/`, `pcmanfm/`, `libfm/`** | Catppuccin Mocha GTK3/GTK4-Theming & PCManFM GUI-Dateimanager-Einstellungen | `~/.config/gtk-3.0`, `~/.config/gtk-4.0`, `~/.config/pcmanfm`, `~/.config/libfm` |
@@ -117,7 +117,7 @@ Das Skript `scripts/install.sh` (bzw. `scripts/install.sh packages`) installiert
 - `bluez` & `bluez-utils` – Bluetooth-Stack & CLI (`bluetoothctl`)
 
 ### Terminals & Shell-Umgebung
-- `kitty` & `foot` – GPU-beschleunigter bzw. leichtgewichtiger Wayland-Terminal-Emulator
+- `ghostty`, `kitty` & `foot` – Schnelle, GPU-beschleunigte bzw. leichtgewichtige Wayland-Terminal-Emulatoren
 - `zsh` – Standard-Shell
 - `tmux` – Terminal-Multiplexer
 
