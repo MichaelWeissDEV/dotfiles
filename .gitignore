@@ -1,0 +1,18 @@
+# Browser-Profile, Caches & Laufzeitdaten ignorieren
+mozilla/
+chromium/
+google-chrome/
+BraveSoftware/
+vivaldi/
+dconf/
+pulse/
+Code/
+discord/
+Electron/
+libreoffice/
+htop/
+btop/
+*.log
+*.bak
+*.swp
+*~
