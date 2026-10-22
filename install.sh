@@ -1,18 +1,20 @@
 #!/usr/bin/env bash
 # ============================================================================
-# ~/.config/install.sh - Arch Linux Dotfiles & System-Setup / Updater
+# ~/git/dotfiles/install.sh - Arch Linux Dotfiles & System-Setup / Updater
 # ============================================================================
 # Verwendung:
-#   ~/.config/install.sh            Komplettes Setup (Pakete, Submodule, OMZ, Symlinks, Services)
-#   ~/.config/install.sh install    Komplettes Setup (wie ohne Argument)
-#   ~/.config/install.sh update     System-, Submodul- & Plugin-Update + Symlinks prüfen
-#   ~/.config/install.sh packages   Nur benötigte Arch-Pakete installieren (pacman)
-#   ~/.config/install.sh links      Nur Symlinks & Verzeichnisse einrichten (ohne sudo/Netzwerk)
+#   ~/git/dotfiles/install.sh            Komplettes Setup (Pakete, Subtrees, OMZ, Symlinks, Services)
+#   ~/git/dotfiles/install.sh install    Komplettes Setup (wie ohne Argument)
+#   ~/git/dotfiles/install.sh update     System-, Dotfiles-, Subtree- & Plugin-Update + Symlinks
+#   ~/git/dotfiles/install.sh subtrees   Git-Subtrees (nvim & tmux) von Upstream aktualisieren
+#   ~/git/dotfiles/install.sh packages   Nur benötigte Arch-Pakete installieren (pacman)
+#   ~/git/dotfiles/install.sh links      Nur Symlinks in ~/.config & ~ einrichten (ohne sudo/Netzwerk)
 # ============================================================================
 
 set -euo pipefail
 
-CONFIG_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+CONFIG_TARGET="${XDG_CONFIG_HOME:-$HOME/.config}"
 
 # Farben für übersichtliche Statusausgaben (Catppuccin Mocha)
 BLUE='\033[1;34m'
@@ -25,6 +27,30 @@ info()  { printf "${BLUE}[INFO]${RESET}  %s\n" "$*"; }
 ok()    { printf "${GREEN}[OK]${RESET}    %s\n" "$*"; }
 warn()  { printf "${YELLOW}[WARN]${RESET}  %s\n" "$*"; }
 error() { printf "${RED}[ERROR]${RESET} %s\n" "$*" >&2; }
+
+# Verwaltete Konfigurationsordner, die nach ~/.config/<dir> verlinkt werden
+CONFIG_DIRS=(
+    foot
+    fuzzel
+    gtk-3.0
+    gtk-4.0
+    hypr
+    kitty
+    libfm
+    nvim
+    pcmanfm
+    tmux
+    vim
+    waybar
+    yazi
+    zsh
+)
+
+# Git-Subtree-Remotes für nvim und tmux
+NVIM_REMOTE_NAME="nvim-remote"
+NVIM_REMOTE_URL="https://github.com/MichaelWeissDEV/nvim-config.git"
+TMUX_REMOTE_NAME="tmux-remote"
+TMUX_REMOTE_URL="https://github.com/MichaelWeissDEV/tmux-config.git"
 
 # ============================================================================
 # PAKETLISTEN (Offizielle Arch Linux Repositories)
@@ -96,12 +122,55 @@ install_packages() {
 }
 
 # ============================================================================
-# 2. GIT-SUBMODULE (nvim & tmux) INITIALISIEREN
+# 2. GIT-SUBTREES (nvim & tmux) EINRICHTEN & AKTUALISIEREN
 # ============================================================================
-setup_submodules() {
-    info "Initialisiere Git-Submodule (nvim, tmux)..."
-    git -C "$CONFIG_DIR" submodule update --init --recursive
-    ok "Git-Submodule sind bereit."
+ensure_subtree_remotes() {
+    if ! git -C "$DOTFILES_DIR" remote get-url "$NVIM_REMOTE_NAME" >/dev/null 2>&1; then
+        info "Füge Git-Remote '$NVIM_REMOTE_NAME' ($NVIM_REMOTE_URL) hinzu..."
+        git -C "$DOTFILES_DIR" remote add "$NVIM_REMOTE_NAME" "$NVIM_REMOTE_URL"
+    fi
+
+    if ! git -C "$DOTFILES_DIR" remote get-url "$TMUX_REMOTE_NAME" >/dev/null 2>&1; then
+        info "Füge Git-Remote '$TMUX_REMOTE_NAME' ($TMUX_REMOTE_URL) hinzu..."
+        git -C "$DOTFILES_DIR" remote add "$TMUX_REMOTE_NAME" "$TMUX_REMOTE_URL"
+    fi
+}
+
+setup_subtrees() {
+    ensure_subtree_remotes
+
+    if [[ ! -d "$DOTFILES_DIR/nvim" ]]; then
+        info "Füge nvim-Subtree hinzu..."
+        git -C "$DOTFILES_DIR" subtree add --prefix=nvim "$NVIM_REMOTE_NAME" main --squash \
+            -m "Add nvim config as git subtree"
+    fi
+
+    if [[ ! -d "$DOTFILES_DIR/tmux" ]]; then
+        info "Füge tmux-Subtree hinzu..."
+        git -C "$DOTFILES_DIR" subtree add --prefix=tmux "$TMUX_REMOTE_NAME" main --squash \
+            -m "Add tmux config as git subtree"
+    fi
+
+    ok "Git-Subtrees (nvim, tmux) und Remotes sind eingerichtet."
+}
+
+update_subtrees() {
+    ensure_subtree_remotes
+
+    if [[ -n "$(git -C "$DOTFILES_DIR" status --porcelain)" ]]; then
+        warn "Uncommittete Änderungen in $DOTFILES_DIR gefunden – überspringe Subtree-Pull."
+        return 0
+    fi
+
+    info "Aktualisiere Git-Subtree 'nvim' von $NVIM_REMOTE_NAME/main..."
+    git -C "$DOTFILES_DIR" subtree pull --prefix=nvim "$NVIM_REMOTE_NAME" main --squash \
+        -m "Update nvim subtree from upstream" || warn "Subtree-Pull für nvim fehlgeschlagen."
+
+    info "Aktualisiere Git-Subtree 'tmux' von $TMUX_REMOTE_NAME/main..."
+    git -C "$DOTFILES_DIR" subtree pull --prefix=tmux "$TMUX_REMOTE_NAME" main --squash \
+        -m "Update tmux subtree from upstream" || warn "Subtree-Pull für tmux fehlgeschlagen."
+
+    ok "Git-Subtrees (nvim, tmux) sind auf dem neuesten Stand."
 }
 
 # ============================================================================
@@ -137,32 +206,63 @@ setup_oh_my_zsh() {
 # ============================================================================
 # 4. SYMLINKS, VERZEICHNISSE & DATEIRECHTE SETZEN
 # ============================================================================
-setup_links() {
-    info "Richte Symlinks und benötigte Benutzerverzeichnisse ein..."
+link_item() {
+    local src="$1"
+    local dst="$2"
 
-    # Benötigte Ordner für Screenshots (grim) und Vim Persistent-Undo
+    # Falls Ziel bereits der korrekte Symlink ist: nichts zu tun
+    if [[ -L "$dst" ]]; then
+        local current_target
+        current_target="$(readlink "$dst")"
+        if [[ "$current_target" == "$src" ]]; then
+            return 0
+        fi
+        rm -f "$dst"
+    elif [[ -e "$dst" ]]; then
+        local backup="${dst}.bak.$(date +%Y%m%d_%H%M%S)"
+        warn "Bestehendes Ziel '$dst' ist kein Symlink – verschiebe Backup nach '$backup'"
+        mv "$dst" "$backup"
+    fi
+
+    ln -sfn "$src" "$dst"
+}
+
+setup_links() {
+    info "Richte Symlinks von $DOTFILES_DIR nach $CONFIG_TARGET und $HOME ein..."
+
+    # Benötigte Ordner für Configs, Screenshots (grim) und Vim Persistent-Undo
+    mkdir -p "$CONFIG_TARGET"
     mkdir -p "$HOME/Downloads"
     mkdir -p "$HOME/.local/state/vim/undo"
     mkdir -p "$HOME/.local/bin"
 
-    # Symlinks im Home-Verzeichnis
-    ln -sfn "$CONFIG_DIR/zsh/zshrc"      "$HOME/.zshrc"
-    ln -sfn "$CONFIG_DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
-    ln -sfn "$CONFIG_DIR/vim/vimrc"      "$HOME/.vimrc"
+    # 1. Alle verwalteten Modul-Ordner nach ~/.config/<dir> verlinken
+    for dir in "${CONFIG_DIRS[@]}"; do
+        if [[ -e "$DOTFILES_DIR/$dir" ]]; then
+            link_item "$DOTFILES_DIR/$dir" "$CONFIG_TARGET/$dir"
+        else
+            warn "Verzeichnis '$DOTFILES_DIR/$dir' existiert nicht – überspringe."
+        fi
+    done
 
-    # Oh My Zsh Theme verlinken (falls ~/.oh-my-zsh existiert)
+    # 2. Symlinks im Home-Verzeichnis (zeigen auf ~/.config/..., welches auf ~/git/dotfiles/... verweist)
+    link_item "$CONFIG_TARGET/zsh/zshrc"      "$HOME/.zshrc"
+    link_item "$CONFIG_TARGET/tmux/tmux.conf" "$HOME/.tmux.conf"
+    link_item "$CONFIG_TARGET/vim/vimrc"      "$HOME/.vimrc"
+
+    # 3. Oh My Zsh Theme verlinken (falls ~/.oh-my-zsh existiert)
     if [[ -d "$HOME/.oh-my-zsh/custom/themes" ]]; then
-        ln -sfn "$CONFIG_DIR/zsh/themes/catppuccin.zsh-theme" \
+        link_item "$CONFIG_TARGET/zsh/themes/catppuccin.zsh-theme" \
             "$HOME/.oh-my-zsh/custom/themes/catppuccin.zsh-theme"
     fi
 
-    # Ausführbarkeitsrechte für Skripte sicherstellen
-    chmod +x "$CONFIG_DIR/hypr/askpass.sh" \
-             "$CONFIG_DIR/hypr/powermenu.sh" \
-             "$CONFIG_DIR/install.sh" \
-             "$CONFIG_DIR/install-links.sh"
+    # 4. Ausführbarkeitsrechte für Skripte sicherstellen
+    chmod +x "$DOTFILES_DIR/hypr/askpass.sh" \
+             "$DOTFILES_DIR/hypr/powermenu.sh" \
+             "$DOTFILES_DIR/install.sh" \
+             "$DOTFILES_DIR/install-links.sh"
 
-    ok "Symlinks eingerichtet (~/.zshrc, ~/.tmux.conf, ~/.vimrc, catppuccin.zsh-theme)."
+    ok "Symlinks in $CONFIG_TARGET (${#CONFIG_DIRS[@]} Module) sowie ~/.zshrc, ~/.tmux.conf, ~/.vimrc eingerichtet."
 }
 
 # ============================================================================
@@ -195,7 +295,7 @@ setup_system() {
 }
 
 # ============================================================================
-# 6. UPDATE-PROZESS (System, Dotfiles, Submodule & Zsh-Plugins aktualisieren)
+# 6. UPDATE-PROZESS (System, Dotfiles, Subtrees & Zsh-Plugins aktualisieren)
 # ============================================================================
 update_all() {
     if command -v pacman >/dev/null 2>&1; then
@@ -203,13 +303,12 @@ update_all() {
         sudo pacman -Syu --needed "${PACMAN_PACKAGES[@]}"
     fi
 
-    if git -C "$CONFIG_DIR" remote | grep -q .; then
-        info "Aktualisiere ~/.config Repository..."
-        git -C "$CONFIG_DIR" pull --ff-only || warn "Git-Pull für ~/.config übersprungen (lokale Änderungen vorhanden)."
+    if git -C "$DOTFILES_DIR" remote get-url origin >/dev/null 2>&1; then
+        info "Aktualisiere Dotfiles-Repository ($DOTFILES_DIR)..."
+        git -C "$DOTFILES_DIR" pull --ff-only origin main || warn "Git-Pull für Dotfiles übersprungen (lokale Änderungen vorhanden)."
     fi
 
-    info "Aktualisiere Git-Submodule (nvim & tmux)..."
-    git -C "$CONFIG_DIR" submodule update --init --recursive
+    update_subtrees
 
     if [[ -d "$HOME/.oh-my-zsh/.git" ]]; then
         info "Aktualisiere Oh My Zsh & Plugins..."
@@ -234,9 +333,10 @@ Verwendung: $(basename "$0") [BEFEHL]
 
 Befehle:
   install    Komplettes Setup auf einem Arch-System (Standard, wenn kein Befehl angegeben)
-  update     Systempakete, Dotfiles, Submodule & Zsh-Plugins aktualisieren
+  update     Systempakete, Dotfiles, Git-Subtrees (nvim/tmux) & Zsh-Plugins aktualisieren
+  subtrees   Git-Subtrees (nvim & tmux) von ihren Upstream-Repositories aktualisieren
   packages   Nur alle benötigten Arch Linux Pakete via pacman installieren
-  links      Nur Symlinks (~/.zshrc, ~/.tmux.conf, ~/.vimrc) & Ordner anlegen
+  links      Nur Symlinks in ~/.config & ~ (~/.zshrc, ~/.tmux.conf, ~/.vimrc) anlegen
   help       Diese Hilfe anzeigen
 EOF
 }
@@ -246,7 +346,7 @@ main() {
     case "$cmd" in
         install|all)
             install_packages
-            setup_submodules
+            setup_subtrees
             setup_oh_my_zsh
             setup_links
             setup_system
@@ -254,6 +354,9 @@ main() {
             ;;
         update|upgrade)
             update_all
+            ;;
+        subtrees|subtree)
+            update_subtrees
             ;;
         packages|pkgs)
             install_packages
