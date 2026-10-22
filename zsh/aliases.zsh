@@ -8,9 +8,9 @@ alias v='vim'
 
 # Dotfiles & System-Wartung (~/git/dotfiles)
 alias dotfiles='cd "$HOME/git/dotfiles"'
-alias cfg-update='"$HOME/git/dotfiles/install.sh" update'
-alias cfg-links='"$HOME/git/dotfiles/install-links.sh"'
-alias cfg-subtrees='"$HOME/git/dotfiles/install.sh" subtrees'
+alias cfg-update='"$HOME/git/dotfiles/scripts/install.sh" update'
+alias cfg-links='"$HOME/git/dotfiles/scripts/install-links.sh"'
+alias cfg-subtrees='"$HOME/git/dotfiles/scripts/update-subtrees.sh"'
 
 # Datei- & System-Aliases mit Farbunterstützung
 alias ls='ls --color=auto'

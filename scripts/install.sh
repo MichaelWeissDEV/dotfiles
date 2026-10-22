@@ -1,19 +1,20 @@
 #!/usr/bin/env bash
 # ============================================================================
-# ~/git/dotfiles/install.sh - Arch Linux Dotfiles & System-Setup / Updater
+# ~/git/dotfiles/scripts/install.sh - Arch Linux Dotfiles & System-Setup
 # ============================================================================
 # Verwendung:
-#   ~/git/dotfiles/install.sh            Komplettes Setup (Pakete, Subtrees, OMZ, Symlinks, Services)
-#   ~/git/dotfiles/install.sh install    Komplettes Setup (wie ohne Argument)
-#   ~/git/dotfiles/install.sh update     System-, Dotfiles-, Subtree- & Plugin-Update + Symlinks
-#   ~/git/dotfiles/install.sh subtrees   Git-Subtrees (nvim & tmux) von Upstream aktualisieren
-#   ~/git/dotfiles/install.sh packages   Nur benötigte Arch-Pakete installieren (pacman)
-#   ~/git/dotfiles/install.sh links      Nur Symlinks in ~/.config & ~ einrichten (ohne sudo/Netzwerk)
+#   ~/git/dotfiles/scripts/install.sh            Komplettes Setup (Pakete, Subtrees, OMZ, Symlinks, Services)
+#   ~/git/dotfiles/scripts/install.sh install    Komplettes Setup (wie ohne Argument)
+#   ~/git/dotfiles/scripts/install.sh update     System-, Dotfiles-, Subtree- & Plugin-Update + Symlinks
+#   ~/git/dotfiles/scripts/install.sh subtrees   Git-Subtrees (nvim & tmux) von Upstream aktualisieren
+#   ~/git/dotfiles/scripts/install.sh packages   Nur benötigte Arch-Pakete installieren (pacman)
+#   ~/git/dotfiles/scripts/install.sh links      Nur Symlinks in ~/.config & ~ einrichten (ohne sudo/Netzwerk)
 # ============================================================================
 
 set -euo pipefail
 
-DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPTS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOTFILES_DIR="$(cd "$SCRIPTS_DIR/.." && pwd)"
 CONFIG_TARGET="${XDG_CONFIG_HOME:-$HOME/.config}"
 
 # Farben für übersichtliche Statusausgaben (Catppuccin Mocha)
@@ -45,12 +46,6 @@ CONFIG_DIRS=(
     yazi
     zsh
 )
-
-# Git-Subtree-Remotes für nvim und tmux
-NVIM_REMOTE_NAME="nvim-remote"
-NVIM_REMOTE_URL="https://github.com/MichaelWeissDEV/nvim-config.git"
-TMUX_REMOTE_NAME="tmux-remote"
-TMUX_REMOTE_URL="https://github.com/MichaelWeissDEV/tmux-config.git"
 
 # ============================================================================
 # PAKETLISTEN (Offizielle Arch Linux Repositories)
@@ -124,53 +119,12 @@ install_packages() {
 # ============================================================================
 # 2. GIT-SUBTREES (nvim & tmux) EINRICHTEN & AKTUALISIEREN
 # ============================================================================
-ensure_subtree_remotes() {
-    if ! git -C "$DOTFILES_DIR" remote get-url "$NVIM_REMOTE_NAME" >/dev/null 2>&1; then
-        info "Füge Git-Remote '$NVIM_REMOTE_NAME' ($NVIM_REMOTE_URL) hinzu..."
-        git -C "$DOTFILES_DIR" remote add "$NVIM_REMOTE_NAME" "$NVIM_REMOTE_URL"
-    fi
-
-    if ! git -C "$DOTFILES_DIR" remote get-url "$TMUX_REMOTE_NAME" >/dev/null 2>&1; then
-        info "Füge Git-Remote '$TMUX_REMOTE_NAME' ($TMUX_REMOTE_URL) hinzu..."
-        git -C "$DOTFILES_DIR" remote add "$TMUX_REMOTE_NAME" "$TMUX_REMOTE_URL"
-    fi
-}
-
 setup_subtrees() {
-    ensure_subtree_remotes
-
-    if [[ ! -d "$DOTFILES_DIR/nvim" ]]; then
-        info "Füge nvim-Subtree hinzu..."
-        git -C "$DOTFILES_DIR" subtree add --prefix=nvim "$NVIM_REMOTE_NAME" main --squash \
-            -m "Add nvim config as git subtree"
-    fi
-
-    if [[ ! -d "$DOTFILES_DIR/tmux" ]]; then
-        info "Füge tmux-Subtree hinzu..."
-        git -C "$DOTFILES_DIR" subtree add --prefix=tmux "$TMUX_REMOTE_NAME" main --squash \
-            -m "Add tmux config as git subtree"
-    fi
-
-    ok "Git-Subtrees (nvim, tmux) und Remotes sind eingerichtet."
+    "$SCRIPTS_DIR/update-subtrees.sh" setup
 }
 
 update_subtrees() {
-    ensure_subtree_remotes
-
-    if [[ -n "$(git -C "$DOTFILES_DIR" status --porcelain)" ]]; then
-        warn "Uncommittete Änderungen in $DOTFILES_DIR gefunden – überspringe Subtree-Pull."
-        return 0
-    fi
-
-    info "Aktualisiere Git-Subtree 'nvim' von $NVIM_REMOTE_NAME/main..."
-    git -C "$DOTFILES_DIR" subtree pull --prefix=nvim "$NVIM_REMOTE_NAME" main --squash \
-        -m "Update nvim subtree from upstream" || warn "Subtree-Pull für nvim fehlgeschlagen."
-
-    info "Aktualisiere Git-Subtree 'tmux' von $TMUX_REMOTE_NAME/main..."
-    git -C "$DOTFILES_DIR" subtree pull --prefix=tmux "$TMUX_REMOTE_NAME" main --squash \
-        -m "Update tmux subtree from upstream" || warn "Subtree-Pull für tmux fehlgeschlagen."
-
-    ok "Git-Subtrees (nvim, tmux) sind auf dem neuesten Stand."
+    "$SCRIPTS_DIR/update-subtrees.sh" "${1:-all}"
 }
 
 # ============================================================================
@@ -259,8 +213,9 @@ setup_links() {
     # 4. Ausführbarkeitsrechte für Skripte sicherstellen
     chmod +x "$DOTFILES_DIR/hypr/askpass.sh" \
              "$DOTFILES_DIR/hypr/powermenu.sh" \
-             "$DOTFILES_DIR/install.sh" \
-             "$DOTFILES_DIR/install-links.sh"
+             "$SCRIPTS_DIR/install.sh" \
+             "$SCRIPTS_DIR/install-links.sh" \
+             "$SCRIPTS_DIR/update-subtrees.sh"
 
     ok "Symlinks in $CONFIG_TARGET (${#CONFIG_DIRS[@]} Module) sowie ~/.zshrc, ~/.tmux.conf, ~/.vimrc eingerichtet."
 }
@@ -308,7 +263,7 @@ update_all() {
         git -C "$DOTFILES_DIR" pull --ff-only origin main || warn "Git-Pull für Dotfiles übersprungen (lokale Änderungen vorhanden)."
     fi
 
-    update_subtrees
+    update_subtrees all || warn "Subtree-Update übersprungen."
 
     if [[ -d "$HOME/.oh-my-zsh/.git" ]]; then
         info "Aktualisiere Oh My Zsh & Plugins..."
@@ -356,7 +311,8 @@ main() {
             update_all
             ;;
         subtrees|subtree)
-            update_subtrees
+            shift || true
+            update_subtrees "${1:-all}"
             ;;
         packages|pkgs)
             install_packages

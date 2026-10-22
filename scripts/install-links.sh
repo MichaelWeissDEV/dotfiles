@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # ============================================================================
-# ~/git/dotfiles/install-links.sh - Symlinks für ~/.config & Home einrichten
+# ~/git/dotfiles/scripts/install-links.sh - Symlinks für ~/.config & ~ setzen
 # ============================================================================
 set -euo pipefail
 
-DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-exec "$DOTFILES_DIR/install.sh" links "$@"
+SCRIPTS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+exec "$SCRIPTS_DIR/install.sh" links "$@"
