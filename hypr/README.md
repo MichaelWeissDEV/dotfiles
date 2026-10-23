@@ -49,6 +49,23 @@ Als Haupt-Modifikatortaste (`SUPER`) dient die **Windows-/Super-Taste**.
 | `SUPER + SHIFT + B` | Waybar neu laden / neu starten |
 | `SUPER + SHIFT + E` *(oder `SUPER + M`)* | Hyprland direkt beenden (zurück zur TTY) |
 
+### Schneller Fensterwechsel, Letztes Programm & Sprung-Positionen (auch über Bildschirme hinweg)
+Mit diesen Tastenkombinationen wechselst du verzögerungsfrei zwischen Programmen, springst zum zuletzt genutzten Fenster zurück oder vergibst feste **Sprung-Positionen (Slots 1–10 / F1–F4)** für deine wichtigsten Fenster – **komplett über alle Bildschirme (Monitore) und Workspaces hinweg**:
+
+| Tastenkombination | Aktion |
+| :--- | :--- |
+| **`ALT + Tab`** *(oder `SUPER + Tab` / `SUPER + BackSpace`)* | **Sofort zum zuletzt aktiven Fenster/Programm springen** – egal auf welchem Bildschirm oder Workspace es liegt (erneutes Drücken springt wieder zurück – idealer Ping-Pong-Wechsel zwischen zwei Programmen!) |
+| **`ALT + SHIFT + Tab`** *(oder `SUPER + SHIFT + Tab`)* | Durch **alle offenen Fenster** auf allen Bildschirmen und Workspaces rotieren |
+| **`SUPER + ^`** *(Zirkumflex links oben unter `Esc`)* | Zwischen allen Fenstern **desselben Programms** wechseln (z. B. alle offenen Terminals oder Browser-Fenster über alle Bildschirme hinweg) |
+| **`SUPER + G`** *(oder `SUPER + #`)* | **Interaktiven Fenster- & Positions-Switcher (`fuzzel`)** öffnen: Zeigt alle offenen Fenster aller Bildschirme & Workspaces (das **letzte Fenster** steht direkt auf Platz 1 -> `Enter` springt sofort hin, oder nach Name/Position `Pos 1..9` filtern) |
+| **`SUPER + ALT + 1..9, 0`** | **Direkt zu Fenster-Position (Slot) `1..10` springen** (über alle Bildschirme & Workspaces hinweg!):<br>• Wenn auf Position `<num>` ein Fenster gespeichert wurde, springt Hyprland direkt dorthin *(drückst du dieselbe Taste im Zielfenster nochmal, springst du wieder zurück zum vorherigen Fenster!)*.<br>• Wenn auf Position `<num>` noch nichts manuell gespeichert wurde, springt es automatisch zum `<num>`-ten offenen Fenster (sortiert von links nach rechts über alle Bildschirme). |
+| **`SUPER + CTRL + 1..9, 0`** | **Aktuelles Fenster fest auf Position (Slot) `1..10` speichern** (mit kurzer Bestätigung oben rechts; bleibt auch über Workspace-/Monitor-Wechsel hinweg erhalten) |
+| **`SUPER + F1..F4`** | **Ein-Griff-Schnellsprung zu Position `1..4`** (springt sofort zu Slot `1..4` bzw. zurück zum vorherigen Fenster) |
+| **`SUPER + CTRL + F1..F4`** *(oder `SUPER + SHIFT + F1..F4`)* | Aktuelles Fenster fest auf **Schnell-Position `1..4`** speichern |
+| **`SUPER + O`** *(oder `SUPER + <`)* | Fokus sofort auf den **anderen / nächsten Bildschirm (Monitor)** wechseln |
+| **`SUPER + SHIFT + O`** *(oder `SUPER + SHIFT + <`)* | Aktives Fenster sofort auf den **anderen / nächsten Bildschirm (Monitor)** mitnehmen und dort fokussieren |
+| **`SUPER + CTRL + O`** | Die aktiven Workspaces der beiden Bildschirme miteinander **tauschen** (`swap_monitors`) |
+
 ### Bildschirme / Workspaces (Unbegrenzt / Infinity)
 Die Workspaces sind **nicht auf eine feste Anzahl begrenzt**. In der Waybar links oben werden nur tatsächlich vorhandene/aktive Bildschirme angezeigt.
 | Tastenkombination | Aktion |
@@ -75,9 +92,10 @@ Die Workspaces sind **nicht auf eine feste Anzahl begrenzt**. In der Waybar link
 | `SUPER + F` | Echtes Vollbild umschalten (Fullscreen) |
 | `SUPER + SHIFT + F` | Maximiert umschalten (Waybar bleibt sichtbar) |
 | `SUPER + V` | Schwebendes Fenster umschalten (Floating) |
+| `SUPER + CTRL + C` | Schwebendes Fenster exakt in der Bildschirmmitte zentrieren |
 | `SUPER + T` | Split-Richtung umschalten (Horizontal / Vertikal) |
 | `SUPER + P` | Pseudo-Tiling umschalten |
-| `SUPER + Pfeiltasten (←/→/↑/↓)` | Fokus zwischen Fenstern wechseln |
+| `SUPER + Pfeiltasten (←/→/↑/↓)` | Fokus zwischen Fenstern wechseln *(springt am Bildschirmrand automatisch weiter auf den Nachbar-Monitor!)* |
 | `SUPER + SHIFT + Pfeiltasten (←/→/↑/↓)` | Aktives Fenster in Richtung verschieben |
 | `SUPER + CTRL + Pfeiltasten (←/→/↑/↓)` | Fenstergröße schrittweise anpassen |
 | `SUPER + Linke Maustaste ziehen` | Fenster mit der Maus verschieben |
@@ -127,6 +145,7 @@ Als **Prefix** funktionieren sowohl klassisch **`STRG + B`** als auch **`STRG + 
 ## Übersicht der Konfigurationsdateien
 
 - **Hyprland:** `~/.config/hypr/hyprland.lua`
+- **Fenster- & Positions-Switcher:** `~/.config/hypr/windowswitcher.sh`
 - **Power-Menü & Sudo-Askpass:** `~/.config/hypr/powermenu.sh` & `~/.config/hypr/askpass.sh`
 - **Sperrbildschirm:** `~/.config/hypr/hyprlock.conf`
 - **Waybar (Leiste oben):** `~/.config/waybar/config.jsonc`, `~/.config/waybar/style.css` & `~/.config/waybar/power_menu.xml`

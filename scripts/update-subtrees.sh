@@ -1,14 +1,20 @@
 #!/usr/bin/env bash
 # ============================================================================
-# ~/git/dotfiles/scripts/update-subtrees.sh - Git-Subtrees (nvim & tmux) verwalten
+# ~/git/dotfiles/scripts/update-subtrees.sh - Git-Subtrees verwalten
+# Verwaltete Subtrees:
+#   - nvim    -> https://github.com/MichaelWeissDEV/nvim-config.git
+#   - tmux    -> https://github.com/MichaelWeissDEV/tmux-config.git
+#   - ghostty -> https://github.com/MichaelWeissDEV/ghostty-config.git
+#   - kitty   -> https://github.com/MichaelWeissDEV/kittiy-config.git
+#   - vim     -> https://github.com/MichaelWeissDEV/vim-config.git
 # ============================================================================
 # Verwendung:
-#   ~/git/dotfiles/scripts/update-subtrees.sh              Alle Subtrees (nvim & tmux) pullen
-#   ~/git/dotfiles/scripts/update-subtrees.sh all          Alle Subtrees (nvim & tmux) pullen
-#   ~/git/dotfiles/scripts/update-subtrees.sh nvim         Nur nvim-Subtree von Upstream pullen
-#   ~/git/dotfiles/scripts/update-subtrees.sh tmux         Nur tmux-Subtree von Upstream pullen
-#   ~/git/dotfiles/scripts/update-subtrees.sh push [ziel]  Lokale Subtree-Commits nach Upstream pushen
-#   ~/git/dotfiles/scripts/update-subtrees.sh setup        Remotes & Subtrees initial einrichten
+#   ~/git/dotfiles/scripts/update-subtrees.sh                   Alle 5 Subtrees von Upstream pullen
+#   ~/git/dotfiles/scripts/update-subtrees.sh all               Alle 5 Subtrees von Upstream pullen
+#   ~/git/dotfiles/scripts/update-subtrees.sh <modul>           Einzelnen Subtree pullen (nvim|tmux|ghostty|kitty|vim)
+#   ~/git/dotfiles/scripts/update-subtrees.sh push [ziel]       Lokale Subtree-Commits nach Upstream pushen (all oder <modul>)
+#   ~/git/dotfiles/scripts/update-subtrees.sh setup             Alle 5 Git-Remotes & Subtrees prüfen/einrichten
+#   ~/git/dotfiles/scripts/update-subtrees.sh status            Remote-URLs & Upstream-Status aller 5 Subtrees anzeigen
 # ============================================================================
 
 set -euo pipefail
@@ -28,31 +34,48 @@ ok()    { printf "${GREEN}[OK]${RESET}    %s\n" "$*"; }
 warn()  { printf "${YELLOW}[WARN]${RESET}  %s\n" "$*"; }
 error() { printf "${RED}[ERROR]${RESET} %s\n" "$*" >&2; }
 
-# Subtree-Konfiguration
-NVIM_PREFIX="nvim"
-NVIM_REMOTE_NAME="nvim-remote"
-NVIM_REMOTE_URL="https://github.com/MichaelWeissDEV/nvim-config.git"
-NVIM_BRANCH="main"
+# Alle verwalteten Subtree-Module in fester Reihenfolge
+SUBTREE_MODULES=(nvim tmux ghostty kitty vim)
 
-TMUX_PREFIX="tmux"
-TMUX_REMOTE_NAME="tmux-remote"
-TMUX_REMOTE_URL="https://github.com/MichaelWeissDEV/tmux-config.git"
-TMUX_BRANCH="main"
+get_remote_name() {
+    case "$1" in
+        nvim)    echo "nvim-remote" ;;
+        tmux)    echo "tmux-remote" ;;
+        ghostty) echo "ghostty-remote" ;;
+        kitty)   echo "kitty-remote" ;;
+        vim)     echo "vim-remote" ;;
+        *)       return 1 ;;
+    esac
+}
+
+get_remote_url() {
+    case "$1" in
+        nvim)    echo "https://github.com/MichaelWeissDEV/nvim-config.git" ;;
+        tmux)    echo "https://github.com/MichaelWeissDEV/tmux-config.git" ;;
+        ghostty) echo "https://github.com/MichaelWeissDEV/ghostty-config.git" ;;
+        kitty)   echo "https://github.com/MichaelWeissDEV/kittiy-config.git" ;;
+        vim)     echo "https://github.com/MichaelWeissDEV/vim-config.git" ;;
+        *)       return 1 ;;
+    esac
+}
+
+get_branch() {
+    echo "main"
+}
 
 ensure_remotes() {
-    if ! git -C "$DOTFILES_DIR" remote get-url "$NVIM_REMOTE_NAME" >/dev/null 2>&1; then
-        info "Füge Git-Remote '$NVIM_REMOTE_NAME' ($NVIM_REMOTE_URL) hinzu..."
-        git -C "$DOTFILES_DIR" remote add "$NVIM_REMOTE_NAME" "$NVIM_REMOTE_URL"
-    else
-        git -C "$DOTFILES_DIR" remote set-url "$NVIM_REMOTE_NAME" "$NVIM_REMOTE_URL"
-    fi
+    for mod in "${SUBTREE_MODULES[@]}"; do
+        local remote_name remote_url
+        remote_name="$(get_remote_name "$mod")"
+        remote_url="$(get_remote_url "$mod")"
 
-    if ! git -C "$DOTFILES_DIR" remote get-url "$TMUX_REMOTE_NAME" >/dev/null 2>&1; then
-        info "Füge Git-Remote '$TMUX_REMOTE_NAME' ($TMUX_REMOTE_URL) hinzu..."
-        git -C "$DOTFILES_DIR" remote add "$TMUX_REMOTE_NAME" "$TMUX_REMOTE_URL"
-    else
-        git -C "$DOTFILES_DIR" remote set-url "$TMUX_REMOTE_NAME" "$TMUX_REMOTE_URL"
-    fi
+        if ! git -C "$DOTFILES_DIR" remote get-url "$remote_name" >/dev/null 2>&1; then
+            info "Füge Git-Remote '$remote_name' ($remote_url) hinzu..."
+            git -C "$DOTFILES_DIR" remote add "$remote_name" "$remote_url"
+        else
+            git -C "$DOTFILES_DIR" remote set-url "$remote_name" "$remote_url"
+        fi
+    done
 }
 
 check_clean_worktree() {
@@ -64,70 +87,110 @@ check_clean_worktree() {
     return 0
 }
 
+remote_has_branch() {
+    local remote_name="$1"
+    local branch="$2"
+    local out
+    out="$(GIT_TERMINAL_PROMPT=0 git -C "$DOTFILES_DIR" ls-remote --heads "$remote_name" "$branch" 2>/dev/null || true)"
+    [[ -n "$out" ]]
+}
+
 setup_subtrees() {
     ensure_remotes
 
-    if [[ ! -d "$DOTFILES_DIR/$NVIM_PREFIX" ]]; then
-        info "Füge Subtree '$NVIM_PREFIX' von $NVIM_REMOTE_NAME/$NVIM_BRANCH hinzu..."
-        git -C "$DOTFILES_DIR" subtree add --prefix="$NVIM_PREFIX" "$NVIM_REMOTE_NAME" "$NVIM_BRANCH" --squash \
-            -m "Add nvim config as git subtree"
-    fi
+    for mod in "${SUBTREE_MODULES[@]}"; do
+        local remote_name branch
+        remote_name="$(get_remote_name "$mod")"
+        branch="$(get_branch "$mod")"
 
-    if [[ ! -d "$DOTFILES_DIR/$TMUX_PREFIX" ]]; then
-        info "Füge Subtree '$TMUX_PREFIX' von $TMUX_REMOTE_NAME/$TMUX_BRANCH hinzu..."
-        git -C "$DOTFILES_DIR" subtree add --prefix="$TMUX_PREFIX" "$TMUX_REMOTE_NAME" "$TMUX_BRANCH" --squash \
-            -m "Add tmux config as git subtree"
-    fi
+        if [[ ! -d "$DOTFILES_DIR/$mod" ]]; then
+            if remote_has_branch "$remote_name" "$branch"; then
+                info "Füge Subtree '$mod' von $remote_name/$branch hinzu..."
+                git -C "$DOTFILES_DIR" fetch "$remote_name" "$branch"
+                git -C "$DOTFILES_DIR" subtree add --prefix="$mod" "$remote_name" "$branch" --squash \
+                    -m "Add $mod config as git subtree"
+            else
+                warn "Subtree-Ordner '$mod' fehlt lokal und Remote '$remote_name' hat noch keinen '$branch'-Branch."
+            fi
+        fi
+    done
 
-    ok "Git-Subtrees (nvim, tmux) und Remotes sind eingerichtet."
+    ok "Alle 5 Git-Subtrees (${SUBTREE_MODULES[*]}) und Remotes sind eingerichtet."
 }
 
-pull_nvim() {
+pull_one() {
+    local mod="$1"
+    local remote_name remote_url branch
+    remote_name="$(get_remote_name "$mod")"
+    remote_url="$(get_remote_url "$mod")"
+    branch="$(get_branch "$mod")"
+
     ensure_remotes
     check_clean_worktree || return 1
-    info "Hole neueste Commits von $NVIM_REMOTE_NAME ($NVIM_REMOTE_URL)..."
-    git -C "$DOTFILES_DIR" fetch "$NVIM_REMOTE_NAME" "$NVIM_BRANCH"
-    info "Aktualisiere Git-Subtree '$NVIM_PREFIX'..."
-    git -C "$DOTFILES_DIR" subtree pull --prefix="$NVIM_PREFIX" "$NVIM_REMOTE_NAME" "$NVIM_BRANCH" --squash \
-        -m "Update nvim subtree from upstream"
-    ok "Subtree '$NVIM_PREFIX' erfolgreich aktualisiert."
+
+    if ! remote_has_branch "$remote_name" "$branch"; then
+        warn "Remote '$remote_name' ($remote_url) hat auf GitHub noch keinen '$branch'-Branch – überspringe Pull."
+        warn "Tipp: Mit '~/git/dotfiles/scripts/update-subtrees.sh push $mod' initial ins Remote-Repo pushen."
+        return 0
+    fi
+
+    info "Hole neueste Commits von $remote_name ($remote_url)..."
+    git -C "$DOTFILES_DIR" fetch "$remote_name" "$branch"
+    info "Aktualisiere Git-Subtree '$mod'..."
+    git -C "$DOTFILES_DIR" subtree pull --prefix="$mod" "$remote_name" "$branch" --squash \
+        -m "Update $mod subtree from upstream"
+    ok "Subtree '$mod' erfolgreich aktualisiert."
 }
 
-pull_tmux() {
+push_one() {
+    local mod="$1"
+    local remote_name remote_url branch
+    remote_name="$(get_remote_name "$mod")"
+    remote_url="$(get_remote_url "$mod")"
+    branch="$(get_branch "$mod")"
+
     ensure_remotes
-    check_clean_worktree || return 1
-    info "Hole neueste Commits von $TMUX_REMOTE_NAME ($TMUX_REMOTE_URL)..."
-    git -C "$DOTFILES_DIR" fetch "$TMUX_REMOTE_NAME" "$TMUX_BRANCH"
-    info "Aktualisiere Git-Subtree '$TMUX_PREFIX'..."
-    git -C "$DOTFILES_DIR" subtree pull --prefix="$TMUX_PREFIX" "$TMUX_REMOTE_NAME" "$TMUX_BRANCH" --squash \
-        -m "Update tmux subtree from upstream"
-    ok "Subtree '$TMUX_PREFIX' erfolgreich aktualisiert."
+
+    info "Pushe Subtree '$mod/' nach $remote_name ($remote_url -> $branch)..."
+    git -C "$DOTFILES_DIR" subtree push --prefix="$mod" "$remote_name" "$branch"
+    ok "Subtree '$mod' erfolgreich nach $remote_name/$branch gepusht."
 }
 
 push_subtree() {
     local target="${1:-all}"
-    ensure_remotes
-
     case "$target" in
-        nvim)
-            info "Pushe Änderungen aus '$NVIM_PREFIX/' nach $NVIM_REMOTE_NAME/$NVIM_BRANCH..."
-            git -C "$DOTFILES_DIR" subtree push --prefix="$NVIM_PREFIX" "$NVIM_REMOTE_NAME" "$NVIM_BRANCH"
-            ok "Subtree '$NVIM_PREFIX' erfolgreich nach Upstream gepusht."
-            ;;
-        tmux)
-            info "Pushe Änderungen aus '$TMUX_PREFIX/' nach $TMUX_REMOTE_NAME/$TMUX_BRANCH..."
-            git -C "$DOTFILES_DIR" subtree push --prefix="$TMUX_PREFIX" "$TMUX_REMOTE_NAME" "$TMUX_BRANCH"
-            ok "Subtree '$TMUX_PREFIX' erfolgreich nach Upstream gepusht."
+        nvim|tmux|ghostty|kitty|vim)
+            push_one "$target"
             ;;
         all)
-            push_subtree nvim
-            push_subtree tmux
+            for mod in "${SUBTREE_MODULES[@]}"; do
+                push_one "$mod"
+            done
             ;;
         *)
-            error "Unbekanntes Push-Ziel: $target (erlaubt: nvim, tmux, all)"
+            error "Unbekanntes Push-Ziel: $target (erlaubt: nvim, tmux, ghostty, kitty, vim, all)"
             exit 1
             ;;
     esac
+}
+
+show_status() {
+    ensure_remotes
+    printf "\n%-10s %-16s %-54s %-10s\n" "PFAD" "REMOTE" "GITHUB-URL" "UPSTREAM"
+    printf "%-10s %-16s %-54s %-10s\n" "----------" "----------------" "------------------------------------------------------" "----------"
+    for mod in "${SUBTREE_MODULES[@]}"; do
+        local remote_name remote_url branch state
+        remote_name="$(get_remote_name "$mod")"
+        remote_url="$(get_remote_url "$mod")"
+        branch="$(get_branch "$mod")"
+        if remote_has_branch "$remote_name" "$branch"; then
+            state="main aktiv"
+        else
+            state="leer (push bereit)"
+        fi
+        printf "%-10s %-16s %-54s %-10s\n" "$mod/" "$remote_name" "$remote_url" "$state"
+    done
+    echo ""
 }
 
 usage() {
@@ -135,12 +198,16 @@ usage() {
 Verwendung: $(basename "$0") [BEFEHL]
 
 Befehle:
-  all             Beide Git-Subtrees (nvim & tmux) von Upstream aktualisieren (Standard)
-  nvim            Nur den nvim-Subtree (MichaelWeissDEV/nvim-config) aktualisieren
-  tmux            Nur den tmux-Subtree (MichaelWeissDEV/tmux-config) aktualisieren
-  push [ziel]     Lokale Commits zurück ans Upstream-Repo pushen (nvim, tmux oder all)
-  setup           Git-Remotes (nvim-remote, tmux-remote) & Subtrees initial prüfen/anlegen
-  help            Diese Hilfe anzeigen
+  all                 Alle 5 Git-Subtrees (nvim, tmux, ghostty, kitty, vim) von Upstream pullen (Standard)
+  nvim                Nur den nvim-Subtree (MichaelWeissDEV/nvim-config) pullen
+  tmux                Nur den tmux-Subtree (MichaelWeissDEV/tmux-config) pullen
+  ghostty             Nur den ghostty-Subtree (MichaelWeissDEV/ghostty-config) pullen
+  kitty               Nur den kitty-Subtree (MichaelWeissDEV/kittiy-config) pullen
+  vim                 Nur den vim-Subtree (MichaelWeissDEV/vim-config) pullen
+  push [ziel]         Lokale Subtree-Commits nach Upstream pushen (nvim, tmux, ghostty, kitty, vim oder all)
+  setup               Git-Remotes & Subtrees initial prüfen/einrichten
+  status              Status-Übersicht aller 5 Subtrees & Remotes anzeigen
+  help                Diese Hilfe anzeigen
 EOF
 }
 
@@ -148,21 +215,22 @@ main() {
     local cmd="${1:-all}"
     case "$cmd" in
         all|pull|update)
-            pull_nvim
-            pull_tmux
-            ok "Alle Git-Subtrees (nvim, tmux) sind auf dem neuesten Stand!"
+            for mod in "${SUBTREE_MODULES[@]}"; do
+                pull_one "$mod"
+            done
+            ok "Alle Git-Subtrees (${SUBTREE_MODULES[*]}) wurden geprüft/aktualisiert!"
             ;;
-        nvim)
-            pull_nvim
-            ;;
-        tmux)
-            pull_tmux
+        nvim|tmux|ghostty|kitty|vim)
+            pull_one "$cmd"
             ;;
         push)
             push_subtree "${2:-all}"
             ;;
         setup|init)
             setup_subtrees
+            ;;
+        status|list)
+            show_status
             ;;
         -h|--help|help)
             usage

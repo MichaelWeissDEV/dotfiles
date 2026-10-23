@@ -6,7 +6,7 @@
 #   ~/git/dotfiles/scripts/install.sh            Komplettes Setup (Pakete, Subtrees, OMZ, Symlinks, Services)
 #   ~/git/dotfiles/scripts/install.sh install    Komplettes Setup (wie ohne Argument)
 #   ~/git/dotfiles/scripts/install.sh update     System-, Dotfiles-, Subtree- & Plugin-Update + Symlinks
-#   ~/git/dotfiles/scripts/install.sh subtrees   Git-Subtrees (nvim & tmux) von Upstream aktualisieren
+#   ~/git/dotfiles/scripts/install.sh subtrees   Git-Subtrees (nvim, tmux, ghostty, kitty & vim) von Upstream aktualisieren
 #   ~/git/dotfiles/scripts/install.sh packages   Nur benötigte Arch-Pakete installieren (pacman)
 #   ~/git/dotfiles/scripts/install.sh links      Nur Symlinks in ~/.config & ~ einrichten (ohne sudo/Netzwerk)
 # ============================================================================
@@ -119,7 +119,7 @@ install_packages() {
 }
 
 # ============================================================================
-# 2. GIT-SUBTREES (nvim & tmux) EINRICHTEN & AKTUALISIEREN
+# 2. GIT-SUBTREES (nvim, tmux, ghostty, kitty & vim) EINRICHTEN & AKTUALISIEREN
 # ============================================================================
 setup_subtrees() {
     "$SCRIPTS_DIR/update-subtrees.sh" setup
@@ -215,6 +215,7 @@ setup_links() {
     # 4. Ausführbarkeitsrechte für Skripte sicherstellen
     chmod +x "$DOTFILES_DIR/hypr/askpass.sh" \
              "$DOTFILES_DIR/hypr/powermenu.sh" \
+             "$DOTFILES_DIR/hypr/windowswitcher.sh" \
              "$SCRIPTS_DIR/install.sh" \
              "$SCRIPTS_DIR/install-links.sh" \
              "$SCRIPTS_DIR/update-subtrees.sh"
@@ -290,8 +291,8 @@ Verwendung: $(basename "$0") [BEFEHL]
 
 Befehle:
   install    Komplettes Setup auf einem Arch-System (Standard, wenn kein Befehl angegeben)
-  update     Systempakete, Dotfiles, Git-Subtrees (nvim/tmux) & Zsh-Plugins aktualisieren
-  subtrees   Git-Subtrees (nvim & tmux) von ihren Upstream-Repositories aktualisieren
+  update     Systempakete, Dotfiles, Git-Subtrees (nvim/tmux/ghostty/kitty/vim) & Zsh-Plugins aktualisieren
+  subtrees   Git-Subtrees (nvim, tmux, ghostty, kitty & vim) von ihren Upstream-Repositories aktualisieren
   packages   Nur alle benötigten Arch Linux Pakete via pacman installieren
   links      Nur Symlinks in ~/.config & ~ (~/.zshrc, ~/.tmux.conf, ~/.vimrc) anlegen
   help       Diese Hilfe anzeigen

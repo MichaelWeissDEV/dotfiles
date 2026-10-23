@@ -32,6 +32,6 @@ case "$chosen" in
         hyprlock
         ;;
     *"Abmelden"*)
-        hyprctl dispatch exit
+        hyprctl dispatch 'hl.dsp.exit()'
         ;;
 esac
