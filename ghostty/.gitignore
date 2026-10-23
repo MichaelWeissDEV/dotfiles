@@ -1,0 +1,8 @@
+# Docs build output
+docs/_build/
+_build/
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
