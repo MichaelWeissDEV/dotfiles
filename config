@@ -1,0 +1,69 @@
+# ============================================================================
+# GHOSTTY KONFIGURATION - Official Catppuccin Mocha (Pastel Theme)
+# ============================================================================
+
+# Schriftart (identisch zu Kitty)
+font-family = JetBrainsMono Nerd Font
+font-size = 10.5
+
+# Minimalistisches Layout, keine Titelleiste/Dekoration & direkt Zsh starten
+command = /usr/bin/zsh
+window-decoration = none
+gtk-titlebar = false
+window-padding-x = 8
+window-padding-y = 8
+window-padding-balance = true
+confirm-close-surface = false
+mouse-hide-while-typing = true
+shell-integration-features = no-cursor
+
+# Cursor (Block, kein Blinken, Rosewater #f5e0dc / Base #1e1e2e)
+cursor-style = block
+cursor-style-blink = false
+cursor-color = #f5e0dc
+cursor-text = #1e1e2e
+adjust-cursor-thickness = 1
+
+# Leicht transparent (0.90) wie in Kitty
+background-opacity = 0.90
+
+# ============================================================================
+# CATPPUCCIN MOCHA PALETTE (Soothing Pastel Theme)
+# ============================================================================
+# Grundfarben (Base #1e1e2e, Text #cdd6f4, Selection Blue #89b4fa)
+background = #1e1e2e
+foreground = #cdd6f4
+selection-background = #89b4fa
+selection-foreground = #1e1e2e
+
+# Schwarz / Surface1 & Surface2
+palette = 0=#45475a
+palette = 8=#585b70
+
+# Rot / Pastel Red & Maroon
+palette = 1=#f38ba8
+palette = 9=#f38ba8
+
+# Grün / Pastel Green
+palette = 2=#a6e3a1
+palette = 10=#a6e3a1
+
+# Gelb / Pastel Yellow
+palette = 3=#f9e2af
+palette = 11=#f9e2af
+
+# Blau / Pastel Blue
+palette = 4=#89b4fa
+palette = 12=#89b4fa
+
+# Magenta / Pastel Pink & Mauve
+palette = 5=#f5c2e7
+palette = 13=#cba6f7
+
+# Cyan / Pastel Teal
+palette = 6=#94e2d5
+palette = 14=#94e2d5
+
+# Weiß / Subtext & Text
+palette = 7=#bac2de
+palette = 15=#a6adc8
