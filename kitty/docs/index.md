@@ -1,9 +1,9 @@
-# kittiy-config
+# kitty-config
 
 A clean, GPU-accelerated **Kitty** terminal configuration styled in the official **Catppuccin Mocha** palette with balanced transparency, JetBrainsMono Nerd Font typography, and Powerline tab styling.
 
 :::{note}
-**Part of the dotfiles ecosystem**: This is Michael Weiss' personal Kitty configuration. It is created to provide instant rendering, zero audio bells, and a distraction-free terminal workflow for anyone using Arch Linux, macOS, or another modern desktop.
+**Part of the Arch Dotfiles Ecosystem**: Built for **Arch Linux** as part of [`arch-dotfiles`](https://arch-dotfiles.readthedocs.io/en/latest/), this Kitty configuration provides instant rendering, zero audio bells, and a distraction-free terminal workflow that anyone can install on Arch Linux or adapt to **any Linux distribution or macOS**.
 :::
 
 ---
@@ -34,7 +34,7 @@ faq
 :caption: Related documentation
 :hidden:
 
-Dotfiles (main hub) <https://michaelweiss-dotfiles.readthedocs.io/en/latest/>
+Arch Dotfiles (main hub) <https://arch-dotfiles.readthedocs.io/en/latest/>
 Neovim (nvim-config) <https://nvim-config.readthedocs.io/en/latest/>
 tmux (tmux-config) <https://tmux-config.readthedocs.io/en/latest/>
 Ghostty (ghostty-config) <https://ghostty-config.readthedocs.io/en/latest/>
@@ -52,24 +52,32 @@ git clone https://github.com/MichaelWeissDEV/kittiy-config.git ~/.config/kitty
 kitty
 ```
 
-### In the Dotfiles Repository
+### In the Arch Dotfiles Repository
 
-This repository is integrated as a **Git-Subtree** at `kitty/` in `~/git/dotfiles` and linked directly to `~/.config/kitty`:
+This repository is integrated as a **Git Subtree** at `kitty/` in `~/git/dotfiles` and linked directly to `~/.config/kitty`:
 
 ```bash
-# Update subtree from upstream:
-~/git/dotfiles/scripts/update-subtrees.sh kitty
+# Update everything (system, dotfiles & all subtrees):
+adot update
+# (also available as: arch-dot update / arch-dotfiles update)
+
+# Update only the kitty subtree from upstream:
+adot update kitty
+
+# Inspect status or terminal keybindings:
+adot status
+adot keys terminals
 
 # Push local changes back to upstream:
-~/git/dotfiles/scripts/update-subtrees.sh push kitty
+adot push kitty
 ```
 
 ---
 
 ## Connected Dotfiles Ecosystem
 
-- **[Dotfiles Hub](https://michaelweiss-dotfiles.readthedocs.io/en/latest/)**: Central repository uniting desktop, window manager, and shell environments.
+- **[Arch Dotfiles Hub (`arch-dotfiles`)](https://arch-dotfiles.readthedocs.io/en/latest/)**: Central repository uniting the Arch Linux + Hyprland desktop, window manager, and shell environments.
 - **[ghostty-config](https://ghostty-config.readthedocs.io/en/latest/)**: Alternative GPU terminal sharing identical opacity and styling.
-- **[nvim-config](https://nvim-config.readthedocs.io/en/latest/)**: Fast Neovim configuration with matching Catppuccin themes.
-- **[tmux-config](https://tmux-config.readthedocs.io/en/latest/)**: Terminal multiplexer configured for seamless terminal integration.
-- **[vim-config](https://vim-config.readthedocs.io/en/latest/)**: Standalone Vim configuration.
+- **[nvim-config](https://nvim-config.readthedocs.io/en/latest/)**: Reproducible, offline-capable Neovim IDE with matching Catppuccin themes.
+- **[tmux-config](https://tmux-config.readthedocs.io/en/latest/)**: Portable terminal multiplexer configured for seamless terminal integration.
+- **[vim-config](https://vim-config.readthedocs.io/en/latest/)**: Zero-plugin standalone Vim configuration.

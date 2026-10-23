@@ -1,69 +1,136 @@
-# Shell & Productivity Aliases
+# Shell, CLI Commands & Productivity Aliases
 
-The command-line environment centers on **Zsh** enhanced with **Oh My Zsh**, asynchronous suggestions, syntax highlighting, and an intentional collection of fast aliases.
-
----
-
-## Prompt Theme: Catppuccin Mocha
-
-The custom prompt theme lives at `~/.oh-my-zsh/custom/themes/catppuccin.zsh-theme`. It provides a clean, two-line layout:
-
-```text
-┌──  ~/git/dotfiles on  main [✔]
-└──>
-```
-
-- **Directory**: Rendered in soft Teal (`#94e2d5`).
-- **Git Branch**: Highlighted in Lavender (`#b4befe`) with dirty indicator (`*` in Peach).
-- **Return Code**: Displays Green checkmark (`✔`) on success or Red cross (`✘`) with error code on failure.
-- **Prompt Symbol**: Minimal `>` arrow in Pastel Blue (`#89b4fa`).
+The command-line environment centers on **Zsh** (`~/.config/zsh/zshrc` and `~/.config/zsh/aliases.zsh`) enhanced with **Oh My Zsh**, Catppuccin Mocha syntax highlighting, asynchronous autosuggestions, FZF integration, and custom CLI tools (`arch-dot` / `arch-dotfiles` and `wallpaper`).
 
 ---
 
-## Active Plugins
+## Prompt & Environment (`zsh/zshrc`)
 
-1. **`git`**: Provides comprehensive git command shorthands and status parsing.
-2. **`sudo`**: Pressing <kbd>Esc</kbd> twice automatically prepends `sudo` to the current (or previous) command.
-3. **`zsh-autosuggestions`**: Suggests historical commands asynchronously in muted gray; press <kbd>→</kbd> (Right Arrow) to accept.
-4. **`zsh-syntax-highlighting`**: Highlights commands in green (valid), red (unknown), or cyan (aliases) while typing.
+- **Default Editor**: `EDITOR="nvim"` and `VISUAL="nvim"`
+- **Graphical Sudo Prompt**: `SUDO_ASKPASS="$HOME/.config/hypr/askpass.sh"` (uses `fuzzel --dmenu --password` in Wayland sessions)
+- **PATH**: Automatically prepends `~/.local/bin` so custom CLI tools (`arch-dot`, `arch-dotfiles`, `wallpaper`) are available everywhere.
+- **Minimal Prompt**: Clean `> ` prompt indicator with zero visual clutter, paired with the custom theme at `~/.oh-my-zsh/custom/themes/catppuccin.zsh-theme`.
+- **TUI Styling (`NEWT_COLORS`)**: Pre-configured Catppuccin Mocha color variables for `nmtui` and other libnewt TUI utilities.
 
 ---
 
-## Productivity Aliases & Helpers
+## Active Oh My Zsh Plugins & Keybindings
 
-Defined in `~/.config/zsh/aliases.zsh`:
-
-### Text Editors
-
-| Alias / Function | Command Executed | Purpose |
+| Plugin / Integration | Keybinding / Trigger | Description |
 | :--- | :--- | :--- |
-| `nv` | `nvim` | Open Neovim |
-| `v` | `vim` | Open standalone Vim |
-| `fznv` | Interactive `fd \| fzf` -> `nvim` | Interactively search all files and open selection in Neovim |
-| `fzv` | Interactive `fd \| fzf` -> `vim` | Interactively search all files and open selection in Vim |
+| **`sudo`** | <kbd>Esc</kbd> <kbd>Esc</kbd> *(press Escape twice)* | Automatically prefixes the current or previous command line with `sudo` |
+| **`zsh-autosuggestions`** | <kbd>→</kbd> *(Right Arrow)* or <kbd>End</kbd> | Accepts the inline historical command suggestion (rendered in muted Overlay0 `#6c7086`) |
+| **`zsh-syntax-highlighting`** | Live while typing | Highlights valid commands in Pastel Blue (`#89b4fa`), aliases in Teal (`#94e2d5`), builtins in Mauve (`#cba6f7`), strings in Green (`#a6e3a1`), and invalid tokens in Red (`#f38ba8`) |
+| **`fzf --zsh`** | <kbd>Ctrl</kbd> + <kbd>R</kbd> / <kbd>Ctrl</kbd> + <kbd>T</kbd> / <kbd>Alt</kbd> + <kbd>C</kbd> | Fuzzy search command history (`Ctrl+R`), insert file path (`Ctrl+T`), or fuzzy `cd` into directory (`Alt+C`) |
+| **`zoxide init zsh --cmd j`** | **`j <query>`** / **`ji`** *(also `z` / `zi`)* | **Smart Directory Jump (`j` for jump)** powered under the hood by **zoxide**: jumps to the highest-ranked matching directory (`j`) or opens an interactive `fzf` directory picker (`ji`) |
+| **`git`** | `gst`, `ga`, `gc`, `gp`, `gl`, ... | Standard Oh My Zsh Git aliases and completions |
 
-### File Navigation with Yazi (`y`)
+---
 
-The `y` command runs `yazi` with a shell wrapper that tracks directory changes. When you exit Yazi with `q`, your shell automatically `cd`s into the directory you were browsing:
+## Custom CLI Programs (`~/.local/bin`)
+
+### 1. `adot` / `arch-dot` / `arch-dotfiles` (Unified Ecosystem & Dotfiles Manager)
+
+Linked from `~/git/dotfiles/scripts/adot` to `~/.local/bin/adot`, `~/.local/bin/arch-dot`, and `~/.local/bin/arch-dotfiles`. Rather than invoking separate scripts manually, `adot` provides a single program for installing, updating (all or individual components), checking system/subtree state, and listing all custom keybindings, commands, and scripts:
+
+| Command | Action |
+| :--- | :--- |
+| `adot update` *(or `arch-dot update` / `arch-dotfiles update`)* | **Full ecosystem update**: updates Arch Linux `pacman` packages, pulls `~/git/dotfiles`, pulls all 5 Git subtrees (`nvim`, `tmux`, `ghostty`, `kitty`, `vim`), updates `pictures/` wallpapers (if cloned), updates Oh My Zsh & plugins, and refreshes all symlinks |
+| `adot update <target>` | **Granular update**: update only a specific target (`nvim`, `tmux`, `ghostty`, `kitty`, `vim`, `subtrees`, `dotfiles`, `system`, `zsh`, `wallpapers`, or `links`) |
+| `adot status [--fetch]` | **Live status dashboard**: displays git branch/commit/worktree state, `~/.local/bin` binaries, all 19 config symlinks, all 5 subtrees (with optional `--fetch` for remote GitHub SHAs), Oh My Zsh, `zoxide`, and `pacman` package status |
+| `adot list [category]` | **List managed items**: `all` (default), `modules`, `subtrees`, `keys`, `commands`, `scripts`, `packages`, or `docs` |
+| `adot keys [section]` | **List custom keybindings**: print keybinding tables in the terminal (`hypr`, `nvim`, `vim`, `tmux`, `terminals`, `shell`, or `all`) |
+| `adot commands` | **List custom commands & aliases**: print all custom CLI commands, shell functions (`j`/`ji`, `y`, `fznv`, `fzv`), and aliases |
+| `adot scripts` | **List scripts & binaries**: list all executables in `~/.local/bin` and internal helper scripts in `scripts/`, `hypr/`, and `wallpaper/` |
+| `adot docs` | **List documentation links**: display all 6 Read the Docs URLs and GitHub repository links |
+| `adot install` | Full initial setup (packages, subtrees, Oh My Zsh, symlinks, systemd services, login shell) |
+| `adot links` | Create/refresh all symlinks in `~/.config`, `~`, and `~/.local/bin` (safe on any OS, no sudo needed) |
+| `adot subtrees [target]` | Pull all 5 Git subtrees (or specify `nvim`, `tmux`, `ghostty`, `kitty`, or `vim`) from upstream |
+| `adot push [target]` | Push local subtree commits back to upstream GitHub (`nvim\|tmux\|ghostty\|kitty\|vim\|all`) |
+| `adot packages` | Install or update required Arch Linux packages via `pacman -Syu --needed` |
+| `adot wallpapers [URL\|--update]` | Clone or update the private wallpaper repository (`~/git/dotfiles/pictures`) |
+| `adot path` | Print the root path of the dotfiles repository (`~/git/dotfiles`) |
+| `adot help` | Display help message and subcommands |
+
+### 2. `wallpaper` (Multi-Monitor Wallpaper Manager)
+
+Linked from `~/git/dotfiles/wallpaper/wallpaper.sh` to `~/.local/bin/wallpaper` (alias: `wp`):
+
+| Command | Action |
+| :--- | :--- |
+| `wallpaper` *(or `wp`)* | Launch interactive Fuzzel TUI (choose target monitor + wallpaper) |
+| `wallpaper list [--monitor MON] [--plain]` | List all wallpapers (`★` = global default, `●` = monitor override) |
+| `wallpaper set <name\|path> [--monitor MON \| --all]` | Set global default, per-monitor override, or apply everywhere (`--all`) |
+| `wallpaper default [<name\|path>]` | Show or set the global default wallpaper |
+| `wallpaper monitor <MON> [<name\|path>\|default]` | Show, set, or remove a per-monitor override |
+| `wallpaper clear <MON> \| --all` | Clear override for `<MON>` or all monitors |
+| `wallpaper current` | Show saved state and active wallpapers per connected monitor |
+| `wallpaper next` / `wallpaper prev` / `wallpaper random` | Cycle to next, previous, or random wallpaper |
+| `wallpaper add <file>... [--move] [--set]` | Copy/move image(s) into `~/git/dotfiles/pictures` and optionally apply |
+| `wallpaper apply` / `wallpaper reload` | Apply saved state / restart `hyprpaper` and re-apply |
+| `wallpaper dirs` / `wallpaper open` / `wallpaper doctor` | Show configured directories / open in file manager / run diagnostics |
+
+---
+
+## Custom Aliases & Shell Functions (`zsh/aliases.zsh`)
+
+### Dotfiles & Maintenance Aliases
+
+| Alias | Command Executed | Purpose |
+| :--- | :--- | :--- |
+| `dotfiles` | `cd "$HOME/git/dotfiles"` | Jump directly to the dotfiles repository |
+| `adot` / `arch-dot` / `arch-dotfiles` | `"$HOME/git/dotfiles/scripts/adot"` | Run the unified dotfiles manager CLI program |
+| `cfg-update` | `"$HOME/git/dotfiles/scripts/adot" update` | Shortcut for `adot update` |
+| `cfg-links` | `"$HOME/git/dotfiles/scripts/adot" links` | Shortcut for `adot links` |
+| `cfg-subtrees` | `"$HOME/git/dotfiles/scripts/adot" subtrees` | Shortcut for `adot subtrees` |
+| `cfg-wallpapers` | `"$HOME/git/dotfiles/scripts/adot" wallpapers` | Shortcut for `adot wallpapers` |
+| `wp` | `wallpaper` | Short alias for the wallpaper manager |
+
+### Text Editors & Interactive Fuzzy Openers
+
+| Alias / Function | Implementation | Purpose |
+| :--- | :--- | :--- |
+| `nv` | `nvim` | Open [Neovim (`nvim-config`)](https://nvim-config.readthedocs.io/en/latest/) |
+| `v` | `vim` | Open standalone [Vim (`vim-config`)](https://vim-config.readthedocs.io/en/latest/) |
+| `fznv [args]` | `fzf --height=40% --layout=reverse --border --prompt='nvim > '` -> `nvim` | Fuzzy-find a file interactively and open it in Neovim |
+| `fzv [args]` | `fzf --height=40% --layout=reverse --border --prompt='vim > '` -> `vim` | Fuzzy-find a file interactively and open it in Vim |
+
+### Smart Directory Jumping with `j` (Powered by `zoxide`)
+
+Directory navigation uses the short command **`j`** (for **jump**), backed under the hood by **`zoxide`** (`eval "$(zoxide init zsh --cmd j)"`):
+
+| Command | Action |
+| :--- | :--- |
+| **`j <pattern>`** *(or `z <pattern>`)* | **Jump (`j`)** directly to the highest-ranked directory matching `<pattern>` based on frecency (`zoxide` database) |
+| **`ji`** *(or `zi`)* | Open an **interactive `fzf` directory picker** over your `zoxide` history and jump to the selection |
+| **`j -`** *(or `z -`)* | Jump back to the previous directory |
+
+### Yazi Directory-Tracking Wrapper (`y`)
+
+The `y` shell function wraps `yazi` (`yazi "$@" --cwd-file="$tmp"`). When you navigate through directories in Yazi and press <kbd>q</kbd> to quit, your current Zsh shell automatically `cd`s into the last directory you visited:
 
 ```bash
 y [path]
 ```
 
-### Tmux Session Management
+### tmux Session Shortcuts
 
-| Command | Action |
-| :--- | :--- |
-| `tm` | Attach to primary session `main` (creates it automatically if not running) |
-| `tn <name>` | Create a new named tmux session |
-| `ta <name>` | Attach to an existing named tmux session |
-| `tl` | List all running tmux sessions (`tmux list-sessions`) |
+See the full [tmux-config Documentation](https://tmux-config.readthedocs.io/en/latest/) for internal tmux bindings.
 
-### Dotfiles & System Management
-
-| Command | Equivalent Script Call | Purpose |
+| Alias | Command Executed | Purpose |
 | :--- | :--- | :--- |
-| `dotfiles` | `cd ~/git/dotfiles` | Jump directly into the dotfiles workspace |
-| `cfg-update` | `~/git/dotfiles/scripts/install.sh update` | Full update: system packages, subtrees, dotfiles, Zsh plugins |
-| `cfg-links` | `~/git/dotfiles/scripts/install-links.sh` | Refresh and verify all `~/.config` symlinks |
-| `cfg-subtrees` | `~/git/dotfiles/scripts/update-subtrees.sh` | Pull all 5 subtrees from upstream GitHub repositories |
+| `tm` | `tmux new-session -A -s main` | Attach to primary session `main` (or create it if not running) |
+| `tn <name>` | `tmux new-session -s <name>` | Create a new named tmux session |
+| `ta <name>` | `tmux attach -t <name>` | Attach to an existing named tmux session |
+| `tl` | `tmux list-sessions` | List all active tmux sessions |
+
+### Colorized System Utilities
+
+| Alias | Command Executed |
+| :--- | :--- |
+| `ls` | `ls --color=auto` |
+| `ll` | `ls -lah --color=auto` |
+| `la` | `ls -A --color=auto` |
+| `grep` | `grep --color=auto` |
+| `diff` | `diff --color=auto` |
+| `ip` | `ip -color=auto` |

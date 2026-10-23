@@ -76,12 +76,21 @@ roottext=blue,black
 '
 
 # ============================================================================
-# FZF Shell-Integration & Aliases laden
+# FZF, Zoxide Shell-Integration & Aliases laden
 # ============================================================================
 if command -v fzf >/dev/null 2>&1; then
     source <(fzf --zsh)
 fi
 
+if command -v zoxide >/dev/null 2>&1; then
+    # Initialize zoxide with 'j' (jump) & 'ji' (interactive fzf jump), plus standard 'z' & 'zi'
+    eval "$(zoxide init zsh --cmd j)"
+fi
+
 if [[ -f "$HOME/.config/zsh/aliases.zsh" ]]; then
     source "$HOME/.config/zsh/aliases.zsh"
 fi
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/mweiss/.local/bin:$PATH"

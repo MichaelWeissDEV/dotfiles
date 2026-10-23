@@ -3,7 +3,7 @@
 A minimalist, high-performance **Ghostty** terminal configuration styled in the official **Catppuccin Mocha** palette with tasteful transparency, custom font metrics, and seamless integration with Neovim, tmux, and Hyprland.
 
 :::{note}
-**Part of the dotfiles ecosystem**: This is Michael Weiss' personal Ghostty configuration. It is built to be clean, self-contained, and beginner-friendly so anyone can clone it, understand every line, and use it as a reliable daily terminal on Linux or macOS.
+**Part of the Arch Dotfiles Ecosystem**: Built for **Arch Linux** as part of [`arch-dotfiles`](https://arch-dotfiles.readthedocs.io/en/latest/), this Ghostty configuration is completely self-contained and beginner-friendly so anyone can install it on Arch Linux or use it standalone on **any Linux distribution or macOS** with minimal adjustments.
 :::
 
 ---
@@ -34,10 +34,10 @@ faq
 :caption: Related documentation
 :hidden:
 
-Dotfiles (main hub) <https://michaelweiss-dotfiles.readthedocs.io/en/latest/>
+Arch Dotfiles (main hub) <https://arch-dotfiles.readthedocs.io/en/latest/>
 Neovim (nvim-config) <https://nvim-config.readthedocs.io/en/latest/>
 tmux (tmux-config) <https://tmux-config.readthedocs.io/en/latest/>
-Kitty (kittiy-config) <https://kittiy-config.readthedocs.io/en/latest/>
+Kitty (kitty-config) <https://kitty-config.readthedocs.io/en/latest/>
 Vim (vim-config) <https://vim-config.readthedocs.io/en/latest/>
 ```
 
@@ -52,24 +52,32 @@ git clone https://github.com/MichaelWeissDEV/ghostty-config.git ~/.config/ghostt
 ghostty
 ```
 
-### In the Dotfiles Repository
+### In the Arch Dotfiles Repository
 
-This repository is integrated as a **Git-Subtree** at `ghostty/` in `~/git/dotfiles` and linked directly to `~/.config/ghostty`:
+This repository is integrated as a **Git Subtree** at `ghostty/` in `~/git/dotfiles` and linked directly to `~/.config/ghostty`:
 
 ```bash
-# Update subtree from upstream:
-~/git/dotfiles/scripts/update-subtrees.sh ghostty
+# Update everything (system, dotfiles & all subtrees):
+adot update
+# (also available as: arch-dot update / arch-dotfiles update)
+
+# Update only the ghostty subtree from upstream:
+adot update ghostty
+
+# Inspect status or terminal keybindings:
+adot status
+adot keys terminals
 
 # Push local changes back to upstream:
-~/git/dotfiles/scripts/update-subtrees.sh push ghostty
+adot push ghostty
 ```
 
 ---
 
 ## Connected Dotfiles Ecosystem
 
-- **[Dotfiles Hub](https://michaelweiss-dotfiles.readthedocs.io/en/latest/)**: Central repository uniting desktop, window manager, and shell environments.
-- **[nvim-config](https://nvim-config.readthedocs.io/en/latest/)**: Fast Neovim configuration with identical Catppuccin colors.
-- **[tmux-config](https://tmux-config.readthedocs.io/en/latest/)**: Terminal multiplexer with truecolor and OSC 52 clipboard support.
-- **[kittiy-config](https://kittiy-config.readthedocs.io/en/latest/)**: Alternative GPU-accelerated terminal with identical styling.
-- **[vim-config](https://vim-config.readthedocs.io/en/latest/)**: Standalone Vim configuration.
+- **[Arch Dotfiles Hub (`arch-dotfiles`)](https://arch-dotfiles.readthedocs.io/en/latest/)**: Central repository uniting the Arch Linux + Hyprland desktop, window manager, and shell environments.
+- **[nvim-config](https://nvim-config.readthedocs.io/en/latest/)**: Reproducible, offline-capable Neovim IDE with identical Catppuccin Mocha colors.
+- **[tmux-config](https://tmux-config.readthedocs.io/en/latest/)**: Portable terminal multiplexer with truecolor and OSC 52 clipboard support.
+- **[kitty-config](https://kitty-config.readthedocs.io/en/latest/)**: Alternative GPU-accelerated terminal with identical styling and Powerline tabs.
+- **[vim-config](https://vim-config.readthedocs.io/en/latest/)**: Zero-plugin standalone Vim configuration.

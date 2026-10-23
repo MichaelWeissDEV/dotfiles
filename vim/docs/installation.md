@@ -55,29 +55,32 @@ The editor starts instantly with no warnings or external downloads.
 
 ---
 
-## Integration within the Dotfiles Repository
+## Integration within the Arch Dotfiles Repository
 
-If you are using the central [Dotfiles Hub](https://michaelweiss-dotfiles.readthedocs.io/en/latest/), `vim-config` is embedded as a Git subtree in `~/git/dotfiles/vim`.
+If you are using the central [Arch Dotfiles Hub (`arch-dotfiles`)](https://arch-dotfiles.readthedocs.io/en/latest/), `vim-config` is embedded as a Git subtree in `~/git/dotfiles/vim`.
 
-The main installation script `scripts/install.sh` automatically links the files:
+The central CLI program **`adot`** (also accessible as `arch-dot` or `arch-dotfiles`) automatically links and manages the files:
 
 ```bash
-cd ~/git/dotfiles
-./scripts/install.sh
+adot install
+# or recreate symlinks only:
+adot links
 ```
 
 ### Synchronizing Changes
 
-To update the subtree from GitHub:
+To update everything or just the `vim` subtree from GitHub:
 
 ```bash
-~/git/dotfiles/scripts/update-subtrees.sh vim
+adot update
+# or pull only vim:
+adot update vim
 ```
 
 To contribute local edits made in `vim/` back to the upstream remote:
 
 ```bash
-~/git/dotfiles/scripts/update-subtrees.sh push vim
+adot push vim
 ```
 
 ---

@@ -1,20 +1,30 @@
 # ============================================================================
-# ~/.config/zsh/aliases.zsh - Aliases & Hilfsfunktionen (Zsh)
+# ~/.config/zsh/aliases.zsh - Aliases & Helper Functions (Zsh)
 # ============================================================================
 
-# Editor-Aliases
+# Editor Aliases
 alias nv='nvim'
 alias v='vim'
 
-# Dotfiles & System-Wartung (~/git/dotfiles)
+# Dotfiles & System Management (~/git/dotfiles)
+# Unified CLI program: adot / arch-dot / arch-dotfiles (linked in ~/.local/bin)
 alias dotfiles='cd "$HOME/git/dotfiles"'
-alias cfg-update='"$HOME/git/dotfiles/scripts/install.sh" update'
-alias cfg-links='"$HOME/git/dotfiles/scripts/install-links.sh"'
-alias cfg-subtrees='"$HOME/git/dotfiles/scripts/update-subtrees.sh"'
-alias cfg-wallpapers='"$HOME/git/dotfiles/scripts/install-wallpapers.sh"'
+alias adot='"$HOME/git/dotfiles/scripts/adot"'
+alias arch-dot='"$HOME/git/dotfiles/scripts/adot"'
+alias arch-dotfiles='"$HOME/git/dotfiles/scripts/adot"'
+alias cfg-update='"$HOME/git/dotfiles/scripts/adot" update'
+alias cfg-links='"$HOME/git/dotfiles/scripts/adot" links'
+alias cfg-subtrees='"$HOME/git/dotfiles/scripts/adot" subtrees'
+alias cfg-wallpapers='"$HOME/git/dotfiles/scripts/adot" wallpapers'
 
-# Wallpaper-Switcher (Default + pro Monitor)
+# Wallpaper Switcher (Default + per-monitor overrides)
 alias wp='wallpaper'
+
+# Smart Directory Jumping (powered by zoxide: 'j' for jump, 'ji' for interactive fzf jump; 'z'/'zi' also supported)
+if command -v zoxide >/dev/null 2>&1; then
+    alias z='j'
+    alias zi='ji'
+fi
 
 # Datei- & System-Aliases mit Farbunterstützung
 alias ls='ls --color=auto'

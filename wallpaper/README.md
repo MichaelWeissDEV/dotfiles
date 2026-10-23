@@ -1,235 +1,172 @@
-# Wallpaper-Switcher – Catppuccin Mocha
+<div align="center">
 
-Wechselt Hintergrundbilder unter Hyprland über **hyprpaper** – mit einem
-**Default für alle Bildschirme** und **eigenen Wallpapers pro Monitor**
-(z. B. Zweit- oder Drittschirm).
+# Wallpaper Switcher — Catppuccin Mocha
 
-Die Wallpaper werden aus der privaten Bibliothek `~/git/dotfiles/pictures`
-gelesen. Dieses Verzeichnis ist per `.gitignore` aus dem öffentlichen
-Dotfiles-Repo ausgeschlossen (Urheberrecht) und wird separat als privates
-Git-Repository geklont. Unterordner werden rekursiv durchsucht.
+**Multi-monitor wallpaper manager for Hyprland (`hyprpaper`) with Fuzzel TUI & CLI.**
+
+Global Default · Per-Monitor Overrides · Automatic Hot-Plug Restore · XDG State Cleanliness
+
+[![Dotfiles Hub](https://img.shields.io/badge/ecosystem-arch--dotfiles-1793D1?logo=arch-linux&logoColor=white)](https://arch-dotfiles.readthedocs.io/en/latest/)
+[![Hyprland Guide](https://img.shields.io/badge/docs-Hyprland%20%26%20Wallpapers-89b4fa)](https://arch-dotfiles.readthedocs.io/en/latest/hyprland/#wallpaper-management-hyprpaper)
+[![Theme: Catppuccin Mocha](https://img.shields.io/badge/theme-Catppuccin%20Mocha-cba6f7)](https://github.com/catppuccin/catppuccin)
+
+[**Ecosystem Documentation**](https://arch-dotfiles.readthedocs.io/en/latest/) ·
+[Hyprland & Wallpaper Guide](https://arch-dotfiles.readthedocs.io/en/latest/hyprland/) ·
+[Installation Guide](https://arch-dotfiles.readthedocs.io/en/latest/installation/)
+
+</div>
 
 ---
 
-## Schnellstart
+## Overview
+
+`wallpaper` (`~/.config/wallpaper/wallpaper.sh`, linked to `~/.local/bin/wallpaper`) manages desktop backgrounds under Hyprland via **hyprpaper** — supporting both a **global default for all screens** and **independent per-monitor overrides** (e.g., for secondary or tertiary displays).
+
+Wallpapers are loaded from the private library at `~/git/dotfiles/pictures` (and any additional directories configured in `~/.config/wallpaper/wallpaper.conf`). Because `pictures/` is excluded from the public repository via `.gitignore` for copyright reasons, it is managed as a standalone private Git repository via `adot wallpapers` (or `arch-dot wallpapers`). Subdirectories are scanned recursively.
+
+While built for the **Arch Linux + Hyprland** dotfiles setup, `wallpaper` works on any Linux distribution running Hyprland, `hyprpaper`, `jq`, and `fuzzel`.
+
+---
+
+## Quick Start
 
 ```bash
-# Fuzzel-TUI: erst Ziel (alle oder ein Monitor), dann Wallpaper wählen
+# Open interactive Fuzzel TUI: first choose target (all/default or specific monitor), then pick wallpaper
 wallpaper
+# (or press SUPER + SHIFT + W in Hyprland)
 
-# Verfügbare Wallpapers anzeigen (★ = Default, ● = Monitor-Override)
+# List available wallpapers (★ = Default, ● = Monitor Override)
 wallpaper list
 
-# Default für alle Bildschirme ohne eigenen Override setzen
+# Set global default for all monitors that do not have a custom override
 wallpaper set forest.png
 
-# Eigenes Wallpaper für einen Monitor (z. B. Drittschirm)
+# Set a dedicated override wallpaper for a specific monitor (e.g. DP-1)
 wallpaper set ocean.png --monitor DP-1
 
-# Überall dasselbe Wallpaper setzen und alle Overrides löschen
+# Set the same wallpaper everywhere and clear all monitor overrides
 wallpaper set city.png --all
 
-# Override eines Monitors wieder entfernen (nutzt danach den Default)
+# Remove a monitor's override (reverts that monitor to the global default)
 wallpaper monitor DP-1 default
 
-# Aktuelle Belegung anzeigen
+# Show current assignment and active wallpapers per monitor
 wallpaper current
 ```
 
-Beim Start von Hyprland wird die gespeicherte Belegung automatisch angewendet.
-Ein neu angeschlossener Monitor erhält zunächst den Default.
+When Hyprland starts (or when a new monitor is hot-plugged), the saved assignment in `~/.local/state/wallpaper/state` is applied automatically.
 
 ---
 
-## Befehle
+## CLI Command Reference
 
-| Befehl | Beschreibung |
+| Command | Description |
 | :--- | :--- |
-| `wallpaper` | Fuzzel-TUI öffnen (Ziel + Wallpaper) |
-| `wallpaper list [--monitor MON]` | Wallpapers auflisten (`--plain` nur Namen) |
-| `wallpaper set <name\|pfad> [--monitor MON \| --all]` | Default bzw. Monitor-Override setzen |
-| `wallpaper default [<name\|pfad>]` | Default anzeigen oder setzen |
-| `wallpaper monitor <MON> [<name\|pfad>\|default]` | Monitor-Override anzeigen/setzen/entfernen |
-| `wallpaper clear <MON> \| --all` | Override(s) entfernen |
-| `wallpaper current` | Belegung und aktive Wallpapers pro Monitor |
-| `wallpaper next` / `prev` | Nächstes/vorheriges Wallpaper |
-| `wallpaper random [--monitor MON \| --all]` | Zufälliges Wallpaper |
-| `wallpaper apply [--quiet] [--monitor MON]` | Gespeicherte Belegung anwenden |
-| `wallpaper reload` | hyprpaper neu starten und Belegung anwenden |
-| `wallpaper dirs` | Wallpaper-Ordner, Konfiguration und Status anzeigen |
-| `wallpaper add <datei>... [--move] [--set]` | Bilder in die Bibliothek übernehmen |
-| `wallpaper open` | Wallpaper-Ordner im Dateimanager öffnen |
-| `wallpaper doctor` | Installation, Monitore und Status prüfen |
+| `wallpaper` *(or `wallpaper tui`)* | Open interactive Fuzzel TUI (select target monitor + wallpaper) |
+| `wallpaper list [--monitor MON] [--plain]` | List discovered wallpapers (`--plain` prints filenames only) |
+| `wallpaper set <name\|path> [--monitor MON \| --all]` | Set global default or per-monitor override |
+| `wallpaper default [<name\|path>]` | Show or set the global default wallpaper |
+| `wallpaper monitor <MON> [<name\|path>\|default]` | Show, set, or clear the override for monitor `<MON>` |
+| `wallpaper clear <MON> \| --all` | Clear override for `<MON>` or clear all monitor overrides |
+| `wallpaper current` | Show saved state and currently active wallpapers per monitor |
+| `wallpaper next` / `wallpaper prev` | Cycle to next / previous wallpaper |
+| `wallpaper random [--monitor MON \| --all]` | Apply a random wallpaper from the library |
+| `wallpaper apply [--quiet] [--monitor MON]` | Re-apply saved wallpaper assignments to running `hyprpaper` |
+| `wallpaper reload` | Restart `hyprpaper` daemon and re-apply saved state |
+| `wallpaper dirs` | Show configured wallpaper search directories, config file, and state |
+| `wallpaper add <file>... [--move] [--set]` | Copy (or `--move`) image(s) into the wallpaper library (`--set` applies immediately) |
+| `wallpaper open` | Open the wallpaper directory in the file manager |
+| `wallpaper doctor` | Diagnose dependencies (`hyprpaper`, `jq`, `fuzzel`), monitors, and state |
 
-### Ziel-Semantik
+### Target Semantics
 
-- **Default** (`wallpaper set X` bzw. `wallpaper default X`): gilt für alle
-  Monitore, die keinen eigenen Override haben.
-- **Monitor-Override** (`wallpaper set X --monitor DP-1`): gilt nur für diesen
-  Monitor und bleibt auch beim Wechsel des Defaults erhalten.
-- **`--all`**: setzt den Default und löscht alle Overrides, sodass überall
-  dasselbe Bild erscheint.
+- **Default (`wallpaper set X` or `wallpaper default X`)**: Applies to all monitors that do not have an explicit per-monitor override.
+- **Monitor Override (`wallpaper set X --monitor DP-1`)**: Applies exclusively to `DP-1` and remains pinned even when the global default changes.
+- **`--all` (`wallpaper set X --all`)**: Sets the global default to `X` and removes all per-monitor overrides so every screen shows `X`.
 
 ---
 
-## Privates Wallpaper-Repository (Urheberrecht)
+## Private Wallpaper Repository (`pictures/`)
 
-Die Wallpaper liegen **nicht** im öffentlichen Dotfiles-Repo, sondern in:
+Wallpaper images are stored in:
 
 ```text
 ~/git/dotfiles/pictures/
 ```
 
-Das Verzeichnis ist in `.gitignore` eingetragen und wird nicht mit dem
-Dotfiles-Repo veröffentlicht. Es ist ein eigenständiges privates Git-Repo –
-bewusst **kein Git-Submodul** im Dotfiles-Repo. Dadurch steht die private URL
-nicht in `.gitmodules` und die Bilder sind nicht Teil des öffentlichen Repos.
+This directory is listed in `.gitignore` so copyrighted images are never committed to the public dotfiles repository. It is intentionally cloned as a standalone Git repository rather than a Git submodule so no private repository URL is leaked in `.gitmodules`.
 
-### Einmalig einrichten
+### Initial Setup & Updating
 
 ```bash
-~/git/dotfiles/scripts/install-wallpapers.sh <git-url>
+# Clone private wallpaper repository (one-time):
+adot wallpapers <git-url>
+# (also available as: arch-dot wallpapers <git-url>)
+
+# Update existing wallpaper repository:
+adot update wallpapers
+# (or automatically as part of: adot update)
 ```
 
-Alternativ manuell:
-
-```bash
-cd ~/git/dotfiles
-git clone <git-url> pictures
-```
-
-### Aktualisieren
-
-```bash
-~/git/dotfiles/scripts/install-wallpapers.sh --update
-# oder:
-git -C ~/git/dotfiles/pictures pull --ff-only
-```
-
-Das Dotfiles-Repo bleibt sauber: `pictures/` taucht nicht in `git status` auf.
-
-> **Achtung:** `pictures/` ist absichtlich ignoriert. Ein `git clean -fdx` im
-> Dotfiles-Repo würde das private Wallpaper-Repo löschen. Vorher committen und
-> pushen.
+> **Caution:** Because `pictures/` is gitignored, running `git clean -fdx` in the root dotfiles repository would delete `pictures/`. Always commit and push any new wallpapers inside `~/git/dotfiles/pictures` before running a force-clean.
 
 ---
 
-## Eigene Wallpapers hinzufügen
+## Adding Your Own Wallpapers
 
-### Standardordner
-
-Lege die Bilder hier ab:
-
-```text
-~/git/dotfiles/pictures/
-```
-
-Unterordner sind erlaubt und werden rekursiv durchsucht, z. B.:
-
-```text
-~/git/dotfiles/pictures/Natur/wald.jpg
-~/git/dotfiles/pictures/Abstrakt/blau.png
-```
-
-Danach reicht ein neuer Aufruf von `wallpaper` oder `wallpaper list` – die
-Bilder erscheinen **sofort**, ohne Hyprland- oder hyprpaper-Neustart:
+Drop images directly into `~/git/dotfiles/pictures/` (subdirectories are scanned recursively) or import them via the CLI:
 
 ```bash
-wallpaper          # TUI öffnen und neues Bild auswählen
-wallpaper list     # oder nur die Liste anzeigen
+# Copy image into ~/git/dotfiles/pictures/
+wallpaper add ~/Downloads/my-wallpaper.jpg
+
+# Copy and immediately set as global default
+wallpaper add ~/Downloads/my-wallpaper.jpg --set
+
+# Move instead of copy
+wallpaper add ~/Downloads/my-wallpaper.jpg --move
 ```
 
-### Über das Tool übernehmen
+New images appear immediately in `wallpaper` (TUI) and `wallpaper list` without restarting Hyprland or `hyprpaper`.
 
-```bash
-# Bild in die private Bibliothek kopieren
-wallpaper add ~/Downloads/mein-bild.jpg
+### Configuring Additional Directories (`wallpaper.conf`)
 
-# Direkt als Default setzen
-wallpaper add ~/Downloads/mein-bild.jpg --set
-
-# Verschieben statt kopieren
-wallpaper add ~/Downloads/mein-bild.jpg --move
-```
-
-`wallpaper add` legt das Bild im ersten beschreibbaren Ordner aus
-`WALLPAPER_DIRS` ab – standardmäßig in `~/git/dotfiles/pictures`. Existiert der
-Dateiname schon, wird automatisch ein Suffix wie `-1` angehängt. Danach kannst
-du die neuen Bilder im privaten Repo committen:
-
-```bash
-git -C ~/git/dotfiles/pictures add .
-git -C ~/git/dotfiles/pictures commit -m "Add wallpapers"
-git -C ~/git/dotfiles/pictures push
-```
-
-### Weitere Ordner verwenden
-
-Weitere Quellen (Ordner oder Dateimuster) stehen in
-`~/.config/wallpaper/wallpaper.conf`:
+You can configure extra directories or glob patterns in `~/.config/wallpaper/wallpaper.conf`:
 
 ```bash
 WALLPAPER_DIRS=(
     "${DOTFILES_ROOT:-$HOME/git/dotfiles}/pictures"
-    "/pfad/zu/meinen/wallpapers"
+    "$HOME/Pictures/Wallpapers"
     "/usr/share/hypr/wall*.png"
 )
 WALLPAPER_FIT="cover"   # cover | contain | tile | fill
+WALLPAPER_NOTIFY=1      # 1 = desktop notification on change, 0 = silent
 ```
 
-- `DOTFILES_ROOT` wird vom Wallpaper-Skript automatisch auf das
-  Dotfiles-Repo gesetzt; der Fallback funktioniert auch beim manuellen Sourcen.
-- Ordner werden rekursiv gelesen; Dateimuster wie `/usr/share/hypr/wall*.png`
-  sind ebenfalls erlaubt.
-- `~` wird unterstützt, besser ist aber `$HOME` (wird beim Einlesen expandiert).
-- Nach Änderungen genügt `wallpaper list` bzw. `wallpaper` – kein Neustart nötig.
-- Mit `wallpaper dirs` prüfst du, welche Quellen aktuell gefunden werden.
-
-### Unterstützte Formate
-
-PNG, JPG/JPEG, WebP, GIF, BMP, AVIF, JXL und TIF/TIFF.
-
-### Dateinamen & Auswahl
-
-- Eindeutige Namen sind am bequemsten: `wallpaper set wald.jpg`
-- Bei gleichen Dateinamen in verschiedenen Ordnern den relativen Pfad angeben:
-  `wallpaper set Natur/wald.jpg`
-- Absolute Pfade funktionieren ebenfalls:
-  `wallpaper set /pfad/zu/bild.png`
-- In der TUI einfach lostippen, um die Liste zu filtern; `Enter` wählt aus.
+Supported formats: `PNG`, `JPG/JPEG`, `WebP`, `GIF`, `BMP`, `AVIF`, `JXL`, `TIF/TIFF`.
 
 ---
 
-## Dateien
+## Files & State Paths
 
-| Pfad | Zweck |
+| Path | Purpose |
 | :--- | :--- |
-| `~/git/dotfiles/pictures` | Privates Wallpaper-Repo (gitignoriert, nicht im öffentlichen Dotfiles-Repo) |
-| `~/git/dotfiles/scripts/install-wallpapers.sh` | Klont/aktualisiert das private Wallpaper-Repo |
-| `~/.config/wallpaper/wallpaper.conf` | Wallpaper-Ordner, Fit-Modus, Benachrichtigungen |
-| `~/.config/wallpaper/wallpaper.sh` | CLI- und TUI-Programm (auch als `wallpaper` in `~/.local/bin`) |
-| `~/.local/state/wallpaper/state` | Gespeicherter Default und Monitor-Overrides |
-| `~/.config/hypr/hyprpaper.conf` | hyprpaper-Grundeinstellungen (`splash = false`) |
-
-Der Zustand wird bewusst unter `~/.local/state` gespeichert, damit
-`wallpaper set ...` keine Änderungen im Dotfiles-Repository erzeugt.
+| `~/git/dotfiles/pictures` | Private wallpaper repository (gitignored) |
+| `~/git/dotfiles/scripts/install-wallpapers.sh` | Helper script invoked by `adot wallpapers` / `adot update wallpapers` |
+| `~/.config/wallpaper/wallpaper.conf` | Search directories, fit mode (`cover\|contain\|tile\|fill`), notification toggle |
+| `~/.config/wallpaper/wallpaper.sh` | Main CLI & TUI executable (symlinked to `~/.local/bin/wallpaper`, alias `wp`) |
+| `~/.local/state/wallpaper/state` | Persistent default & per-monitor overrides (kept outside the Git repo) |
+| `~/.config/hypr/hyprpaper.conf` | Base `hyprpaper` daemon config (`splash = false`) |
 
 ---
 
-## Tastenkürzel & CLI
+## Connected Dotfiles Ecosystem
 
-- **`SUPER + SHIFT + W`** öffnet die Wallpaper-TUI.
-- Alternativ per CLI: `wallpaper` (TUI) bzw. `wallpaper list`, `wallpaper set …`.
-- In der Waybar gibt es bewusst kein Wallpaper-Symbol; die Steuerung erfolgt
-  nur über Tastenkürzel oder CLI.
-
----
-
-## Voraussetzungen
-
-```bash
-sudo pacman -S hyprpaper jq fuzzel
-```
-
-`hyprpaper` wird von `wallpaper apply` automatisch gestartet, falls es noch
-nicht läuft. `scripts/install.sh` installiert das Paket mit.
+| Component | Repository | Documentation |
+| :--- | :--- | :--- |
+| **Arch Dotfiles Hub** *(Main System)* | [`MichaelWeissDEV/dotfiles`](https://github.com/MichaelWeissDEV/dotfiles) | [arch-dotfiles.readthedocs.io](https://arch-dotfiles.readthedocs.io/en/latest/) |
+| **Neovim (`nvim-config`)** | [`MichaelWeissDEV/nvim-config`](https://github.com/MichaelWeissDEV/nvim-config) | [nvim-config.readthedocs.io](https://nvim-config.readthedocs.io/en/latest/) |
+| **tmux (`tmux-config`)** | [`MichaelWeissDEV/tmux-config`](https://github.com/MichaelWeissDEV/tmux-config) | [tmux-config.readthedocs.io](https://tmux-config.readthedocs.io/en/latest/) |
+| **Ghostty (`ghostty-config`)** | [`MichaelWeissDEV/ghostty-config`](https://github.com/MichaelWeissDEV/ghostty-config) | [ghostty-config.readthedocs.io](https://ghostty-config.readthedocs.io/en/latest/) |
+| **Kitty (`kitty-config`)** | [`MichaelWeissDEV/kittiy-config`](https://github.com/MichaelWeissDEV/kittiy-config) | [kitty-config.readthedocs.io](https://kitty-config.readthedocs.io/en/latest/) |
+| **Vim (`vim-config`)** | [`MichaelWeissDEV/vim-config`](https://github.com/MichaelWeissDEV/vim-config) | [vim-config.readthedocs.io](https://vim-config.readthedocs.io/en/latest/) |

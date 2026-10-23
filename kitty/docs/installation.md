@@ -51,13 +51,16 @@ Clone the repository directly into your XDG configuration directory:
 git clone https://github.com/MichaelWeissDEV/kittiy-config.git ~/.config/kitty
 ```
 
-### Route B: Inside the Dotfiles Hub
+### Route B: Inside the Arch Dotfiles Hub
 
-In the parent dotfiles repository (`~/git/dotfiles`), Kitty is managed as a Git-Subtree and linked automatically:
+In the parent [Arch Dotfiles Hub](https://arch-dotfiles.readthedocs.io/en/latest/) (`~/git/dotfiles`), Kitty is managed as a Git Subtree and linked automatically:
 
 ```bash
-cd ~/git/dotfiles
-./scripts/install-links.sh
+# Link or update via the central CLI program (adot / arch-dot / arch-dotfiles):
+adot links
+adot update kitty
+# or update the entire ecosystem:
+adot update
 ```
 
 ---

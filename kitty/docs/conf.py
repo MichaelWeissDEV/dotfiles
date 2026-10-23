@@ -15,7 +15,7 @@ lexers["conf"] = IniLexer()
 lexers["kitty"] = IniLexer()
 lexers["mermaid"] = TextLexer()
 
-project = "kittiy-config"
+project = "kitty-config"
 copyright = "2026, Michael Weiss"
 author = "Michael Weiss"
 
@@ -40,7 +40,7 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", ".venv"]
 myst_heading_anchors = 3
 
 html_theme = "furo"
-html_title = "kittiy-config docs"
+html_title = "kitty-config docs"
 html_theme_options = {
     "source_repository": "https://github.com/MichaelWeissDEV/kittiy-config",
     "source_branch": "main",

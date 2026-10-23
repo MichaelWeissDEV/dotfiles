@@ -15,7 +15,7 @@ lexers["tmux"] = IniLexer()
 lexers["kitty"] = IniLexer()
 lexers["mermaid"] = TextLexer()
 
-project = "dotfiles"
+project = "arch-dotfiles"
 copyright = "2026, Michael Weiss"
 author = "Michael Weiss"
 
@@ -41,7 +41,7 @@ myst_heading_anchors = 3
 suppress_warnings = ["myst.header", "myst.xref_missing"]
 
 html_theme = "furo"
-html_title = "dotfiles docs"
+html_title = "arch-dotfiles docs"
 html_theme_options = {
     "source_repository": "https://github.com/MichaelWeissDEV/dotfiles",
     "source_branch": "main",

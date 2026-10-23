@@ -3,7 +3,7 @@
 A lightweight, zero-plugin **Vim** configuration crafted in the official **Catppuccin Mocha** palette. Built with native Vimscript for sub-10ms startup times, pure XDG file hygiene, dynamic statusline telemetry, and keybindings synchronized with Neovim.
 
 :::{note}
-**Part of the dotfiles ecosystem**: This is Michael Weiss' personal Vim configuration. Engineered as a robust, dependency-free editor setup, it runs reliably on minimal servers, SSH containers, and modern desktop systems alike. Beginners can install it with a single command without worrying about package managers or plugin compilers.
+**Part of the Arch Dotfiles Ecosystem**: Built for **Arch Linux** as part of [`arch-dotfiles`](https://arch-dotfiles.readthedocs.io/en/latest/), this Vim configuration is engineered as a robust, dependency-free editor setup that runs out-of-the-box on any Arch Linux system, minimal SSH servers, containers, other Linux distributions, or macOS without package managers or plugin compilers.
 :::
 
 ---
@@ -36,11 +36,11 @@ faq
 :caption: Related documentation
 :hidden:
 
-Dotfiles (main hub) <https://michaelweiss-dotfiles.readthedocs.io/en/latest/>
+Arch Dotfiles (main hub) <https://arch-dotfiles.readthedocs.io/en/latest/>
 Neovim (nvim-config) <https://nvim-config.readthedocs.io/en/latest/>
 tmux (tmux-config) <https://tmux-config.readthedocs.io/en/latest/>
 Ghostty (ghostty-config) <https://ghostty-config.readthedocs.io/en/latest/>
-Kitty (kittiy-config) <https://kittiy-config.readthedocs.io/en/latest/>
+Kitty (kitty-config) <https://kitty-config.readthedocs.io/en/latest/>
 ```
 
 ---
@@ -58,24 +58,32 @@ ln -sfn ~/.config/vim/vimrc ~/.vimrc
 mkdir -p ~/.local/state/vim/undo
 ```
 
-### In the Dotfiles Repository
+### In the Arch Dotfiles Repository
 
-This repository is maintained as a **Git-Subtree** at `vim/` inside `~/git/dotfiles`:
+This repository is maintained as a **Git Subtree** at `vim/` inside `~/git/dotfiles`:
 
 ```bash
-# Update subtree from upstream:
-~/git/dotfiles/scripts/update-subtrees.sh vim
+# Update everything (system, dotfiles & all subtrees):
+adot update
+# (also available as: arch-dot update / arch-dotfiles update)
+
+# Update only the vim subtree from upstream:
+adot update vim
+
+# Inspect status or Vim keybindings:
+adot status
+adot keys vim
 
 # Push local changes back to upstream:
-~/git/dotfiles/scripts/update-subtrees.sh push vim
+adot push vim
 ```
 
 ---
 
 ## Connected Dotfiles Ecosystem
 
-- **[Dotfiles Hub](https://michaelweiss-dotfiles.readthedocs.io/en/latest/)**: Central repository uniting desktop, window manager, and shell environments.
-- **[nvim-config](https://nvim-config.readthedocs.io/en/latest/)**: Full-featured IDE configuration powered by Lua, LSP, Treesitter, and Snacks.nvim.
+- **[Arch Dotfiles Hub (`arch-dotfiles`)](https://arch-dotfiles.readthedocs.io/en/latest/)**: Central repository uniting the Arch Linux + Hyprland desktop, window manager, and shell environments.
+- **[nvim-config](https://nvim-config.readthedocs.io/en/latest/)**: Reproducible, offline-capable Neovim IDE powered by native Lua, LSP, and Tree-sitter.
 - **[tmux-config](https://tmux-config.readthedocs.io/en/latest/)**: Terminal multiplexer sharing identical navigation semantics.
 - **[ghostty-config](https://ghostty-config.readthedocs.io/en/latest/)**: High-performance GPU terminal with matching Catppuccin theme.
-- **[kittiy-config](https://kittiy-config.readthedocs.io/en/latest/)**: GPU terminal with Powerline tabs and transparency.
+- **[kitty-config](https://kitty-config.readthedocs.io/en/latest/)**: GPU terminal with Powerline tabs and transparency.

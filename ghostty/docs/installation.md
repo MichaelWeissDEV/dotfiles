@@ -57,13 +57,16 @@ mv ~/.config/ghostty ~/.config/ghostty.bak
 git clone https://github.com/MichaelWeissDEV/ghostty-config.git ~/.config/ghostty
 ```
 
-### Route B: As Part of the Dotfiles Hub
+### Route B: As Part of the Arch Dotfiles Hub
 
-If you are using Michael Weiss' full dotfiles repository (`~/git/dotfiles`), Ghostty is already embedded as a Git-Subtree and automatically symlinked to `~/.config/ghostty`:
+If you are using the full [Arch Dotfiles Hub](https://arch-dotfiles.readthedocs.io/en/latest/) (`~/git/dotfiles`), Ghostty is already embedded as a Git Subtree and automatically symlinked to `~/.config/ghostty`:
 
 ```bash
-cd ~/git/dotfiles
-./scripts/install-links.sh
+# Link or update via the central CLI program (adot / arch-dot / arch-dotfiles):
+adot links
+adot update ghostty
+# or update the entire ecosystem:
+adot update
 ```
 
 ---

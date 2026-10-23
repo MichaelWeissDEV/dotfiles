@@ -1,114 +1,255 @@
-# Dotfiles (`~/git/dotfiles`)
+<div align="center">
 
-Zentrales Git-Repository für alle Tool- und Desktop-Konfigurationen unter `~/git/dotfiles` (Arch Linux · Hyprland · Catppuccin Mocha).
-Alle Konfigurationsordner werden per Symlink sauber nach `~/.config/<modul>` (sowie `~/.zshrc`, `~/.tmux.conf`, `~/.vimrc`) verlinkt, sodass `~/.config` selbst frei von einem `.git`-Repository und Laufzeitdaten anderer Programme bleibt.
+# Arch Linux Dotfiles (`arch-dotfiles`)
+
+**A cohesive, modular, high-performance Wayland & terminal development ecosystem.**
+
+Arch Linux · Hyprland · Waybar · Ghostty · Kitty · Foot · Zsh · tmux · Neovim · Vim · Yazi · Catppuccin Mocha
+
+[![Docs](https://readthedocs.org/projects/arch-dotfiles/badge/?version=latest)](https://arch-dotfiles.readthedocs.io/en/latest/)
+[![Neovim Docs](https://img.shields.io/badge/docs-nvim--config-89b4fa?logo=neovim&logoColor=white)](https://nvim-config.readthedocs.io/en/latest/)
+[![tmux Docs](https://img.shields.io/badge/docs-tmux--config-1BB91F?logo=tmux&logoColor=white)](https://tmux-config.readthedocs.io/en/latest/)
+[![Ghostty Docs](https://img.shields.io/badge/docs-ghostty--config-cba6f7?logo=gnometerminal&logoColor=white)](https://ghostty-config.readthedocs.io/en/latest/)
+[![Kitty Docs](https://img.shields.io/badge/docs-kitty--config-94e2d5?logo=gnometerminal&logoColor=white)](https://kitty-config.readthedocs.io/en/latest/)
+[![Vim Docs](https://img.shields.io/badge/docs-vim--config-a6e3a1?logo=vim&logoColor=white)](https://vim-config.readthedocs.io/en/latest/)
+[![Platform: Arch Linux](https://img.shields.io/badge/platform-Arch%20Linux%20%7C%20Linux%20%7C%20macOS-1793D1?logo=arch-linux&logoColor=white)](https://archlinux.org/)
+[![Theme: Catppuccin Mocha](https://img.shields.io/badge/theme-Catppuccin%20Mocha-cba6f7)](https://github.com/catppuccin/catppuccin)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](nvim/LICENSE)
+
+[**Ecosystem Documentation**](https://arch-dotfiles.readthedocs.io/en/latest/) ·
+[Installation](https://arch-dotfiles.readthedocs.io/en/latest/installation/) ·
+[Hyprland & Keybindings](https://arch-dotfiles.readthedocs.io/en/latest/hyprland/) ·
+[Shell & CLI Commands](https://arch-dotfiles.readthedocs.io/en/latest/shell/) ·
+[Git Subtrees](https://arch-dotfiles.readthedocs.io/en/latest/subtrees/)
+
+</div>
 
 ---
 
-## Enthaltene Konfigurationen & Ordnerstruktur
+## Overview & Philosophy
 
-| Ordner | Beschreibung | Ziel-Symlink(s) |
-| :--- | :--- | :--- |
-| **`scripts/`** | Installations-, Symlink-, Subtree-Update- & Wallpaper-Repo-Skripte (`install.sh`, `install-links.sh`, `install-wallpapers.sh`, `update-subtrees.sh`) | – |
-| **`zsh/`** | Zsh-Hauptkonfiguration (`zshrc`), modulare Aliases & FZF-Funktionen (`aliases.zsh`: `nv`, `v`, `fznv`, `fzv`, `y`, `tm`, `dotfiles`, `cfg-update`, `cfg-links`, `cfg-subtrees`, `cfg-wallpapers`) sowie minimales Prompt-Theme (`> `) | `~/.config/zsh`, `~/.zshrc`, `~/.oh-my-zsh/custom/themes/catppuccin.zsh-theme` |
-| **`nvim/`** | Neovim-Konfiguration (**Git-Subtree**: `MichaelWeissDEV/nvim-config`) | `~/.config/nvim` |
-| **`tmux/`** | Tmux-Konfiguration (**Git-Subtree**: `MichaelWeissDEV/tmux-config`) | `~/.config/tmux`, `~/.tmux.conf` |
-| **`vim/`** | Standalone Vim-Konfiguration (`vimrc`, **Git-Subtree**: `MichaelWeissDEV/vim-config`) im Catppuccin Mocha Design mit dynamischer Statuszeile (`NORMAL`/`INSERT`/`VISUAL`, `NUM:REL`/`NUM:ABS`) und Zeilennummern-Toggle (`<Space>un`, `<Space>rn`, `<Space>n`, `<F3>`) | `~/.config/vim`, `~/.vimrc` |
-| **`ghostty/`** | Ghostty Terminal-Konfiguration (**Git-Subtree**: `MichaelWeissDEV/ghostty-config`) im Catppuccin Mocha Farbschema (transparent `0.90`, `JetBrainsMono Nerd Font`) | `~/.config/ghostty` |
-| **`kitty/`** | Kitty Terminal-Konfiguration (**Git-Subtree**: `MichaelWeissDEV/kittiy-config`) im Catppuccin Mocha Farbschema (transparent `0.90`, `JetBrainsMono Nerd Font`) | `~/.config/kitty` |
-| **`foot/`** | Leichtgewichtiger Wayland-Terminal-Emulator im Catppuccin Mocha Farbschema (transparent `0.90`, `JetBrainsMono Nerd Font`) | `~/.config/foot` |
-| **`hypr/`** | Hyprland (inkl. monitorübergreifendem Fensterwechsel, Sprung-Positionen/Slots `1–10`/`F1–F4` & `windowswitcher.sh`), Hyprlock, Hyprpaper, Powermenu & Askpass | `~/.config/hypr` |
-| **`wallpaper/`** | Wallpaper-Switcher für Hyprland (hyprpaper) mit Default- & Monitor-Zuweisung, Fuzzel-TUI (`SUPER + SHIFT + W`) & CLI (`wallpaper`) | `~/.config/wallpaper`, `~/.local/bin/wallpaper` |
-| **`pictures/`** | Privates Wallpaper-Repository (optional, per `.gitignore` ausgeschlossen; nicht im öffentlichen Dotfiles-Repo) | – |
-| **`waybar/`** | Waybar Statusleiste (`config.jsonc`, `style.css`, `power_menu.xml`) | `~/.config/waybar` |
-| **`fuzzel/`** | Wayland Application Launcher | `~/.config/fuzzel` |
-| **`yazi/`** | Terminal-Dateimanager inkl. `catppuccin-mocha.yazi` Flavor | `~/.config/yazi` |
-| **`gtk-3.0/`, `gtk-4.0/`, `pcmanfm/`, `libfm/`** | Catppuccin Mocha GTK3/GTK4-Theming & PCManFM GUI-Dateimanager-Einstellungen | `~/.config/gtk-3.0`, `~/.config/gtk-4.0`, `~/.config/pcmanfm`, `~/.config/libfm` |
+This repository (`~/git/dotfiles`) is the central configuration hub for a complete, distraction-free developer workstation built around **Arch Linux**, **Hyprland**, and the **Catppuccin Mocha** pastel palette.
+
+- **Ready for Any Arch Linux System — Adaptable Everywhere**: Every component is structured so that anyone can install the entire environment out-of-the-box on **Arch Linux** with a single command (`adot install` or `./scripts/install.sh`). Because configurations are cleanly separated into modular directories and standalone subtrees, the setup (or individual parts of it) can also be run on **other Linux distributions, macOS, or WSL2** with only minor adjustments (such as package manager names or binary paths).
+- **Clean XDG Symlink Architecture**: All configuration directories reside in `~/git/dotfiles` and are symlinked into `~/.config/<module>` (plus `~/.zshrc`, `~/.tmux.conf`, `~/.vimrc`, and CLI programs in `~/.local/bin/`). Your `~/.config` directory remains completely free of `.git` clutter and runtime state.
+- **Unified CLI Program (`adot` / `arch-dot` / `arch-dotfiles`)**: Instead of remembering individual helper scripts, everything is managed through a single CLI program (`adot`, also accessible as `arch-dot` or `arch-dotfiles` in `~/.local/bin/`). Run `adot install` for initial provisioning, `adot update` to update the entire system (or `adot update nvim` for a single subtree), `adot status` to inspect the live state of all managed modules, and `adot list` / `adot keys` / `adot commands` / `adot scripts` to view all custom keybindings, commands, and scripts directly in the terminal.
+- **Self-Contained Git Subtrees**: Core tools (`nvim`, `tmux`, `ghostty`, `kitty`, `vim`) are maintained in their own dedicated repositories with their own Read the Docs sites, but are embedded directly via **Git Subtrees** — no `--recurse-submodules` required when cloning, no detached HEAD states.
 
 ---
 
-## Verwendete Git-Repositories
+## Documentation Hub
 
-Das Setup bezieht folgende externe Git-Repositories (als Subtree, für Oh My Zsh oder optional als privates Wallpaper-Repo):
+The ecosystem is documented across six interconnected **Read the Docs** sites. The main hub covers the overall system, desktop, shell, and subtree orchestration, while each standalone tool provides its own deep-dive manual:
 
-### 1. Eingebettete Git-Subtrees (direkt im Repository versioniert)
-| Subtree-Pfad | Remote-Name | Git-Repository URL | Branch |
+| Project | Role | GitHub Repository | Documentation (Read the Docs) |
 | :--- | :--- | :--- | :--- |
-| **`nvim/`** | `nvim-remote` | `https://github.com/MichaelWeissDEV/nvim-config.git` | `main` |
-| **`tmux/`** | `tmux-remote` | `https://github.com/MichaelWeissDEV/tmux-config.git` | `main` |
-| **`ghostty/`** | `ghostty-remote` | `https://github.com/MichaelWeissDEV/ghostty-config.git` | `main` |
-| **`kitty/`** | `kitty-remote` | `https://github.com/MichaelWeissDEV/kittiy-config.git` | `main` |
-| **`vim/`** | `vim-remote` | `https://github.com/MichaelWeissDEV/vim-config.git` | `main` |
-
-### 2. Externe Git-Repositories (lokal unter `~/.oh-my-zsh` geklont durch `scripts/install.sh`)
-| Komponente | Zielpfad | Git-Repository URL |
-| :--- | :--- | :--- |
-| **Oh My Zsh** | `~/.oh-my-zsh` | `https://github.com/ohmyzsh/ohmyzsh.git` |
-| **zsh-autosuggestions** | `~/.oh-my-zsh/custom/plugins/zsh-autosuggestions` | `https://github.com/zsh-users/zsh-autosuggestions.git` |
-| **zsh-syntax-highlighting** | `~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting` | `https://github.com/zsh-users/zsh-syntax-highlighting.git` |
-
-### 3. Privates Wallpaper-Repository (optional, nicht Teil dieses Repos)
-| Komponente | Zielpfad | Git-Repository URL | Hinweis |
-| :--- | :--- | :--- | :--- |
-| **Wallpapers** | `~/git/dotfiles/pictures` | privates Repo (URL wird bewusst nicht veröffentlicht) | per `.gitignore` ausgeschlossen (Urheberrecht); Einrichtung mit `scripts/install-wallpapers.sh <git-url>` |
+| **`arch-dotfiles`** *(Main Hub)* | Full Arch Linux & Hyprland Ecosystem | [`MichaelWeissDEV/dotfiles`](https://github.com/MichaelWeissDEV/dotfiles) | [**arch-dotfiles.readthedocs.io**](https://arch-dotfiles.readthedocs.io/en/latest/) |
+| **`nvim-config`** | Reproducible, Offline-Capable Neovim IDE | [`MichaelWeissDEV/nvim-config`](https://github.com/MichaelWeissDEV/nvim-config) | [**nvim-config.readthedocs.io**](https://nvim-config.readthedocs.io/en/latest/) |
+| **`tmux-config`** | Portable, Fast Terminal Multiplexer | [`MichaelWeissDEV/tmux-config`](https://github.com/MichaelWeissDEV/tmux-config) | [**tmux-config.readthedocs.io**](https://tmux-config.readthedocs.io/en/latest/) |
+| **`ghostty-config`** | Minimalist GPU Terminal (Ghostty) | [`MichaelWeissDEV/ghostty-config`](https://github.com/MichaelWeissDEV/ghostty-config) | [**ghostty-config.readthedocs.io**](https://ghostty-config.readthedocs.io/en/latest/) |
+| **`kitty-config`** | GPU Terminal with Powerline Tabs (Kitty) | [`MichaelWeissDEV/kittiy-config`](https://github.com/MichaelWeissDEV/kittiy-config) | [**kitty-config.readthedocs.io**](https://kitty-config.readthedocs.io/en/latest/) |
+| **`vim-config`** | Zero-Plugin Standalone Vim Configuration | [`MichaelWeissDEV/vim-config`](https://github.com/MichaelWeissDEV/vim-config) | [**vim-config.readthedocs.io**](https://vim-config.readthedocs.io/en/latest/) |
 
 ---
 
-## Git-Subtrees (`nvim`, `tmux`, `ghostty`, `kitty` & `vim`) verwalten & aktualisieren
+## Repository Structure & Symlink Map
 
-Da `nvim`, `tmux`, `ghostty`, `kitty` und `vim` als **Git-Subtrees** eingebunden sind, befinden sich alle Dateien direkt in diesem Repository (kein `--recurse-submodules` beim Klonen nötig, kein Detached-HEAD), können aber jederzeit einzeln mit ihren eigenen GitHub-Repositories synchronisiert werden.
+| Directory | Description | Target Symlink(s) |
+| :--- | :--- | :--- |
+| **[`scripts/`](scripts/)** | Unified CLI program **[`adot`](scripts/adot)** (`arch-dot` / `arch-dotfiles`) & internal helper scripts (`install.sh`, `install-links.sh`, `update-subtrees.sh`, `install-wallpapers.sh`) | `~/.local/bin/adot`, `~/.local/bin/arch-dot`, `~/.local/bin/arch-dotfiles` |
+| **[`zsh/`](zsh/)** | Zsh configuration (`zshrc`), custom aliases & FZF helpers (`aliases.zsh`), and minimal Catppuccin prompt (`> `) | `~/.config/zsh`, `~/.zshrc`, `~/.oh-my-zsh/custom/themes/catppuccin.zsh-theme` |
+| **[`nvim/`](nvim/)** | Neovim IDE (**Git Subtree**: `MichaelWeissDEV/nvim-config`) — [README](nvim/README.md) · [Docs](https://nvim-config.readthedocs.io/en/latest/) | `~/.config/nvim` |
+| **[`tmux/`](tmux/)** | tmux Multiplexer (**Git Subtree**: `MichaelWeissDEV/tmux-config`) — [README](tmux/README.md) · [Docs](https://tmux-config.readthedocs.io/en/latest/) | `~/.config/tmux`, `~/.tmux.conf` |
+| **[`vim/`](vim/)** | Standalone Vim (**Git Subtree**: `MichaelWeissDEV/vim-config`) — [README](vim/README.md) · [Docs](https://vim-config.readthedocs.io/en/latest/) | `~/.config/vim`, `~/.vimrc` |
+| **[`ghostty/`](ghostty/)** | Ghostty Terminal (**Git Subtree**: `MichaelWeissDEV/ghostty-config`) — [README](ghostty/README.md) · [Docs](https://ghostty-config.readthedocs.io/en/latest/) | `~/.config/ghostty` |
+| **[`kitty/`](kitty/)** | Kitty Terminal (**Git Subtree**: `MichaelWeissDEV/kittiy-config`) — [README](kitty/README.md) · [Docs](https://kitty-config.readthedocs.io/en/latest/) | `~/.config/kitty` |
+| **[`foot/`](foot/)** | Lightweight Wayland terminal in Catppuccin Mocha (`0.90` opacity, `JetBrainsMono Nerd Font`) | `~/.config/foot` |
+| **[`hypr/`](hypr/)** | Hyprland compositor (cross-monitor window jumping, slots `1–10`/`F1–F4`, `windowswitcher.sh`), Hyprlock, Hyprpaper, Powermenu & Askpass — [README](hypr/README.md) | `~/.config/hypr` |
+| **[`wallpaper/`](wallpaper/)** | Multi-monitor wallpaper manager for `hyprpaper` with Fuzzel TUI (`SUPER + SHIFT + W`) & CLI (`wallpaper`) — [README](wallpaper/README.md) | `~/.config/wallpaper`, `~/.local/bin/wallpaper` |
+| **`pictures/`** | Private wallpaper repository (optional, gitignored for copyright; managed via `arch-dot wallpapers`) | – |
+| **[`waybar/`](waybar/)** | Top status bar (`config.jsonc`, `style.css`, `power_menu.xml`) | `~/.config/waybar` |
+| **[`fuzzel/`](fuzzel/)** | Wayland application launcher, sudo askpass prompt & interactive picker | `~/.config/fuzzel` |
+| **[`yazi/`](yazi/)** | Terminal file manager with official `catppuccin-mocha.yazi` flavor | `~/.config/yazi` |
+| **[`gtk-3.0/`](gtk-3.0/), [`gtk-4.0/`](gtk-4.0/), [`pcmanfm/`](pcmanfm/), [`libfm/`](libfm/)** | Catppuccin Mocha GTK3/GTK4 theming & PCManFM GUI file manager settings | `~/.config/gtk-3.0`, `~/.config/gtk-4.0`, `~/.config/pcmanfm`, `~/.config/libfm` |
 
-### Per Skript verwalten (`scripts/update-subtrees.sh`)
+---
+
+## Quick Start & Installation
+
+### 1. Clone the Repository
 
 ```bash
-# Status aller 5 Subtrees & Remotes anzeigen:
-~/git/dotfiles/scripts/update-subtrees.sh status
-
-# Alle 5 Subtrees (nvim, tmux, ghostty, kitty & vim) von Upstream pullen (Standard):
-~/git/dotfiles/scripts/update-subtrees.sh
-# (oder kurz über den Zsh-Alias: cfg-subtrees)
-
-# Nur einen einzelnen Subtree von Upstream aktualisieren:
-~/git/dotfiles/scripts/update-subtrees.sh nvim
-~/git/dotfiles/scripts/update-subtrees.sh tmux
-~/git/dotfiles/scripts/update-subtrees.sh ghostty
-~/git/dotfiles/scripts/update-subtrees.sh kitty
-~/git/dotfiles/scripts/update-subtrees.sh vim
-
-# Lokale Änderungen aus einem Subtree-Ordner zurück in das jeweilige GitHub-Repo pushen:
-~/git/dotfiles/scripts/update-subtrees.sh push ghostty
-~/git/dotfiles/scripts/update-subtrees.sh push kitty
-~/git/dotfiles/scripts/update-subtrees.sh push vim
-~/git/dotfiles/scripts/update-subtrees.sh push nvim
-~/git/dotfiles/scripts/update-subtrees.sh push tmux
-~/git/dotfiles/scripts/update-subtrees.sh push all
-
-# Git-Remotes (nvim-remote, tmux-remote, ghostty-remote, kitty-remote, vim-remote) prüfen/anlegen:
-~/git/dotfiles/scripts/update-subtrees.sh setup
+mkdir -p ~/git
+git clone https://github.com/MichaelWeissDEV/dotfiles.git ~/git/dotfiles
+cd ~/git/dotfiles
 ```
 
-### Im Zweifel manuell per `git subtree` aktualisieren
+### 2. Install or Link
 
-Falls du die Subtrees ohne Skript direkt mit Git verwalten oder im Fehlerfall manuell synchronisieren möchtest:
+```bash
+# Option A: Full Arch Linux setup (pacman packages, subtrees, Oh My Zsh + plugins, symlinks & systemd services)
+./scripts/install.sh
+
+# Option B: Create symlinks only (safe on any Linux/macOS system, no sudo or network required)
+./scripts/install-links.sh
+```
+
+> **Using on other Linux distributions or macOS:** Run `./scripts/install-links.sh` (or install individual subtrees like `nvim`, `tmux`, `ghostty`, `kitty`, `vim`) and install the equivalent packages using your native package manager (`apt`, `dnf`, `brew`, etc.).
+
+---
+
+## Managing & Updating Everything (`adot` / `arch-dot` / `arch-dotfiles`)
+
+The installer links the unified CLI program **`adot`** (along with **`arch-dot`** and **`arch-dotfiles`**) into `~/.local/bin/` and defines matching Zsh aliases. You do not need to call individual scripts — `adot` orchestrates installation, full or granular updates, status checks, and live terminal reference tables from anywhere:
+
+```bash
+# ── 1. INSTALL & UPDATE ───────────────────────────────────────────────────────
+adot install                 # Complete Arch Linux setup (pacman, subtrees, Oh My Zsh, symlinks, services)
+adot update                  # Update EVERYTHING (pacman, dotfiles, all 5 subtrees, wallpapers, OMZ, symlinks)
+adot update nvim             # Update only a single Git subtree (nvim | tmux | ghostty | kitty | vim)
+adot update subtrees         # Update all 5 Git subtrees from upstream
+adot update dotfiles         # Pull only the main ~/git/dotfiles repository
+adot update system           # Update only Arch Linux pacman packages
+adot update zsh              # Update only Oh My Zsh & Zsh plugins
+adot update wallpapers       # Update only the private wallpaper repository
+adot links                   # Create/refresh all symlinks in ~/.config, ~ & ~/.local/bin (no sudo required)
+adot packages                # Install/update all 43 managed Arch Linux packages via pacman
+
+# ── 2. INSPECT STATUS & LIST MANAGED ITEMS ────────────────────────────────────
+adot status                  # Live dashboard: repo state, symlinks, subtree commits, OMZ, zoxide & packages
+adot status --fetch          # Same as above, plus fetch latest upstream SHA hashes from GitHub
+adot list                    # Full overview of modules, subtrees, scripts, commands & documentation URLs
+adot list modules            # List all 16 managed ~/.config modules and symlink targets
+adot list subtrees           # List all 5 embedded Git subtrees, remote names & upstream URLs
+adot list packages           # List all 43 managed Arch Linux packages and installed versions
+adot list docs               # List all 6 Read the Docs URLs and GitHub repositories
+
+# ── 3. LIST KEYBINDINGS, CUSTOM COMMANDS & SCRIPTS IN TERMINAL ────────────────
+adot keys                    # List all custom keybindings across the entire ecosystem
+adot keys hypr               # Filter keybindings by component (hypr | nvim | vim | tmux | terminals | shell)
+adot commands                # List all custom CLI commands, shell functions (j/ji, y, fznv, ...) & aliases
+adot scripts                 # List all CLI binaries in ~/.local/bin and helper scripts in ~/git/dotfiles
+
+# ── 4. SUBTREE PUSH & WALLPAPERS ──────────────────────────────────────────────
+adot push nvim               # Push local subtree commits to upstream GitHub (nvim|tmux|ghostty|kitty|vim|all)
+adot wallpapers <git-url>    # Clone private wallpaper repository into ~/git/dotfiles/pictures
+adot wallpapers --update     # Pull latest changes in private wallpaper repository
+```
+
+*(Note: `arch-dot <cmd>` and `arch-dotfiles <cmd>` are 100% identical to `adot <cmd>`.)*
+
+---
+
+## Custom CLI Commands, Aliases & Keybindings Overview
+
+### 1. Custom Shell Commands & Aliases (`zsh/zshrc` & `zsh/aliases.zsh`)
+
+| Command / Alias | Action |
+| :--- | :--- |
+| **`adot update`** / **`arch-dot update`** / **`arch-dotfiles update`** | Update everything (`all`) or a specific target (`nvim`, `tmux`, `ghostty`, `kitty`, `vim`, `subtrees`, `dotfiles`, `system`, `zsh`, `wallpapers`) |
+| **`adot status [--fetch]`** | Show live status dashboard of repo, symlinks, all 5 subtrees, Oh My Zsh, `zoxide` & Arch packages |
+| **`adot list [category]`** | List `modules`, `subtrees`, `keys`, `commands`, `scripts`, `packages`, or `docs` |
+| **`adot keys [section]`** | Print keybinding tables in terminal (`hypr`, `nvim`, `vim`, `tmux`, `terminals`, `shell`, or `all`) |
+| **`adot commands`** / **`adot scripts`** / **`adot docs`** | Print all custom commands & aliases / managed scripts / Read the Docs links |
+| **`adot install`** / **`adot links`** / **`adot packages`** | Run full setup / refresh symlinks (`cfg-links`) / install Arch packages |
+| **`adot subtrees [mod]`** / **`adot push [mod]`** | Pull subtree(s) from upstream (`cfg-subtrees`) / Push subtree commits to GitHub |
+| **`adot wallpapers`** / **`cfg-wallpapers`** | Clone or update the private wallpaper repository (`pictures/`) |
+| **`j <dir>`** / **`ji`** *(powered by `zoxide`, aliases `z` / `zi`)* | **Jump (`j`)** to smart frecent directory or open interactive `fzf` directory picker (`ji`) — powered under the hood by **zoxide** |
+| **`y [path]`** | Launch `yazi` TUI file manager and automatically `cd` into the last visited directory on exit (`q`) |
+| **`dotfiles`** | `cd ~/git/dotfiles` |
+| **`wallpaper`** / **`wp`** | Multi-monitor wallpaper CLI & Fuzzel TUI (`wallpaper`, `wallpaper list`, `wallpaper set ...`) |
+| **`nv`** / **`v`** | Launch Neovim (`nvim`) / standalone Vim (`vim`) |
+| **`fznv`** / **`fzv`** | Fuzzy-find a file interactively with `fzf` and open it in Neovim / Vim |
+| **`tm`** / **`tn <name>`** / **`ta <name>`** / **`tl`** | Attach/create `main` tmux session / new named session / attach session / list sessions |
+| **`ll`** / **`la`** | Colorized `ls -lah` / `ls -A` |
+| **`Esc` `Esc`** *(Oh My Zsh `sudo` plugin)* | Prefix current or previous command with `sudo` |
+
+### 2. Essential Hyprland Keybindings (`hypr/hyprland.lua`)
+
+Full reference: [`hypr/README.md`](hypr/README.md) & [Hyprland Docs](https://arch-dotfiles.readthedocs.io/en/latest/hyprland/).
+
+| Keybinding | Action |
+| :--- | :--- |
+| `SUPER + Space` *(or `ALT + Space`, `SUPER + D/R/A`)* | Open application launcher (`fuzzel`) |
+| `SUPER + Return` *(or `SUPER + Q`)* | Open terminal (`kitty`) |
+| `SUPER + SHIFT + Return` | Open terminal directly inside persistent `tmux` session (`main`) |
+| `SUPER + E` / `SUPER + Y` / `SUPER + B` | Open GUI file manager (`pcmanfm`) / TUI file manager (`yazi`) / Browser (`firefox`) |
+| `ALT + Tab` *(or `SUPER + Tab` / `SUPER + BackSpace`)* | **Instant Ping-Pong Jump** to last active window across all monitors & workspaces |
+| `ALT + SHIFT + Tab` *(or `SUPER + SHIFT + Tab`)* | Cycle through all open windows across all monitors & workspaces |
+| `SUPER + ^` *(key below `Esc`)* | Cycle through windows of the **same application class** across all monitors |
+| `SUPER + G` *(or `SUPER + #`)* | Open interactive **Window & Slot Switcher** (`windowswitcher.sh` via `fuzzel`) |
+| `SUPER + CTRL + 1..0` / `SUPER + CTRL + F1..F4` | Pin active window to cross-monitor **Slot `1..10`** / **Quick Slot `1..4`** |
+| `SUPER + ALT + 1..0` / `SUPER + F1..F4` | **Instant Jump** to pinned window in Slot `1..10` / `1..4` (press again to jump back!) |
+| `SUPER + O` *(or `SUPER + <`)* | Focus next physical monitor |
+| `SUPER + SHIFT + O` / `SUPER + CTRL + O` | Move active window to next monitor / Swap active workspaces between monitors |
+| `SUPER + 1..0` / `SUPER + SHIFT + 1..0` | Switch to workspace `1..10` / Move active window to workspace `1..10` |
+| `CTRL + ALT + 1..0` | Switch to workspace/monitor `1..10` **only if it already exists** (no empty workspaces created) |
+| `SUPER + .` / `SUPER + ,` / `SUPER + N` | Next workspace (`r+1`) / Previous workspace (`r-1`) / Next empty workspace |
+| `SUPER + S` / `SUPER + SHIFT + S` | Toggle scratchpad (`special:magic`) / Move active window to scratchpad |
+| `SUPER + C` *(or `SUPER + W`)* | Close active window |
+| `SUPER + F` / `SUPER + SHIFT + F` / `SUPER + V` | Toggle fullscreen / Toggle maximize (keeps Waybar) / Toggle floating |
+| `SUPER + SHIFT + W` | Open interactive multi-monitor Wallpaper TUI (`wallpaper`) |
+| `SUPER + L` / `SUPER + Escape` | Lock screen (`hyprlock`) / Open Fuzzel Power Menu |
+| `Print` / `SUPER + SHIFT + P` | Screenshot full screen / selected region (saved to `~/Downloads` & copied to clipboard) |
+
+### 3. Editor & Multiplexer Keybindings
+
+- **Neovim (`nvim-config`)**: `<Space>` Leader · `<Space>ff` find files · `<Space>fg` live grep · `<Space>e` file tree · `<Space>o` / `-` Oil buffer explorer · `<Space>tl` `:LangInstall` · `gd`/`gr`/`K` LSP navigation · `:NvimKeymaps` & `:NvimCommands`. → [Full Neovim Keymaps & Commands](https://nvim-config.readthedocs.io/en/latest/keymaps/)
+- **Vim (`vim-config`)**: `<Space>` Leader · `<Space>un` / `<Space>rn` / `<Space>n` / `<F3>` toggle relative ↔ absolute line numbers · `<Space>uN` toggle numbers off · `Ctrl+h/j/k/l` split navigation · `Shift+H`/`Shift+L` buffer cycle · `<Space>wv`/`ws`/`wc`/`we` window splits. → [Full Vim Keybindings](https://vim-config.readthedocs.io/en/latest/keybindings/)
+- **tmux (`tmux-config`)**: `Ctrl+b` Prefix · `Prefix + H` interactive **Key Explorer popup** · `Prefix + |` / `_` split side-by-side / stacked · `Prefix + h/j/k/l` pane navigation · `Prefix + R` reload config. → [Full tmux Keybindings](https://tmux-config.readthedocs.io/en/latest/keybindings/quick/)
+- **Kitty & Ghostty**: `Ctrl+Shift+C` / `Ctrl+Shift+V` clipboard · `Ctrl+Shift+F5` (Kitty) / `Ctrl+Shift+,` (Ghostty) live config reload. → [Kitty Keybindings](https://kitty-config.readthedocs.io/en/latest/keybindings/) · [Ghostty Keybindings](https://ghostty-config.readthedocs.io/en/latest/keybindings/)
+
+---
+
+## Git Repositories & Subtree Management
+
+### 1. Embedded Git Subtrees
+
+Because `nvim`, `tmux`, `ghostty`, `kitty`, and `vim` are embedded as **Git Subtrees**, all files are present immediately after a standard `git clone`.
+
+| Subtree Path | Remote Name | Upstream GitHub Repository | Branch | Documentation |
+| :--- | :--- | :--- | :--- | :--- |
+| **`nvim/`** | `nvim-remote` | `https://github.com/MichaelWeissDEV/nvim-config.git` | `main` | [nvim-config.readthedocs.io](https://nvim-config.readthedocs.io/en/latest/) |
+| **`tmux/`** | `tmux-remote` | `https://github.com/MichaelWeissDEV/tmux-config.git` | `main` | [tmux-config.readthedocs.io](https://tmux-config.readthedocs.io/en/latest/) |
+| **`ghostty/`** | `ghostty-remote` | `https://github.com/MichaelWeissDEV/ghostty-config.git` | `main` | [ghostty-config.readthedocs.io](https://ghostty-config.readthedocs.io/en/latest/) |
+| **`kitty/`** | `kitty-remote` | `https://github.com/MichaelWeissDEV/kittiy-config.git` | `main` | [kitty-config.readthedocs.io](https://kitty-config.readthedocs.io/en/latest/) |
+| **`vim/`** | `vim-remote` | `https://github.com/MichaelWeissDEV/vim-config.git` | `main` | [vim-config.readthedocs.io](https://vim-config.readthedocs.io/en/latest/) |
+
+```bash
+# Check status of all 5 subtrees & remotes:
+arch-dot status
+
+# Pull all 5 subtrees from upstream (or use: cfg-subtrees):
+arch-dot subtrees
+
+# Pull a single subtree from upstream:
+arch-dot subtrees nvim       # (nvim | tmux | ghostty | kitty | vim)
+
+# Push local commits from a subtree directory back to its upstream repository:
+arch-dot push nvim           # (nvim | tmux | ghostty | kitty | vim | all)
+```
+
+<details>
+<summary><b>Manual <code>git subtree</code> commands (without helper script)</b></summary>
 
 ```bash
 cd ~/git/dotfiles
 
-# 1. Sicherstellen, dass alle 5 Remotes eingetragen sind (einmalig nach frischem Klonen):
+# 1. Ensure all 5 remotes are registered (one-time setup after fresh clone):
 git remote add nvim-remote    https://github.com/MichaelWeissDEV/nvim-config.git
 git remote add tmux-remote    https://github.com/MichaelWeissDEV/tmux-config.git
 git remote add ghostty-remote https://github.com/MichaelWeissDEV/ghostty-config.git
 git remote add kitty-remote   https://github.com/MichaelWeissDEV/kittiy-config.git
 git remote add vim-remote     https://github.com/MichaelWeissDEV/vim-config.git
 
-# 2. Updates von den Upstream-Repositories holen und per --squash mergen:
+# 2. Fetch and merge upstream changes with --squash:
 git fetch nvim-remote main    && git subtree pull --prefix=nvim    nvim-remote    main --squash -m "Update nvim subtree from upstream"
 git fetch tmux-remote main    && git subtree pull --prefix=tmux    tmux-remote    main --squash -m "Update tmux subtree from upstream"
 git fetch ghostty-remote main && git subtree pull --prefix=ghostty ghostty-remote main --squash -m "Update ghostty subtree from upstream"
 git fetch kitty-remote main   && git subtree pull --prefix=kitty   kitty-remote   main --squash -m "Update kitty subtree from upstream"
 git fetch vim-remote main     && git subtree pull --prefix=vim     vim-remote     main --squash -m "Update vim subtree from upstream"
 
-# 3. Lokale Commits aus ~/git/dotfiles zurück an das jeweilige Upstream-Repo pushen:
+# 3. Push local commits back to the respective upstream repo:
 git subtree push --prefix=nvim    nvim-remote    main
 git subtree push --prefix=tmux    tmux-remote    main
 git subtree push --prefix=ghostty ghostty-remote main
@@ -116,163 +257,63 @@ git subtree push --prefix=kitty   kitty-remote   main
 git subtree push --prefix=vim     vim-remote     main
 ```
 
----
+</details>
 
-## Wallpaper-Switcher (`wallpaper/`)
+### 2. External Zsh Repositories (Cloned Locally by `install.sh`)
 
-Der Wallpaper-Switcher verwaltet Hintergrundbilder über **hyprpaper** – mit einem **Default für alle Bildschirme** und **eigenen Wallpapers pro Monitor** (z. B. Zweit- oder Drittschirm).
-
-```bash
-# Fuzzel-TUI: erst Ziel (alle oder ein Monitor), dann Wallpaper wählen
-wallpaper
-
-# Verfügbare Wallpapers (★ = Default, ● = Monitor-Override)
-wallpaper list
-
-# Default für alle Bildschirme ohne eigenen Override setzen
-wallpaper set forest.png
-
-# Eigenes Wallpaper für einen Monitor (z. B. Drittschirm)
-wallpaper set ocean.png --monitor DP-1
-
-# Überall dasselbe Wallpaper setzen und alle Overrides löschen
-wallpaper set city.png --all
-
-# Override wieder entfernen (nutzt danach den Default)
-wallpaper monitor DP-1 default
-
-# Aktuelle Belegung anzeigen
-wallpaper current
-```
-
-### Privates Wallpaper-Repository (Urheberrecht)
-
-Die Bilder liegen **nicht** im öffentlichen Dotfiles-Repo, sondern in `~/git/dotfiles/pictures/`. Das Verzeichnis ist per `.gitignore` ausgeschlossen und wird separat als privates Git-Repo geklont – bewusst **kein Git-Submodul**, damit die private URL nicht in `.gitmodules` steht.
-
-```bash
-# Einmalig klonen (URL deines privaten Repos)
-~/git/dotfiles/scripts/install-wallpapers.sh <git-url>
-
-# Oder manuell
-cd ~/git/dotfiles
-git clone <git-url> pictures
-
-# Aktualisieren
-~/git/dotfiles/scripts/install-wallpapers.sh --update
-```
-
-Das Dotfiles-Repo bleibt sauber; `pictures/` erscheint nicht in `git status`.
-
-> **Achtung:** `pictures/` ist absichtlich ignoriert. Ein `git clean -fdx` im Dotfiles-Repo würde das private Wallpaper-Repo löschen. Vorher committen und pushen.
-
-### Eigene Wallpapers hinzufügen
-
-**Standardordner:** `~/git/dotfiles/pictures` (Unterordner werden rekursiv gelesen). Bilder erscheinen sofort in der TUI und in `wallpaper list` – ein Neustart ist nicht nötig.
-
-```bash
-cp ~/Downloads/mein-bild.jpg ~/git/dotfiles/pictures/
-
-# Oder bequem über das Tool (mit --set direkt als Default übernehmen)
-wallpaper add ~/Downloads/mein-bild.jpg --set
-```
-
-Neue Bilder im privaten Repo committen:
-
-```bash
-git -C ~/git/dotfiles/pictures add .
-git -C ~/git/dotfiles/pictures commit -m "Add wallpapers"
-git -C ~/git/dotfiles/pictures push
-```
-
-Weitere Ordner können in `~/.config/wallpaper/wallpaper.conf` unter `WALLPAPER_DIRS` ergänzt werden. Mit `wallpaper dirs` siehst du alle aktiven Quellen.
-
-- **Konfiguration:** `~/.config/wallpaper/wallpaper.conf` (Suchordner, Fit-Modus `cover|contain|tile|fill`, Benachrichtigungen).
-- **Gespeicherter Zustand:** `~/.local/state/wallpaper/state` (Default + Monitor-Overrides; bleibt aus dem Git-Repo heraus).
-- **Tastenkürzel:** `SUPER + SHIFT + W` oder CLI `wallpaper` (kein Waybar-Symbol).
-- **Autostart:** Hyprland wendet die gespeicherte Belegung beim Start automatisch an; neu angeschlossene Monitore erhalten den Default.
-- **Details:** [`wallpaper/README.md`](wallpaper/README.md)
+| Component | Target Path | Repository URL |
+| :--- | :--- | :--- |
+| **Oh My Zsh** | `~/.oh-my-zsh` | `https://github.com/ohmyzsh/ohmyzsh.git` |
+| **zsh-autosuggestions** | `~/.oh-my-zsh/custom/plugins/zsh-autosuggestions` | `https://github.com/zsh-users/zsh-autosuggestions.git` |
+| **zsh-syntax-highlighting** | `~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting` | `https://github.com/zsh-users/zsh-syntax-highlighting.git` |
 
 ---
 
-## Enthaltene Arch Linux Pakete (`pacman`)
+## Multi-Monitor Wallpaper Switcher (`wallpaper/`)
 
-Das Skript `scripts/install.sh` (bzw. `scripts/install.sh packages`) installiert über die offiziellen Arch Linux Repositories (`pacman -Syu --needed`) folgende Pakete:
+The custom wallpaper switcher manages backgrounds via **hyprpaper** — supporting a **global default for all screens** as well as **per-monitor overrides**. Full documentation: [`wallpaper/README.md`](wallpaper/README.md).
 
-### Hyprland & Wayland Desktop
-- `hyprland` – Wayland Tiling Compositor
-- `hyprpaper` – Wallpaper-Daemon mit IPC (Default- & Monitor-Wallpapers)
-- `hyprlock` – Sperrbildschirm für Hyprland
-- `hypridle` – Idle-Management-Daemon für Hyprland
-- `waybar` – Statusleiste für Wayland
-- `fuzzel` – Application Launcher & dmenu-Ersatz (für Powermenu & Askpass)
-- `xdg-desktop-portal-hyprland` – XDG Desktop Portal Backend für Screen-Sharing etc.
-- `wl-clipboard` – Wayland Clipboard-Tools (`wl-copy`, `wl-paste`)
-- `grim` & `slurp` – Screenshot-Werkzeuge für Wayland (Vollbild & Bereichsauswahl)
-- `brightnessctl` – Steuerung der Bildschirmhelligkeit
-- `power-profiles-daemon` – Energieprofil-Verwaltung (über D-Bus / Waybar steuerbar)
+```bash
+wallpaper                              # Open Fuzzel TUI (choose target monitor + wallpaper)
+wallpaper list                         # List available wallpapers (★ = Default, ● = Monitor Override)
+wallpaper set forest.png               # Set default wallpaper for all monitors without override
+wallpaper set ocean.png --monitor DP-1 # Set dedicated wallpaper for monitor DP-1
+wallpaper set city.png --all           # Set everywhere and clear all monitor overrides
+wallpaper monitor DP-1 default         # Remove override for DP-1 (reverts to default)
+wallpaper current                      # Show active assignments per monitor
+wallpaper add ~/Downloads/pic.jpg --set # Copy image into library and apply as default
+```
 
-### Audio (PipeWire), Netzwerk & Bluetooth
-- `pipewire`, `pipewire-alsa`, `pipewire-pulse`, `pipewire-jack`, `wireplumber`, `gst-plugin-pipewire`, `libpulse` – Kompletter PipeWire Audio-Stack
-- `networkmanager` – Netzwerkverwaltung (inkl. `nmcli` & `nmtui`)
-- `bluez` & `bluez-utils` – Bluetooth-Stack & CLI (`bluetoothctl`)
+### Private Wallpaper Repository (`pictures/`)
 
-### Terminals & Shell-Umgebung
-- `ghostty`, `kitty` & `foot` – Schnelle, GPU-beschleunigte bzw. leichtgewichtige Wayland-Terminal-Emulatoren
-- `zsh` – Standard-Shell
-- `tmux` – Terminal-Multiplexer
+Wallpaper image files are stored in `~/git/dotfiles/pictures/`, which is excluded via `.gitignore` (for copyright reasons) and cloned as a standalone private Git repository rather than a submodule:
 
-### Editoren & CLI-Werkzeuge
-- `neovim` (`nvim`) & `vim` (`v`) – Terminal-Editoren
-- `git` – Versionsverwaltung (inkl. `git subtree`)
-- `fzf` – Interaktiver Fuzzy-Finder (für `fznv`, `fzv` & Zsh-History)
-- `ripgrep` (`rg`) & `fd` – Schnelle Text- und Dateisuche (für Neovim Telescope/Picker & CLI)
-- `jq` – JSON-Prozessor (u. a. für Waybar-Skripte)
-- `wget` – Datei-Downloader
-- `man-db` & `man-pages` – Handbuchseiten
+```bash
+# Clone private wallpaper repository (one-time):
+arch-dot wallpapers <git-url>
 
-### Dateimanager, Browser & Schriftarten
-- `yazi` – Schneller Terminal-Dateimanager
-- `pcmanfm` – Leichtgewichtiger GTK-Dateimanager
-- `firefox` – Webbrowser
-- `ttf-jetbrains-mono-nerd` & `noto-fonts` – Schriftarten inkl. Nerd-Font-Icons für Waybar, Neovim, Tmux & Yazi
+# Update existing wallpaper repository:
+arch-dot wallpapers --update
+```
+
+> **Note:** Because `pictures/` is gitignored, running `git clean -fdx` in the root dotfiles repository would delete `pictures/`. Always commit and push changes inside `~/git/dotfiles/pictures` before running a force-clean.
 
 ---
 
-## Installation & Verwendung (`scripts/`)
+## Included Arch Linux Packages (`pacman`)
 
-```bash
-# 1. Repository nach ~/git/dotfiles klonen
-mkdir -p ~/git
-git clone <REPO-URL> ~/git/dotfiles
+Running `./scripts/install.sh` (or `arch-dot packages`) installs the following packages from the official Arch Linux repositories (`pacman -Syu --needed`):
 
-# 2. Nur Symlinks nach ~/.config und ~ setzen:
-~/git/dotfiles/scripts/install-links.sh
+- **Hyprland & Wayland Desktop**: `hyprland`, `hyprpaper`, `hyprlock`, `hypridle`, `waybar`, `fuzzel`, `xdg-desktop-portal-hyprland`, `wl-clipboard`, `grim`, `slurp`, `brightnessctl`, `power-profiles-daemon`
+- **Audio (PipeWire), Network & Bluetooth**: `pipewire`, `pipewire-alsa`, `pipewire-pulse`, `pipewire-jack`, `wireplumber`, `gst-plugin-pipewire`, `libpulse`, `networkmanager`, `bluez`, `bluez-utils`
+- **Terminals & Shell**: `ghostty`, `kitty`, `foot`, `zsh`, `tmux`
+- **Editors & CLI Utilities**: `neovim`, `vim`, `git`, `fzf`, `zoxide`, `ripgrep`, `fd`, `jq`, `wget`, `man-db`, `man-pages`
+- **File Managers, Browser & Fonts**: `yazi`, `pcmanfm`, `firefox`, `ttf-jetbrains-mono-nerd`, `noto-fonts`
 
-# ODER: Komplettes System-Setup ausführen (Arch-Pakete, Subtrees, Oh My Zsh + Plugins, Symlinks & Services):
-~/git/dotfiles/scripts/install.sh
-```
+---
 
-### Übersicht aller Skript-Befehle
+## Author & License
 
-```bash
-# Haupt-Installer & System-Updater (scripts/install.sh)
-~/git/dotfiles/scripts/install.sh install    # Komplettes Setup (Pakete, Subtrees, Oh My Zsh, Symlinks, Services)
-~/git/dotfiles/scripts/install.sh update     # Systempakete, Dotfiles, Subtrees & Zsh-Plugins aktualisieren (Alias: cfg-update)
-~/git/dotfiles/scripts/install.sh subtrees   # Alle 5 Git-Subtrees (nvim, tmux, ghostty, kitty & vim) aktualisieren
-~/git/dotfiles/scripts/install.sh packages   # Nur benötigte Arch-Pakete via pacman installieren
-~/git/dotfiles/scripts/install.sh links      # Nur Symlinks in ~/.config & ~ setzen (Alias: cfg-links)
-~/git/dotfiles/scripts/install.sh wallpapers <git-url>  # Privates Wallpaper-Repo klonen/aktualisieren
+**Michael Weiss** — [GitHub (`@MichaelWeissDEV`)](https://github.com/MichaelWeissDEV)
 
-# Symlink-Kurzskript (scripts/install-links.sh)
-~/git/dotfiles/scripts/install-links.sh      # Setzt direkt alle Symlinks in ~/.config & ~ (Alias: cfg-links)
-
-# Subtree-Updater (scripts/update-subtrees.sh)
-~/git/dotfiles/scripts/update-subtrees.sh              # Alle 5 Subtrees (nvim, tmux, ghostty, kitty & vim) pullen (Alias: cfg-subtrees)
-~/git/dotfiles/scripts/update-subtrees.sh status       # Status & Remote-URLs aller 5 Subtrees anzeigen
-~/git/dotfiles/scripts/update-subtrees.sh <modul>      # Einzelnen Subtree pullen (nvim|tmux|ghostty|kitty|vim)
-~/git/dotfiles/scripts/update-subtrees.sh push <modul> # Einzelnen Subtree nach Upstream pushen (nvim|tmux|ghostty|kitty|vim|all)
-
-# Privates Wallpaper-Repo (scripts/install-wallpapers.sh)
-~/git/dotfiles/scripts/install-wallpapers.sh <git-url>  # Einmalig klonen (Alias: cfg-wallpapers)
-~/git/dotfiles/scripts/install-wallpapers.sh --update   # Vorhandenes Repo aktualisieren
-```
+Released under the [MIT License](nvim/LICENSE).
