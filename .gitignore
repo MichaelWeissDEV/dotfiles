@@ -12,3 +12,15 @@
 # Lokale Tmux-Overrides (falls angelegt)
 tmux/local.conf
 tmux/local-options.conf
+
+# Dokumentations-Builds (Sphinx & MkDocs)
+_build/
+docs/_build/
+**/docs/_build/
+.venv/
+__pycache__/
+
+# Privates Wallpaper-Repository (Urheberrecht)
+# Wird separat geklont und ist bewusst NICHT Teil des öffentlichen Dotfiles-Repos.
+# Einrichtung: ~/git/dotfiles/scripts/install-wallpapers.sh <git-url>
+pictures/

@@ -9,15 +9,17 @@ Alle Konfigurationsordner werden per Symlink sauber nach `~/.config/<modul>` (so
 
 | Ordner | Beschreibung | Ziel-Symlink(s) |
 | :--- | :--- | :--- |
-| **`scripts/`** | Installations-, Symlink- und Subtree-Update-Skripte (`install.sh`, `install-links.sh`, `update-subtrees.sh`) | – |
-| **`zsh/`** | Zsh-Hauptkonfiguration (`zshrc`), modulare Aliases & FZF-Funktionen (`aliases.zsh`: `nv`, `v`, `fznv`, `fzv`, `y`, `tm`, `dotfiles`, `cfg-update`, `cfg-links`, `cfg-subtrees`) sowie minimales Prompt-Theme (`> `) | `~/.config/zsh`, `~/.zshrc`, `~/.oh-my-zsh/custom/themes/catppuccin.zsh-theme` |
+| **`scripts/`** | Installations-, Symlink-, Subtree-Update- & Wallpaper-Repo-Skripte (`install.sh`, `install-links.sh`, `install-wallpapers.sh`, `update-subtrees.sh`) | – |
+| **`zsh/`** | Zsh-Hauptkonfiguration (`zshrc`), modulare Aliases & FZF-Funktionen (`aliases.zsh`: `nv`, `v`, `fznv`, `fzv`, `y`, `tm`, `dotfiles`, `cfg-update`, `cfg-links`, `cfg-subtrees`, `cfg-wallpapers`) sowie minimales Prompt-Theme (`> `) | `~/.config/zsh`, `~/.zshrc`, `~/.oh-my-zsh/custom/themes/catppuccin.zsh-theme` |
 | **`nvim/`** | Neovim-Konfiguration (**Git-Subtree**: `MichaelWeissDEV/nvim-config`) | `~/.config/nvim` |
 | **`tmux/`** | Tmux-Konfiguration (**Git-Subtree**: `MichaelWeissDEV/tmux-config`) | `~/.config/tmux`, `~/.tmux.conf` |
 | **`vim/`** | Standalone Vim-Konfiguration (`vimrc`, **Git-Subtree**: `MichaelWeissDEV/vim-config`) im Catppuccin Mocha Design mit dynamischer Statuszeile (`NORMAL`/`INSERT`/`VISUAL`, `NUM:REL`/`NUM:ABS`) und Zeilennummern-Toggle (`<Space>un`, `<Space>rn`, `<Space>n`, `<F3>`) | `~/.config/vim`, `~/.vimrc` |
 | **`ghostty/`** | Ghostty Terminal-Konfiguration (**Git-Subtree**: `MichaelWeissDEV/ghostty-config`) im Catppuccin Mocha Farbschema (transparent `0.90`, `JetBrainsMono Nerd Font`) | `~/.config/ghostty` |
 | **`kitty/`** | Kitty Terminal-Konfiguration (**Git-Subtree**: `MichaelWeissDEV/kittiy-config`) im Catppuccin Mocha Farbschema (transparent `0.90`, `JetBrainsMono Nerd Font`) | `~/.config/kitty` |
 | **`foot/`** | Leichtgewichtiger Wayland-Terminal-Emulator im Catppuccin Mocha Farbschema (transparent `0.90`, `JetBrainsMono Nerd Font`) | `~/.config/foot` |
-| **`hypr/`** | Hyprland (inkl. monitorübergreifendem Fensterwechsel, Sprung-Positionen/Slots `1–10`/`F1–F4` & `windowswitcher.sh`), Hyprlock, Powermenu & Askpass | `~/.config/hypr` |
+| **`hypr/`** | Hyprland (inkl. monitorübergreifendem Fensterwechsel, Sprung-Positionen/Slots `1–10`/`F1–F4` & `windowswitcher.sh`), Hyprlock, Hyprpaper, Powermenu & Askpass | `~/.config/hypr` |
+| **`wallpaper/`** | Wallpaper-Switcher für Hyprland (hyprpaper) mit Default- & Monitor-Zuweisung, Fuzzel-TUI (`SUPER + SHIFT + W`) & CLI (`wallpaper`) | `~/.config/wallpaper`, `~/.local/bin/wallpaper` |
+| **`pictures/`** | Privates Wallpaper-Repository (optional, per `.gitignore` ausgeschlossen; nicht im öffentlichen Dotfiles-Repo) | – |
 | **`waybar/`** | Waybar Statusleiste (`config.jsonc`, `style.css`, `power_menu.xml`) | `~/.config/waybar` |
 | **`fuzzel/`** | Wayland Application Launcher | `~/.config/fuzzel` |
 | **`yazi/`** | Terminal-Dateimanager inkl. `catppuccin-mocha.yazi` Flavor | `~/.config/yazi` |
@@ -27,7 +29,7 @@ Alle Konfigurationsordner werden per Symlink sauber nach `~/.config/<modul>` (so
 
 ## Verwendete Git-Repositories
 
-Das Setup bezieht folgende externe Git-Repositories (entweder direkt als Subtree im Repo oder beim Setup für Oh My Zsh):
+Das Setup bezieht folgende externe Git-Repositories (als Subtree, für Oh My Zsh oder optional als privates Wallpaper-Repo):
 
 ### 1. Eingebettete Git-Subtrees (direkt im Repository versioniert)
 | Subtree-Pfad | Remote-Name | Git-Repository URL | Branch |
@@ -44,6 +46,11 @@ Das Setup bezieht folgende externe Git-Repositories (entweder direkt als Subtree
 | **Oh My Zsh** | `~/.oh-my-zsh` | `https://github.com/ohmyzsh/ohmyzsh.git` |
 | **zsh-autosuggestions** | `~/.oh-my-zsh/custom/plugins/zsh-autosuggestions` | `https://github.com/zsh-users/zsh-autosuggestions.git` |
 | **zsh-syntax-highlighting** | `~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting` | `https://github.com/zsh-users/zsh-syntax-highlighting.git` |
+
+### 3. Privates Wallpaper-Repository (optional, nicht Teil dieses Repos)
+| Komponente | Zielpfad | Git-Repository URL | Hinweis |
+| :--- | :--- | :--- | :--- |
+| **Wallpapers** | `~/git/dotfiles/pictures` | privates Repo (URL wird bewusst nicht veröffentlicht) | per `.gitignore` ausgeschlossen (Urheberrecht); Einrichtung mit `scripts/install-wallpapers.sh <git-url>` |
 
 ---
 
@@ -111,12 +118,89 @@ git subtree push --prefix=vim     vim-remote     main
 
 ---
 
+## Wallpaper-Switcher (`wallpaper/`)
+
+Der Wallpaper-Switcher verwaltet Hintergrundbilder über **hyprpaper** – mit einem **Default für alle Bildschirme** und **eigenen Wallpapers pro Monitor** (z. B. Zweit- oder Drittschirm).
+
+```bash
+# Fuzzel-TUI: erst Ziel (alle oder ein Monitor), dann Wallpaper wählen
+wallpaper
+
+# Verfügbare Wallpapers (★ = Default, ● = Monitor-Override)
+wallpaper list
+
+# Default für alle Bildschirme ohne eigenen Override setzen
+wallpaper set forest.png
+
+# Eigenes Wallpaper für einen Monitor (z. B. Drittschirm)
+wallpaper set ocean.png --monitor DP-1
+
+# Überall dasselbe Wallpaper setzen und alle Overrides löschen
+wallpaper set city.png --all
+
+# Override wieder entfernen (nutzt danach den Default)
+wallpaper monitor DP-1 default
+
+# Aktuelle Belegung anzeigen
+wallpaper current
+```
+
+### Privates Wallpaper-Repository (Urheberrecht)
+
+Die Bilder liegen **nicht** im öffentlichen Dotfiles-Repo, sondern in `~/git/dotfiles/pictures/`. Das Verzeichnis ist per `.gitignore` ausgeschlossen und wird separat als privates Git-Repo geklont – bewusst **kein Git-Submodul**, damit die private URL nicht in `.gitmodules` steht.
+
+```bash
+# Einmalig klonen (URL deines privaten Repos)
+~/git/dotfiles/scripts/install-wallpapers.sh <git-url>
+
+# Oder manuell
+cd ~/git/dotfiles
+git clone <git-url> pictures
+
+# Aktualisieren
+~/git/dotfiles/scripts/install-wallpapers.sh --update
+```
+
+Das Dotfiles-Repo bleibt sauber; `pictures/` erscheint nicht in `git status`.
+
+> **Achtung:** `pictures/` ist absichtlich ignoriert. Ein `git clean -fdx` im Dotfiles-Repo würde das private Wallpaper-Repo löschen. Vorher committen und pushen.
+
+### Eigene Wallpapers hinzufügen
+
+**Standardordner:** `~/git/dotfiles/pictures` (Unterordner werden rekursiv gelesen). Bilder erscheinen sofort in der TUI und in `wallpaper list` – ein Neustart ist nicht nötig.
+
+```bash
+cp ~/Downloads/mein-bild.jpg ~/git/dotfiles/pictures/
+
+# Oder bequem über das Tool (mit --set direkt als Default übernehmen)
+wallpaper add ~/Downloads/mein-bild.jpg --set
+```
+
+Neue Bilder im privaten Repo committen:
+
+```bash
+git -C ~/git/dotfiles/pictures add .
+git -C ~/git/dotfiles/pictures commit -m "Add wallpapers"
+git -C ~/git/dotfiles/pictures push
+```
+
+Weitere Ordner können in `~/.config/wallpaper/wallpaper.conf` unter `WALLPAPER_DIRS` ergänzt werden. Mit `wallpaper dirs` siehst du alle aktiven Quellen.
+
+- **Konfiguration:** `~/.config/wallpaper/wallpaper.conf` (Suchordner, Fit-Modus `cover|contain|tile|fill`, Benachrichtigungen).
+- **Gespeicherter Zustand:** `~/.local/state/wallpaper/state` (Default + Monitor-Overrides; bleibt aus dem Git-Repo heraus).
+- **Tastenkürzel:** `SUPER + SHIFT + W` oder CLI `wallpaper` (kein Waybar-Symbol).
+- **Autostart:** Hyprland wendet die gespeicherte Belegung beim Start automatisch an; neu angeschlossene Monitore erhalten den Default.
+- **Details:** [`wallpaper/README.md`](wallpaper/README.md)
+
+---
+
 ## Enthaltene Arch Linux Pakete (`pacman`)
 
 Das Skript `scripts/install.sh` (bzw. `scripts/install.sh packages`) installiert über die offiziellen Arch Linux Repositories (`pacman -Syu --needed`) folgende Pakete:
 
 ### Hyprland & Wayland Desktop
 - `hyprland` – Wayland Tiling Compositor
+- `hyprpaper` – Wallpaper-Daemon mit IPC (Default- & Monitor-Wallpapers)
 - `hyprlock` – Sperrbildschirm für Hyprland
 - `hypridle` – Idle-Management-Daemon für Hyprland
 - `waybar` – Statusleiste für Wayland
@@ -177,6 +261,7 @@ git clone <REPO-URL> ~/git/dotfiles
 ~/git/dotfiles/scripts/install.sh subtrees   # Alle 5 Git-Subtrees (nvim, tmux, ghostty, kitty & vim) aktualisieren
 ~/git/dotfiles/scripts/install.sh packages   # Nur benötigte Arch-Pakete via pacman installieren
 ~/git/dotfiles/scripts/install.sh links      # Nur Symlinks in ~/.config & ~ setzen (Alias: cfg-links)
+~/git/dotfiles/scripts/install.sh wallpapers <git-url>  # Privates Wallpaper-Repo klonen/aktualisieren
 
 # Symlink-Kurzskript (scripts/install-links.sh)
 ~/git/dotfiles/scripts/install-links.sh      # Setzt direkt alle Symlinks in ~/.config & ~ (Alias: cfg-links)
@@ -186,4 +271,8 @@ git clone <REPO-URL> ~/git/dotfiles
 ~/git/dotfiles/scripts/update-subtrees.sh status       # Status & Remote-URLs aller 5 Subtrees anzeigen
 ~/git/dotfiles/scripts/update-subtrees.sh <modul>      # Einzelnen Subtree pullen (nvim|tmux|ghostty|kitty|vim)
 ~/git/dotfiles/scripts/update-subtrees.sh push <modul> # Einzelnen Subtree nach Upstream pushen (nvim|tmux|ghostty|kitty|vim|all)
+
+# Privates Wallpaper-Repo (scripts/install-wallpapers.sh)
+~/git/dotfiles/scripts/install-wallpapers.sh <git-url>  # Einmalig klonen (Alias: cfg-wallpapers)
+~/git/dotfiles/scripts/install-wallpapers.sh --update   # Vorhandenes Repo aktualisieren
 ```
