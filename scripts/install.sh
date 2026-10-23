@@ -9,6 +9,7 @@
 #   ~/git/dotfiles/scripts/install.sh subtrees   Git-Subtrees (nvim, tmux, ghostty, kitty & vim) von Upstream aktualisieren
 #   ~/git/dotfiles/scripts/install.sh packages   Nur benötigte Arch-Pakete installieren (pacman)
 #   ~/git/dotfiles/scripts/install.sh links      Nur Symlinks in ~/.config & ~ einrichten (ohne sudo/Netzwerk)
+#   ~/git/dotfiles/scripts/install.sh wallpapers [URL]  Privates Wallpaper-Repo klonen/aktualisieren
 # ============================================================================
 
 set -euo pipefail
@@ -43,6 +44,7 @@ CONFIG_DIRS=(
     pcmanfm
     tmux
     vim
+    wallpaper
     waybar
     yazi
     zsh
@@ -54,6 +56,7 @@ CONFIG_DIRS=(
 PACMAN_PACKAGES=(
     # Hyprland & Wayland Desktop
     hyprland
+    hyprpaper
     hyprlock
     hypridle
     waybar
@@ -191,6 +194,8 @@ setup_links() {
     mkdir -p "$HOME/Downloads"
     mkdir -p "$HOME/.local/state/vim/undo"
     mkdir -p "$HOME/.local/bin"
+    # Privates Wallpaper-Repo (per .gitignore ausgeschlossen, optional klonen)
+    mkdir -p "$DOTFILES_DIR/pictures"
 
     # 1. Alle verwalteten Modul-Ordner nach ~/.config/<dir> verlinken
     for dir in "${CONFIG_DIRS[@]}"; do
@@ -206,6 +211,9 @@ setup_links() {
     link_item "$CONFIG_TARGET/tmux/tmux.conf" "$HOME/.tmux.conf"
     link_item "$CONFIG_TARGET/vim/vimrc"      "$HOME/.vimrc"
 
+    # Wallpaper-Switcher als CLI-Befehl "wallpaper" verfügbar machen
+    link_item "$CONFIG_TARGET/wallpaper/wallpaper.sh" "$HOME/.local/bin/wallpaper"
+
     # 3. Oh My Zsh Theme verlinken (falls ~/.oh-my-zsh existiert)
     if [[ -d "$HOME/.oh-my-zsh/custom/themes" ]]; then
         link_item "$CONFIG_TARGET/zsh/themes/catppuccin.zsh-theme" \
@@ -216,8 +224,10 @@ setup_links() {
     chmod +x "$DOTFILES_DIR/hypr/askpass.sh" \
              "$DOTFILES_DIR/hypr/powermenu.sh" \
              "$DOTFILES_DIR/hypr/windowswitcher.sh" \
+             "$DOTFILES_DIR/wallpaper/wallpaper.sh" \
              "$SCRIPTS_DIR/install.sh" \
              "$SCRIPTS_DIR/install-links.sh" \
+             "$SCRIPTS_DIR/install-wallpapers.sh" \
              "$SCRIPTS_DIR/update-subtrees.sh"
 
     ok "Symlinks in $CONFIG_TARGET (${#CONFIG_DIRS[@]} Module) sowie ~/.zshrc, ~/.tmux.conf, ~/.vimrc eingerichtet."
@@ -295,6 +305,7 @@ Befehle:
   subtrees   Git-Subtrees (nvim, tmux, ghostty, kitty & vim) von ihren Upstream-Repositories aktualisieren
   packages   Nur alle benötigten Arch Linux Pakete via pacman installieren
   links      Nur Symlinks in ~/.config & ~ (~/.zshrc, ~/.tmux.conf, ~/.vimrc) anlegen
+  wallpapers [URL]  Privates Wallpaper-Repo nach pictures/ klonen bzw. aktualisieren
   help       Diese Hilfe anzeigen
 EOF
 }
@@ -322,6 +333,10 @@ main() {
             ;;
         links|symlinks)
             setup_links
+            ;;
+        wallpapers|pictures)
+            shift || true
+            "$SCRIPTS_DIR/install-wallpapers.sh" "$@"
             ;;
         -h|--help|help)
             usage

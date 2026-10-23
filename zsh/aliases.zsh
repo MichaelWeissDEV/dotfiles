@@ -11,6 +11,10 @@ alias dotfiles='cd "$HOME/git/dotfiles"'
 alias cfg-update='"$HOME/git/dotfiles/scripts/install.sh" update'
 alias cfg-links='"$HOME/git/dotfiles/scripts/install-links.sh"'
 alias cfg-subtrees='"$HOME/git/dotfiles/scripts/update-subtrees.sh"'
+alias cfg-wallpapers='"$HOME/git/dotfiles/scripts/install-wallpapers.sh"'
+
+# Wallpaper-Switcher (Default + pro Monitor)
+alias wp='wallpaper'
 
 # Datei- & System-Aliases mit Farbunterstützung
 alias ls='ls --color=auto'

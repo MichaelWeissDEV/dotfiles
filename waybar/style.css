@@ -34,19 +34,6 @@ window#waybar {
     border-bottom: 1px solid #313244;
 }
 
-#custom-launcher {
-    padding: 0 12px;
-    background-color: #181825;
-    color: #89b4fa;
-    font-weight: 700;
-    border-right: 1px solid #313244;
-}
-
-#custom-launcher:hover {
-    background-color: #313244;
-    color: #94e2d5;
-}
-
 #workspaces {
     background-color: #1e1e2e;
 }

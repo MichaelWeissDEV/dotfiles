@@ -35,6 +35,7 @@ local tuiFiles    = "kitty -e yazi"
 local lock           = "hyprlock"
 local powermenu      = home .. "/.config/hypr/powermenu.sh"
 local windowswitcher = home .. "/.config/hypr/windowswitcher.sh"
+local wallpaper      = home .. "/.config/wallpaper/wallpaper.sh"
 
 
 -------------------
@@ -42,6 +43,13 @@ local windowswitcher = home .. "/.config/hypr/windowswitcher.sh"
 -------------------
 hl.on("hyprland.start", function()
     hl.exec_cmd("waybar")
+    -- Gespeicherten Default bzw. Monitor-Overrides anwenden (startet hyprpaper bei Bedarf)
+    hl.exec_cmd(wallpaper .. " apply --quiet")
+end)
+
+-- Neu angeschlossene Monitore erhalten die gespeicherte Belegung (sonst Default)
+hl.on("monitor.added", function()
+    hl.exec_cmd("sleep 0.6 && " .. wallpaper .. " apply --quiet")
 end)
 
 
@@ -174,6 +182,7 @@ hl.bind(mainMod .. " + Y",              hl.dsp.exec_cmd(tuiFiles))
 hl.bind(mainMod .. " + L",              hl.dsp.exec_cmd(lock))
 hl.bind(mainMod .. " + Escape",    hl.dsp.exec_cmd(powermenu))
 hl.bind(mainMod .. " + SHIFT + B", hl.dsp.exec_cmd("killall -SIGUSR2 waybar || (pkill waybar; waybar &)"))
+hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd(wallpaper .. " tui"))
 hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exit())
 hl.bind(mainMod .. " + M",         hl.dsp.exit())
 

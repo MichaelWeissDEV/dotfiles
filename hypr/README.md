@@ -14,9 +14,10 @@ start-hyprland
 
 ---
 
-## App-Launcher & Power-Menü in der Leiste (Waybar)
-- **App-Launcher (Links oben `󰀻` oder per Tastatur):**
-  - Ein Klick auf das App-Symbol `󰀻` **links oben in der Waybar** (oder `SUPER + Leertaste`, `ALT + Leertaste`, `SUPER + D`, `SUPER + R`, `SUPER + A`) öffnet den sauber im matten Theme gestylten **App-Launcher (`fuzzel`)**.
+## App-Launcher & Power-Menü
+- **App-Launcher (per Tastatur):**
+  - `SUPER + Leertaste`, `ALT + Leertaste`, `SUPER + D`, `SUPER + R` oder `SUPER + A` öffnet den sauber im matten Theme gestylten **App-Launcher (`fuzzel`)**.
+  - In der Waybar gibt es bewusst kein Launcher-Symbol mehr; der Launcher wird nur per Tastatur gestartet.
   - **Programme starten:** Einfach lostippen, mit Pfeiltasten auswählen und `Enter` drücken (oder mit der Maus anklicken).
   - **Beliebige Befehle direkt ausführen:** Befehl eintippen und `SHIFT + Enter` drücken.
   - **WLAN / Netzwerk:** Direkt über den Eintrag *„WLAN & Netzwerk (nmtui)“* im App-Launcher erreichbar.
@@ -47,6 +48,7 @@ Als Haupt-Modifikatortaste (`SUPER`) dient die **Windows-/Super-Taste**.
 | `SUPER + L` | Bildschirm sperren (`hyprlock`) |
 | `SUPER + Escape` | Power-Menü rechts oben öffnen (Herunterfahren, Neustart, Standby, Sperren, Abmelden) |
 | `SUPER + SHIFT + B` | Waybar neu laden / neu starten |
+| `SUPER + SHIFT + W` | Wallpaper-TUI öffnen (Default/alle oder einzelner Monitor) |
 | `SUPER + SHIFT + E` *(oder `SUPER + M`)* | Hyprland direkt beenden (zurück zur TTY) |
 
 ### Schneller Fensterwechsel, Letztes Programm & Sprung-Positionen (auch über Bildschirme hinweg)
@@ -111,6 +113,33 @@ Die Workspaces sind **nicht auf eine feste Anzahl begrenzt**. In der Waybar link
 
 ---
 
+## Wallpaper (Default & pro Monitor)
+
+Hintergründe werden über **hyprpaper** und den Wallpaper-Switcher verwaltet. Es gibt einen **Default für alle Bildschirme** und **eigene Overrides pro Monitor** (z. B. für Zweit-/Drittschirm). Beim Start wird die gespeicherte Belegung automatisch angewendet.
+
+| Aktion | Befehl |
+| :--- | :--- |
+| TUI öffnen (Ziel + Wallpaper) | `SUPER + SHIFT + W` oder `wallpaper` |
+| Verfügbare Wallpapers | `wallpaper list` |
+| Default setzen | `wallpaper set forest.png` |
+| Monitor-Override setzen | `wallpaper set ocean.png --monitor DP-1` |
+| Überall setzen | `wallpaper set city.png --all` |
+| Override entfernen | `wallpaper monitor DP-1 default` |
+| Belegung anzeigen | `wallpaper current` |
+
+### Eigene Wallpapers hinzufügen
+
+Bilder in die private Bibliothek `~/git/dotfiles/pictures` legen (Unterordner sind erlaubt). Das Verzeichnis ist per `.gitignore` aus dem öffentlichen Dotfiles-Repo ausgeschlossen (Urheberrecht) und wird separat als privates Repo geklont:
+
+```bash
+~/git/dotfiles/scripts/install-wallpapers.sh <git-url>
+wallpaper add ~/Downloads/bild.jpg --set
+```
+
+Sie erscheinen sofort in der TUI und in `wallpaper list` – ein Neustart ist nicht nötig. Weitere Ordner können in `~/.config/wallpaper/wallpaper.conf` unter `WALLPAPER_DIRS` ergänzt werden; `wallpaper dirs` zeigt alle aktiven Quellen. Details: [`../wallpaper/README.md`](../wallpaper/README.md).
+
+---
+
 ## Zsh (Oh My Zsh) & Tmux (Catppuccin Mocha)
 
 ### Zsh & Oh My Zsh
@@ -145,6 +174,8 @@ Als **Prefix** funktionieren sowohl klassisch **`STRG + B`** als auch **`STRG + 
 ## Übersicht der Konfigurationsdateien
 
 - **Hyprland:** `~/.config/hypr/hyprland.lua`
+- **Wallpaper-Daemon:** `~/.config/hypr/hyprpaper.conf` *(Wallpapers selbst über `wallpaper`)*
+- **Wallpaper-Switcher:** `~/.config/wallpaper/wallpaper.sh` *(CLI: `wallpaper`, TUI: `SUPER + SHIFT + W`)*
 - **Fenster- & Positions-Switcher:** `~/.config/hypr/windowswitcher.sh`
 - **Power-Menü & Sudo-Askpass:** `~/.config/hypr/powermenu.sh` & `~/.config/hypr/askpass.sh`
 - **Sperrbildschirm:** `~/.config/hypr/hyprlock.conf`

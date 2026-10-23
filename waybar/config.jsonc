@@ -9,7 +9,6 @@
     "margin-right": 0,
 
     "modules-left": [
-        "custom/launcher",
         "hyprland/workspaces"
     ],
     "modules-center": [
@@ -20,13 +19,6 @@
         "battery",
         "custom/power"
     ],
-
-    "custom/launcher": {
-        "format": "󰀻",
-        "tooltip": true,
-        "tooltip-format": "App-Launcher öffnen (SUPER + Leertaste / SUPER + D)",
-        "on-click": "pkill -x fuzzel || fuzzel"
-    },
 
     "hyprland/workspaces": {
         "disable-scroll": false,
