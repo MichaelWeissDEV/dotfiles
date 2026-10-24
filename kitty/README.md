@@ -10,10 +10,12 @@ Arch Linux · Linux · macOS · Hyprland · Zsh · tmux · Neovim
 [![Dotfiles Hub](https://img.shields.io/badge/ecosystem-arch--dotfiles-1793D1?logo=arch-linux&logoColor=white)](https://arch-dotfiles.readthedocs.io/en/latest/)
 [![Theme: Catppuccin Mocha](https://img.shields.io/badge/theme-Catppuccin%20Mocha-cba6f7)](https://github.com/catppuccin/catppuccin)
 [![Platform: Linux | macOS](https://img.shields.io/badge/platform-Arch%20Linux%20%7C%20Linux%20%7C%20macOS-89b4fa)](https://sw.kovidgoyal.net/kitty/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 [**Documentation**](https://kitty-config.readthedocs.io/en/latest/) ·
 [Installation](https://kitty-config.readthedocs.io/en/latest/installation/) ·
-[Configuration](https://kitty-config.readthedocs.io/en/latest/configuration/) ·
+[Configuration Guide](https://kitty-config.readthedocs.io/en/latest/configuration/) ·
+[Configuration File (`kitty.conf`)](kitty.conf) ·
 [Keybindings](https://kitty-config.readthedocs.io/en/latest/keybindings/) ·
 [FAQ](https://kitty-config.readthedocs.io/en/latest/faq/) ·
 [Arch Dotfiles Hub](https://arch-dotfiles.readthedocs.io/en/latest/)
@@ -24,7 +26,7 @@ Arch Linux · Linux · macOS · Hyprland · Zsh · tmux · Neovim
 
 ## Overview
 
-A minimalist, GPU-accelerated **Kitty** configuration styled in the official **Catppuccin Mocha (Pastel Theme)** color scheme. Designed as the primary terminal for the **Arch Linux + Hyprland** dotfiles ecosystem, it can be installed standalone on **any Arch Linux machine** or easily adapted to **other Linux distributions and macOS**.
+A minimalist, GPU-accelerated **Kitty** configuration ([`kitty.conf`](kitty.conf)) styled in the official **Catppuccin Mocha (Pastel Theme)** color scheme. Designed as the primary terminal for the **Arch Linux + Hyprland** dotfiles ecosystem, it can be installed standalone on **any Arch Linux machine** or easily adapted to **other Linux distributions and macOS**.
 
 ## Features
 
@@ -51,7 +53,7 @@ Full reference: [Kitty Keybindings Documentation](https://kitty-config.readthedo
 | `Ctrl + Shift + Enter` / `Ctrl + Shift + W` | Open new split window / Close active window |
 | `Ctrl + Shift + =` / `-` / `Backspace` | Increase / decrease / reset font size (`10.5pt`) |
 | `Ctrl + Shift + H` | Browse scrollback buffer in pager |
-| `Ctrl + Shift + F5` | Live-reload `~/.config/kitty/kitty.conf` |
+| `Ctrl + Shift + F5` | Live-reload `~/.config/kitty/kitty.conf` ([`kitty.conf`](kitty.conf)) |
 
 ---
 

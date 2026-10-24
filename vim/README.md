@@ -10,10 +10,12 @@
 [![Dotfiles Hub](https://img.shields.io/badge/ecosystem-arch--dotfiles-1793D1?logo=arch-linux&logoColor=white)](https://arch-dotfiles.readthedocs.io/en/latest/)
 [![Theme: Catppuccin Mocha](https://img.shields.io/badge/theme-Catppuccin%20Mocha-cba6f7)](https://github.com/catppuccin/catppuccin)
 [![Vim 8.2+ / 9.0+](https://img.shields.io/badge/Vim-8.2%2B%20%7C%209.0%2B-019733?logo=vim&logoColor=white)](https://www.vim.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 [**Documentation**](https://vim-config.readthedocs.io/en/latest/) ·
 [Installation](https://vim-config.readthedocs.io/en/latest/installation/) ·
-[Configuration](https://vim-config.readthedocs.io/en/latest/configuration/) ·
+[Configuration Guide](https://vim-config.readthedocs.io/en/latest/configuration/) ·
+[Configuration File (`vimrc`)](vimrc) ·
 [Keybindings & Commands](https://vim-config.readthedocs.io/en/latest/keybindings/) ·
 [Statusline](https://vim-config.readthedocs.io/en/latest/statusline/) ·
 [Arch Dotfiles Hub](https://arch-dotfiles.readthedocs.io/en/latest/)
@@ -24,7 +26,7 @@
 
 ## Overview
 
-A standalone, zero-dependency **Vim** configuration (`vimrc`) crafted in the official **Catppuccin Mocha (Pastel Theme)** design and synchronized with the core options and keybindings of [`nvim-config`](https://nvim-config.readthedocs.io/en/latest/).
+A standalone, zero-dependency **Vim** configuration ([`vimrc`](vimrc)) crafted in the official **Catppuccin Mocha (Pastel Theme)** design and synchronized with the core options and keybindings of [`nvim-config`](https://nvim-config.readthedocs.io/en/latest/).
 
 Because it relies purely on native Vimscript with zero external plugins, it runs out-of-the-box on **any Arch Linux system**, **other Linux distributions**, **macOS**, **BSD**, and minimal remote **SSH servers or containers**.
 

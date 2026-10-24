@@ -6,14 +6,18 @@
 
 Arch Linux · Hyprland · Waybar · Fuzzel · Hyprpaper · Hyprlock
 
-[![Dotfiles Hub](https://img.shields.io/badge/ecosystem-arch--dotfiles-1793D1?logo=arch-linux&logoColor=white)](https://arch-dotfiles.readthedocs.io/en/latest/)
+[![Docs](https://readthedocs.org/projects/arch-dotfiles/badge/?version=latest)](https://arch-dotfiles.readthedocs.io/en/latest/)
 [![Hyprland Docs](https://img.shields.io/badge/docs-Hyprland%20Guide-89b4fa)](https://arch-dotfiles.readthedocs.io/en/latest/hyprland/)
+[![Dotfiles Hub](https://img.shields.io/badge/ecosystem-arch--dotfiles-1793D1?logo=arch-linux&logoColor=white)](https://arch-dotfiles.readthedocs.io/en/latest/)
 [![Theme: Catppuccin Mocha](https://img.shields.io/badge/theme-Catppuccin%20Mocha-cba6f7)](https://github.com/catppuccin/catppuccin)
+[![Platform: Arch Linux](https://img.shields.io/badge/platform-Arch%20Linux%20%7C%20Wayland-1793D1?logo=arch-linux&logoColor=white)](https://archlinux.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](../LICENSE)
 
 [**Ecosystem Documentation**](https://arch-dotfiles.readthedocs.io/en/latest/) ·
 [Hyprland Guide](https://arch-dotfiles.readthedocs.io/en/latest/hyprland/) ·
 [Waybar Guide](https://arch-dotfiles.readthedocs.io/en/latest/waybar/) ·
-[Shell & CLI (`adot` / `arch-dot`)](https://arch-dotfiles.readthedocs.io/en/latest/shell/)
+[Shell & CLI (`adot`)](https://arch-dotfiles.readthedocs.io/en/latest/shell/) ·
+[Configuration (`hyprland.lua`)](hyprland.lua)
 
 </div>
 
@@ -21,9 +25,22 @@ Arch Linux · Hyprland · Waybar · Fuzzel · Hyprpaper · Hyprlock
 
 ## Overview
 
-This Hyprland configuration (`~/.config/hypr/hyprland.lua`) is engineered for **instant reaction times** (zero animation lag, zero blur overhead), **maximum screen real estate** (`gaps = 0`, `rounding = 0`, `border_size = 1`), and the official **Catppuccin Mocha** pastel palette.
+This Hyprland configuration ([`hyprland.lua`](hyprland.lua)) is engineered for **instant reaction times** (zero animation lag, zero blur overhead), **maximum screen real estate** (`gaps = 0`, `rounding = 0`, `border_size = 1`), and the official **Catppuccin Mocha** pastel palette.
 
 While pre-configured for **Arch Linux** via the central [`arch-dotfiles`](https://arch-dotfiles.readthedocs.io/en/latest/) CLI program (`adot install` / `adot update` — also available as `arch-dot` or `arch-dotfiles`), it can be easily adapted to any Linux distribution running Wayland and Hyprland.
+
+---
+
+## Configuration Files
+
+| File | Path | Description |
+| :--- | :--- | :--- |
+| **[`hyprland.lua`](hyprland.lua)** | `~/.config/hypr/hyprland.lua` | Main Hyprland configuration (Lua syntax), keybindings, monitor rules, autostart |
+| **[`hyprpaper.conf`](hyprpaper.conf)** | `~/.config/hypr/hyprpaper.conf` | Background wallpaper loader configuration |
+| **[`hyprlock.conf`](hyprlock.conf)** | `~/.config/hypr/hyprlock.conf` | Screen locker styled in Catppuccin Mocha pastel palette |
+| **[`askpass.sh`](askpass.sh)** | `~/.config/hypr/askpass.sh` | Graphical `sudo` askpass prompt using Fuzzel password mode |
+| **[`powermenu.sh`](powermenu.sh)** | `~/.config/hypr/powermenu.sh` | Interactive top-right Fuzzel power menu (Shutdown, Reboot, Suspend, Lock, Logout) |
+| **[`windowswitcher.sh`](windowswitcher.sh)** | `~/.config/hypr/windowswitcher.sh` | Fuzzy window switcher across all monitors (`SUPER + G`) |
 
 ---
 

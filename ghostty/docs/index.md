@@ -1,5 +1,11 @@
 # ghostty-config
 
+[![Docs](https://readthedocs.org/projects/ghostty-config/badge/?version=latest)](https://ghostty-config.readthedocs.io/en/latest/)
+[![Dotfiles Hub](https://img.shields.io/badge/ecosystem-arch--dotfiles-1793D1?logo=arch-linux&logoColor=white)](https://arch-dotfiles.readthedocs.io/en/latest/)
+[![Theme: Catppuccin Mocha](https://img.shields.io/badge/theme-Catppuccin%20Mocha-cba6f7)](https://github.com/catppuccin/catppuccin)
+[![Platform: Linux | macOS](https://img.shields.io/badge/platform-Arch%20Linux%20%7C%20Linux%20%7C%20macOS-89b4fa)](https://ghostty.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/MichaelWeissDEV/ghostty-config/blob/main/LICENSE)
+
 A minimalist, high-performance **Ghostty** terminal configuration styled in the official **Catppuccin Mocha** palette with tasteful transparency, custom font metrics, and seamless integration with Neovim, tmux, and Hyprland.
 
 :::{note}

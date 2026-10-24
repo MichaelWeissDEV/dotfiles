@@ -1,5 +1,18 @@
 # Hyprland Desktop Environment & Keybindings
 
+[![Docs](https://readthedocs.org/projects/arch-dotfiles/badge/?version=latest)](https://arch-dotfiles.readthedocs.io/en/latest/)
+[![Platform: Arch Linux](https://img.shields.io/badge/platform-Arch%20Linux%20%7C%20Linux%20%7C%20macOS-1793D1?logo=arch-linux&logoColor=white)](https://archlinux.org/)
+[![Theme: Catppuccin Mocha](https://img.shields.io/badge/theme-Catppuccin%20Mocha-cba6f7)](https://github.com/catppuccin/catppuccin)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/MichaelWeissDEV/dotfiles/blob/main/LICENSE)
+
+[**Documentation Hub**](index.md) ·
+[Installation](installation.md) ·
+[Hyprland Desktop](hyprland.md) ·
+[Waybar Panel](waybar.md) ·
+[Terminals](terminals.md) ·
+[Shell & CLI](shell.md) ·
+[Git Subtrees](subtrees.md)
+
 Hyprland (`~/.config/hypr/hyprland.lua`) serves as the primary Wayland tiling compositor in the [`arch-dotfiles`](https://arch-dotfiles.readthedocs.io/en/latest/) ecosystem. It is engineered for **instant reaction speeds**, **maximum screen real estate**, **multi-monitor workspace agility**, and **seamless cross-monitor window recall**.
 
 ---
@@ -152,3 +165,16 @@ wallpaper add ~/Downloads/mountain.jpg --set
 
 - Wallpapers reside in `~/git/dotfiles/pictures`, a private Git repository excluded via `.gitignore` (copyright) and managed via `arch-dot wallpapers <git-url>` or `arch-dot wallpapers --update`.
 - Persistent monitor state is stored in `~/.local/state/wallpaper/state` (outside the Git worktree) and automatically restored on login and monitor hot-plug.
+
+---
+
+## Connected Dotfiles Ecosystem
+
+| Component | Repository | Documentation |
+| :--- | :--- | :--- |
+| **Arch Dotfiles Hub** *(Main System)* | [MichaelWeissDEV/dotfiles](https://github.com/MichaelWeissDEV/dotfiles) | [arch-dotfiles.readthedocs.io](https://arch-dotfiles.readthedocs.io/en/latest/) |
+| **Neovim (`nvim-config`)** | [MichaelWeissDEV/nvim-config](https://github.com/MichaelWeissDEV/nvim-config) | [nvim-config.readthedocs.io](https://nvim-config.readthedocs.io/en/latest/) |
+| **tmux (`tmux-config`)** | [MichaelWeissDEV/tmux-config](https://github.com/MichaelWeissDEV/tmux-config) | [tmux-config.readthedocs.io](https://tmux-config.readthedocs.io/en/latest/) |
+| **Ghostty (`ghostty-config`)** | [MichaelWeissDEV/ghostty-config](https://github.com/MichaelWeissDEV/ghostty-config) | [ghostty-config.readthedocs.io](https://ghostty-config.readthedocs.io/en/latest/) |
+| **Kitty (`kitty-config`)** | [MichaelWeissDEV/kittiy-config](https://github.com/MichaelWeissDEV/kittiy-config) | [kitty-config.readthedocs.io](https://kitty-config.readthedocs.io/en/latest/) |
+| **Vim (`vim-config`)** | [MichaelWeissDEV/vim-config](https://github.com/MichaelWeissDEV/vim-config) | [vim-config.readthedocs.io](https://vim-config.readthedocs.io/en/latest/) |

@@ -1,5 +1,18 @@
 # Arch Dotfiles Ecosystem Documentation
 
+[![Docs](https://readthedocs.org/projects/arch-dotfiles/badge/?version=latest)](https://arch-dotfiles.readthedocs.io/en/latest/)
+[![Platform: Arch Linux](https://img.shields.io/badge/platform-Arch%20Linux%20%7C%20Linux%20%7C%20macOS-1793D1?logo=arch-linux&logoColor=white)](https://archlinux.org/)
+[![Theme: Catppuccin Mocha](https://img.shields.io/badge/theme-Catppuccin%20Mocha-cba6f7)](https://github.com/catppuccin/catppuccin)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/MichaelWeissDEV/dotfiles/blob/main/LICENSE)
+
+[**Documentation Hub**](index.md) ·
+[Installation](installation.md) ·
+[Hyprland Desktop](hyprland.md) ·
+[Waybar Panel](waybar.md) ·
+[Terminals](terminals.md) ·
+[Shell & CLI](shell.md) ·
+[Git Subtrees](subtrees.md)
+
 Welcome to the comprehensive documentation for the **Arch Linux Dotfiles Ecosystem** (`arch-dotfiles`). This central repository (`~/git/dotfiles`) unites a complete Wayland desktop environment (**Arch Linux + Hyprland + Waybar + Fuzzel**) with customized GPU terminals, shells, multiplexers, and modal text editors styled uniformly in **Catppuccin Mocha**.
 
 :::{note}
@@ -33,13 +46,13 @@ Welcome to the comprehensive documentation for the **Arch Linux Dotfiles Ecosyst
 ```
 
 The ecosystem separates concerns into clean layers:
-1. **Unified CLI Program (`adot` / `arch-dot` / `arch-dotfiles`)**: Central command-line program in `~/.local/bin` that installs or updates everything (`adot install`, `adot update`), updates individual subtrees (`adot update nvim`), inspects live system/repo/subtree state (`adot status`), and lists all modules, custom commands, scripts, and keybindings (`adot list`, `adot keys`, `adot commands`, `adot scripts`).
-2. **Desktop Shell (`hypr/`)**: Hyprland tiling compositor tuned for instant reaction speed (zero animation lag), multi-monitor window jumping, cross-monitor slot pinning (`1..10` and `F1..F4`), and interactive fuzzy window switching (`windowswitcher.sh`).
-3. **Status Bar & Launcher (`waybar/`, `fuzzel/`)**: Waybar top panel with Catppuccin Mocha styling, audio/network controls, and a dual-mode power menu, paired with Fuzzel for app launching and `sudo` askpass prompts.
-4. **Multi-Monitor Wallpapers (`wallpaper/`)**: Custom `wallpaper` CLI and Fuzzel TUI managing `hyprpaper` with a global default and independent per-monitor overrides.
-5. **Terminals (`ghostty/`, `kitty/`, `foot/`)**: Ghostty, Kitty, and Foot all tuned to `0.90` background opacity with identical `JetBrainsMono Nerd Font` typography.
-6. **Shell Environment (`zsh/`, `yazi/`)**: Zsh with Oh My Zsh, Catppuccin Mocha syntax highlighting, autosuggestions, smart directory jumping via `j` / `ji` (powered under the hood by `zoxide`), and fast aliases (`arch-dot`, `nv`, `v`, `y`, `tm`, `fznv`, `fzv`).
-7. **Independent Git Subtrees**: Core editor and terminal configs reside in their own GitHub repositories with their own Read the Docs sites, embedded here via Git subtrees for zero-submodule cloning simplicity.
+1. **[Unified CLI Program (`adot` / `arch-dot` / `arch-dotfiles`)](shell.md#managing-everything-with-adot--arch-dot)**: Central command-line program in `~/.local/bin` that installs or updates everything (`adot install`, `adot update`), updates individual subtrees (`adot update nvim`), inspects live system/repo/subtree state (`adot status`), and lists all modules, custom commands, scripts, and keybindings (`adot list`, `adot keys`, `adot commands`, `adot scripts`).
+2. **[Desktop Shell (`hypr/`)](hyprland.md)**: Hyprland tiling compositor tuned for instant reaction speed (zero animation lag), multi-monitor window jumping, cross-monitor slot pinning (`1..10` and `F1..F4`), and interactive fuzzy window switching (`windowswitcher.sh`).
+3. **[Status Bar & Launcher (`waybar/`, `fuzzel/`)](waybar.md)**: Waybar top panel with Catppuccin Mocha styling, audio/network controls, and a dual-mode power menu, paired with Fuzzel for app launching and `sudo` askpass prompts.
+4. **[Multi-Monitor Wallpapers (`wallpaper/`)](hyprland.md#wallpaper-management-hyprpaper)**: Custom `wallpaper` CLI and Fuzzel TUI managing `hyprpaper` with a global default and independent per-monitor overrides.
+5. **[Terminals (`ghostty/`, `kitty/`, `foot/`)](terminals.md)**: Ghostty, Kitty, and Foot all tuned to `0.90` background opacity with identical `JetBrainsMono Nerd Font` typography.
+6. **[Shell Environment (`zsh/`, `yazi/`)](shell.md)**: Zsh with Oh My Zsh, Catppuccin Mocha syntax highlighting, autosuggestions, smart directory jumping via `j` / `ji` (powered under the hood by `zoxide`), and fast aliases (`arch-dot`, `nv`, `v`, `y`, `tm`, `fznv`, `fzv`).
+7. **[Independent Git Subtrees](subtrees.md)**: Core editor and terminal configs reside in their own GitHub repositories with their own Read the Docs sites, embedded here via Git subtrees for zero-submodule cloning simplicity.
 
 ---
 

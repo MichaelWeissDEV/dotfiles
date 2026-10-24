@@ -14,7 +14,7 @@ Arch Linux · Hyprland · Waybar · Ghostty · Kitty · Foot · Zsh · tmux · N
 [![Vim Docs](https://img.shields.io/badge/docs-vim--config-a6e3a1?logo=vim&logoColor=white)](https://vim-config.readthedocs.io/en/latest/)
 [![Platform: Arch Linux](https://img.shields.io/badge/platform-Arch%20Linux%20%7C%20Linux%20%7C%20macOS-1793D1?logo=arch-linux&logoColor=white)](https://archlinux.org/)
 [![Theme: Catppuccin Mocha](https://img.shields.io/badge/theme-Catppuccin%20Mocha-cba6f7)](https://github.com/catppuccin/catppuccin)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](nvim/LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 [**Ecosystem Documentation**](https://arch-dotfiles.readthedocs.io/en/latest/) ·
 [Installation](https://arch-dotfiles.readthedocs.io/en/latest/installation/) ·
@@ -54,23 +54,23 @@ The ecosystem is documented across six interconnected **Read the Docs** sites. T
 
 ## Repository Structure & Symlink Map
 
-| Directory | Description | Target Symlink(s) |
-| :--- | :--- | :--- |
-| **[`scripts/`](scripts/)** | Unified CLI program **[`adot`](scripts/adot)** (`arch-dot` / `arch-dotfiles`) & internal helper scripts (`install.sh`, `install-links.sh`, `update-subtrees.sh`, `install-wallpapers.sh`) | `~/.local/bin/adot`, `~/.local/bin/arch-dot`, `~/.local/bin/arch-dotfiles` |
-| **[`zsh/`](zsh/)** | Zsh configuration (`zshrc`), custom aliases & FZF helpers (`aliases.zsh`), and minimal Catppuccin prompt (`> `) | `~/.config/zsh`, `~/.zshrc`, `~/.oh-my-zsh/custom/themes/catppuccin.zsh-theme` |
-| **[`nvim/`](nvim/)** | Neovim IDE (**Git Subtree**: `MichaelWeissDEV/nvim-config`) — [README](nvim/README.md) · [Docs](https://nvim-config.readthedocs.io/en/latest/) | `~/.config/nvim` |
-| **[`tmux/`](tmux/)** | tmux Multiplexer (**Git Subtree**: `MichaelWeissDEV/tmux-config`) — [README](tmux/README.md) · [Docs](https://tmux-config.readthedocs.io/en/latest/) | `~/.config/tmux`, `~/.tmux.conf` |
-| **[`vim/`](vim/)** | Standalone Vim (**Git Subtree**: `MichaelWeissDEV/vim-config`) — [README](vim/README.md) · [Docs](https://vim-config.readthedocs.io/en/latest/) | `~/.config/vim`, `~/.vimrc` |
-| **[`ghostty/`](ghostty/)** | Ghostty Terminal (**Git Subtree**: `MichaelWeissDEV/ghostty-config`) — [README](ghostty/README.md) · [Docs](https://ghostty-config.readthedocs.io/en/latest/) | `~/.config/ghostty` |
-| **[`kitty/`](kitty/)** | Kitty Terminal (**Git Subtree**: `MichaelWeissDEV/kittiy-config`) — [README](kitty/README.md) · [Docs](https://kitty-config.readthedocs.io/en/latest/) | `~/.config/kitty` |
-| **[`foot/`](foot/)** | Lightweight Wayland terminal in Catppuccin Mocha (`0.90` opacity, `JetBrainsMono Nerd Font`) | `~/.config/foot` |
-| **[`hypr/`](hypr/)** | Hyprland compositor (cross-monitor window jumping, slots `1–10`/`F1–F4`, `windowswitcher.sh`), Hyprlock, Hyprpaper, Powermenu & Askpass — [README](hypr/README.md) | `~/.config/hypr` |
-| **[`wallpaper/`](wallpaper/)** | Multi-monitor wallpaper manager for `hyprpaper` with Fuzzel TUI (`SUPER + SHIFT + W`) & CLI (`wallpaper`) — [README](wallpaper/README.md) | `~/.config/wallpaper`, `~/.local/bin/wallpaper` |
-| **`pictures/`** | Private wallpaper repository (optional, gitignored for copyright; managed via `arch-dot wallpapers`) | – |
-| **[`waybar/`](waybar/)** | Top status bar (`config.jsonc`, `style.css`, `power_menu.xml`) | `~/.config/waybar` |
-| **[`fuzzel/`](fuzzel/)** | Wayland application launcher, sudo askpass prompt & interactive picker | `~/.config/fuzzel` |
-| **[`yazi/`](yazi/)** | Terminal file manager with official `catppuccin-mocha.yazi` flavor | `~/.config/yazi` |
-| **[`gtk-3.0/`](gtk-3.0/), [`gtk-4.0/`](gtk-4.0/), [`pcmanfm/`](pcmanfm/), [`libfm/`](libfm/)** | Catppuccin Mocha GTK3/GTK4 theming & PCManFM GUI file manager settings | `~/.config/gtk-3.0`, `~/.config/gtk-4.0`, `~/.config/pcmanfm`, `~/.config/libfm` |
+| Directory / Component | Key Configuration Files | Target Symlink(s) | Documentation |
+| :--- | :--- | :--- | :--- |
+| **[`scripts/`](scripts/)** | [`scripts/adot`](scripts/adot), [`scripts/install.sh`](scripts/install.sh), [`scripts/install-links.sh`](scripts/install-links.sh), [`scripts/update-subtrees.sh`](scripts/update-subtrees.sh) | `~/.local/bin/adot`, `~/.local/bin/arch-dot`, `~/.local/bin/arch-dotfiles` | [README](scripts/README.md) · [Guide](https://arch-dotfiles.readthedocs.io/en/latest/shell/) |
+| **[`hypr/`](hypr/)** | [`hypr/hyprland.lua`](hypr/hyprland.lua), [`hypr/hyprpaper.conf`](hypr/hyprpaper.conf), [`hypr/hyprlock.conf`](hypr/hyprlock.conf), [`hypr/askpass.sh`](hypr/askpass.sh) | `~/.config/hypr` | [README](hypr/README.md) · [Docs](https://arch-dotfiles.readthedocs.io/en/latest/hyprland/) |
+| **[`waybar/`](waybar/)** | [`waybar/config.jsonc`](waybar/config.jsonc), [`waybar/style.css`](waybar/style.css), [`waybar/power_menu.xml`](waybar/power_menu.xml) | `~/.config/waybar` | [README](waybar/README.md) · [Docs](https://arch-dotfiles.readthedocs.io/en/latest/waybar/) |
+| **[`fuzzel/`](fuzzel/)** | [`fuzzel/fuzzel.ini`](fuzzel/fuzzel.ini) | `~/.config/fuzzel` | [README](fuzzel/README.md) · [Guide](https://arch-dotfiles.readthedocs.io/en/latest/hyprland/#application-launcher--power-menu) |
+| **[`wallpaper/`](wallpaper/)** | [`wallpaper/wallpaper.sh`](wallpaper/wallpaper.sh), [`wallpaper/wallpaper.conf`](wallpaper/wallpaper.conf) | `~/.config/wallpaper`, `~/.local/bin/wallpaper` | [README](wallpaper/README.md) · [Guide](https://arch-dotfiles.readthedocs.io/en/latest/hyprland/#wallpaper-management-hyprpaper) |
+| **[`ghostty/`](ghostty/)** | [`ghostty/config`](ghostty/config) *(Git Subtree: `MichaelWeissDEV/ghostty-config`)* | `~/.config/ghostty` | [README](ghostty/README.md) · [Docs](https://ghostty-config.readthedocs.io/en/latest/) |
+| **[`kitty/`](kitty/)** | [`kitty/kitty.conf`](kitty/kitty.conf) *(Git Subtree: `MichaelWeissDEV/kittiy-config`)* | `~/.config/kitty` | [README](kitty/README.md) · [Docs](https://kitty-config.readthedocs.io/en/latest/) |
+| **[`foot/`](foot/)** | [`foot/foot.ini`](foot/foot.ini) | `~/.config/foot` | [README](foot/README.md) · [Guide](https://arch-dotfiles.readthedocs.io/en/latest/terminals/) |
+| **[`nvim/`](nvim/)** | [`nvim/init.lua`](nvim/init.lua), [`nvim/lua/`](nvim/lua/) *(Git Subtree: `MichaelWeissDEV/nvim-config`)* | `~/.config/nvim` | [README](nvim/README.md) · [Docs](https://nvim-config.readthedocs.io/en/latest/) |
+| **[`tmux/`](tmux/)** | [`tmux/tmux.conf`](tmux/tmux.conf) *(Git Subtree: `MichaelWeissDEV/tmux-config`)* | `~/.config/tmux`, `~/.tmux.conf` | [README](tmux/README.md) · [Docs](https://tmux-config.readthedocs.io/en/latest/) |
+| **[`vim/`](vim/)** | [`vim/vimrc`](vim/vimrc) *(Git Subtree: `MichaelWeissDEV/vim-config`)* | `~/.config/vim`, `~/.vimrc` | [README](vim/README.md) · [Docs](https://vim-config.readthedocs.io/en/latest/) |
+| **[`zsh/`](zsh/)** | [`zsh/zshrc`](zsh/zshrc), [`zsh/aliases.zsh`](zsh/aliases.zsh), [`zsh/themes/catppuccin.zsh-theme`](zsh/themes/catppuccin.zsh-theme) | `~/.config/zsh`, `~/.zshrc`, `~/.oh-my-zsh/...` | [README](zsh/README.md) · [Docs](https://arch-dotfiles.readthedocs.io/en/latest/shell/) |
+| **[`yazi/`](yazi/)** | [`yazi/yazi.toml`](yazi/yazi.toml), [`yazi/theme.toml`](yazi/theme.toml), [`yazi/package.toml`](yazi/package.toml) | `~/.config/yazi` | [README](yazi/README.md) · [Guide](https://arch-dotfiles.readthedocs.io/en/latest/shell/#yazi-directory-tracking-wrapper-y) |
+| **`pictures/`** | Private wallpaper library (gitignored for copyright) | Managed via `adot wallpapers` | [Guide](wallpaper/README.md) |
+| **[`gtk-3.0/`](gtk-3.0/), [`gtk-4.0/`](gtk-4.0/), [`pcmanfm/`](pcmanfm/), [`libfm/`](libfm/)** | GTK3/GTK4 settings and PCManFM GUI file manager configuration | `~/.config/gtk-3.0`, `~/.config/gtk-4.0`, `~/.config/pcmanfm`, `~/.config/libfm` | [Guide](https://arch-dotfiles.readthedocs.io/en/latest/installation/#symlink-target-map) |
 
 ---
 

@@ -10,10 +10,12 @@ Arch Linux · Linux · macOS · Hyprland · Zsh · tmux · Neovim
 [![Dotfiles Hub](https://img.shields.io/badge/ecosystem-arch--dotfiles-1793D1?logo=arch-linux&logoColor=white)](https://arch-dotfiles.readthedocs.io/en/latest/)
 [![Theme: Catppuccin Mocha](https://img.shields.io/badge/theme-Catppuccin%20Mocha-cba6f7)](https://github.com/catppuccin/catppuccin)
 [![Platform: Linux | macOS](https://img.shields.io/badge/platform-Arch%20Linux%20%7C%20Linux%20%7C%20macOS-89b4fa)](https://ghostty.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 [**Documentation**](https://ghostty-config.readthedocs.io/en/latest/) ·
 [Installation](https://ghostty-config.readthedocs.io/en/latest/installation/) ·
-[Configuration](https://ghostty-config.readthedocs.io/en/latest/configuration/) ·
+[Configuration Guide](https://ghostty-config.readthedocs.io/en/latest/configuration/) ·
+[Configuration File (`config`)](config) ·
 [Keybindings](https://ghostty-config.readthedocs.io/en/latest/keybindings/) ·
 [FAQ](https://ghostty-config.readthedocs.io/en/latest/faq/) ·
 [Arch Dotfiles Hub](https://arch-dotfiles.readthedocs.io/en/latest/)
@@ -24,7 +26,7 @@ Arch Linux · Linux · macOS · Hyprland · Zsh · tmux · Neovim
 
 ## Overview
 
-A clean, distraction-free **Ghostty** configuration styled in the official **Catppuccin Mocha (Pastel Theme)** palette. Built primarily for **Arch Linux** (with Hyprland, Zsh, tmux, and Neovim), it is completely self-contained and works out-of-the-box on **any Linux distribution or macOS** with minimal or zero adjustments.
+A clean, distraction-free **Ghostty** configuration ([`config`](config)) styled in the official **Catppuccin Mocha (Pastel Theme)** palette. Built primarily for **Arch Linux** (with Hyprland, Zsh, tmux, and Neovim), it is completely self-contained and works out-of-the-box on **any Linux distribution or macOS** with minimal or zero adjustments.
 
 ## Features
 
@@ -50,7 +52,7 @@ Full reference: [Ghostty Keybindings Documentation](https://ghostty-config.readt
 | `Ctrl + =` / `Ctrl + -` / `Ctrl + 0` | Increase / decrease / reset font size (`10.5pt`) |
 | `Ctrl + Shift + D` / `Ctrl + Shift + R` | Split pane horizontally (down) / vertically (right) |
 | `Ctrl + Shift + T` / `Ctrl + Shift + W` | New tab / Close active surface or tab |
-| `Ctrl + Shift + ,` *(or `Cmd + ,` on macOS)* | Live-reload `~/.config/ghostty/config` |
+| `Ctrl + Shift + ,` *(or `Cmd + ,` on macOS)* | Live-reload `~/.config/ghostty/config` ([`config`](config)) |
 | `F11` | Toggle fullscreen |
 
 ---

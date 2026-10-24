@@ -1,5 +1,11 @@
 # kitty-config
 
+[![Docs](https://readthedocs.org/projects/kitty-config/badge/?version=latest)](https://kitty-config.readthedocs.io/en/latest/)
+[![Dotfiles Hub](https://img.shields.io/badge/ecosystem-arch--dotfiles-1793D1?logo=arch-linux&logoColor=white)](https://arch-dotfiles.readthedocs.io/en/latest/)
+[![Theme: Catppuccin Mocha](https://img.shields.io/badge/theme-Catppuccin%20Mocha-cba6f7)](https://github.com/catppuccin/catppuccin)
+[![Platform: Linux | macOS](https://img.shields.io/badge/platform-Arch%20Linux%20%7C%20Linux%20%7C%20macOS-89b4fa)](https://sw.kovidgoyal.net/kitty/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/MichaelWeissDEV/kittiy-config/blob/main/LICENSE)
+
 A clean, GPU-accelerated **Kitty** terminal configuration styled in the official **Catppuccin Mocha** palette with balanced transparency, JetBrainsMono Nerd Font typography, and Powerline tab styling.
 
 :::{note}

@@ -1,5 +1,18 @@
 # Installation & Setup Guide
 
+[![Docs](https://readthedocs.org/projects/arch-dotfiles/badge/?version=latest)](https://arch-dotfiles.readthedocs.io/en/latest/)
+[![Platform: Arch Linux](https://img.shields.io/badge/platform-Arch%20Linux%20%7C%20Linux%20%7C%20macOS-1793D1?logo=arch-linux&logoColor=white)](https://archlinux.org/)
+[![Theme: Catppuccin Mocha](https://img.shields.io/badge/theme-Catppuccin%20Mocha-cba6f7)](https://github.com/catppuccin/catppuccin)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/MichaelWeissDEV/dotfiles/blob/main/LICENSE)
+
+[**Documentation Hub**](index.md) ·
+[Installation](installation.md) ·
+[Hyprland Desktop](hyprland.md) ·
+[Waybar Panel](waybar.md) ·
+[Terminals](terminals.md) ·
+[Shell & CLI](shell.md) ·
+[Git Subtrees](subtrees.md)
+
 This guide describes how to install, link, and maintain the full dotfiles ecosystem on **Arch Linux**, as well as how to adapt it to **other Linux distributions or macOS**.
 
 ---
@@ -57,21 +70,21 @@ All configuration files live inside `~/git/dotfiles` and are linked into `~/.con
 
 | Source Directory / File | Target Path | Purpose |
 | :--- | :--- | :--- |
-| `scripts/adot` | `~/.local/bin/adot`, `~/.local/bin/arch-dot`, `~/.local/bin/arch-dotfiles` | Unified Dotfiles & Ecosystem CLI program |
-| `hypr/` | `~/.config/hypr` | Hyprland compositor (`hyprland.lua`), `hyprpaper`, `hyprlock`, helper scripts |
-| `waybar/` | `~/.config/waybar` | Top status bar & GTK power menu config |
-| `fuzzel/` | `~/.config/fuzzel` | Application launcher, sudo askpass & dmenu picker |
-| `wallpaper/` | `~/.config/wallpaper` | Multi-monitor wallpaper switcher config & script |
+| `scripts/adot` | `~/.local/bin/adot`, `~/.local/bin/arch-dot`, `~/.local/bin/arch-dotfiles` | Unified Dotfiles & Ecosystem CLI program ([Guide](shell.md#managing-everything-with-adot--arch-dot)) |
+| `hypr/` | `~/.config/hypr` | Hyprland compositor (`hyprland.lua`), `hyprpaper`, `hyprlock`, helper scripts ([Docs](hyprland.md)) |
+| `waybar/` | `~/.config/waybar` | Top status bar & GTK power menu config ([Docs](waybar.md)) |
+| `fuzzel/` | `~/.config/fuzzel` | Application launcher, sudo askpass & dmenu picker ([Guide](hyprland.md#application-launcher--power-menu)) |
+| `wallpaper/` | `~/.config/wallpaper` | Multi-monitor wallpaper switcher config & script ([Guide](hyprland.md#wallpaper-management-hyprpaper)) |
 | `wallpaper/wallpaper.sh` | `~/.local/bin/wallpaper` | Wallpaper CLI & Fuzzel TUI executable |
 | `ghostty/` | `~/.config/ghostty` | Ghostty terminal configuration ([Docs](https://ghostty-config.readthedocs.io/en/latest/)) |
 | `kitty/` | `~/.config/kitty` | Kitty terminal configuration ([Docs](https://kitty-config.readthedocs.io/en/latest/)) |
-| `foot/` | `~/.config/foot` | Foot Wayland terminal configuration |
+| `foot/` | `~/.config/foot` | Foot Wayland terminal configuration ([Docs](terminals.md#3-foot-configfootfootini)) |
 | `nvim/` | `~/.config/nvim` | Neovim IDE configuration ([Docs](https://nvim-config.readthedocs.io/en/latest/)) |
 | `vim/` | `~/.config/vim` | Vim configuration directory ([Docs](https://vim-config.readthedocs.io/en/latest/)) |
 | `vim/vimrc` | `~/.vimrc` | Primary Vim configuration file |
 | `tmux/` | `~/.config/tmux` | tmux configuration directory ([Docs](https://tmux-config.readthedocs.io/en/latest/)) |
 | `tmux/tmux.conf` | `~/.tmux.conf` | Primary tmux configuration loader |
-| `zsh/` | `~/.config/zsh` | Zsh configuration & `aliases.zsh` |
+| `zsh/` | `~/.config/zsh` | Zsh configuration & `aliases.zsh` ([Docs](shell.md)) |
 | `zsh/zshrc` | `~/.zshrc` | Primary Zsh startup file |
 | `zsh/themes/catppuccin.zsh-theme` | `~/.oh-my-zsh/custom/themes/catppuccin.zsh-theme` | Oh My Zsh Catppuccin Mocha theme |
 | `yazi/` | `~/.config/yazi` | Yazi TUI file manager & `catppuccin-mocha.yazi` flavor |
@@ -115,3 +128,16 @@ Once installed, the unified **`adot`** CLI program (also linked as **`arch-dot`*
 | **`adot packages`** | – | Install or update required Arch Linux packages via `pacman` |
 | **`adot wallpapers [URL\|--update]`** | `cfg-wallpapers` | Clone or update the private wallpaper repository in `~/git/dotfiles/pictures` |
 | **`adot help`** | – | Display CLI usage overview |
+
+---
+
+## Connected Dotfiles Ecosystem
+
+| Component | Repository | Documentation |
+| :--- | :--- | :--- |
+| **Arch Dotfiles Hub** *(Main System)* | [MichaelWeissDEV/dotfiles](https://github.com/MichaelWeissDEV/dotfiles) | [arch-dotfiles.readthedocs.io](https://arch-dotfiles.readthedocs.io/en/latest/) |
+| **Neovim (`nvim-config`)** | [MichaelWeissDEV/nvim-config](https://github.com/MichaelWeissDEV/nvim-config) | [nvim-config.readthedocs.io](https://nvim-config.readthedocs.io/en/latest/) |
+| **tmux (`tmux-config`)** | [MichaelWeissDEV/tmux-config](https://github.com/MichaelWeissDEV/tmux-config) | [tmux-config.readthedocs.io](https://tmux-config.readthedocs.io/en/latest/) |
+| **Ghostty (`ghostty-config`)** | [MichaelWeissDEV/ghostty-config](https://github.com/MichaelWeissDEV/ghostty-config) | [ghostty-config.readthedocs.io](https://ghostty-config.readthedocs.io/en/latest/) |
+| **Kitty (`kitty-config`)** | [MichaelWeissDEV/kittiy-config](https://github.com/MichaelWeissDEV/kittiy-config) | [kitty-config.readthedocs.io](https://kitty-config.readthedocs.io/en/latest/) |
+| **Vim (`vim-config`)** | [MichaelWeissDEV/vim-config](https://github.com/MichaelWeissDEV/vim-config) | [vim-config.readthedocs.io](https://vim-config.readthedocs.io/en/latest/) |

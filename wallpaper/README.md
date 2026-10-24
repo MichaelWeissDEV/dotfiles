@@ -6,13 +6,18 @@
 
 Global Default · Per-Monitor Overrides · Automatic Hot-Plug Restore · XDG State Cleanliness
 
-[![Dotfiles Hub](https://img.shields.io/badge/ecosystem-arch--dotfiles-1793D1?logo=arch-linux&logoColor=white)](https://arch-dotfiles.readthedocs.io/en/latest/)
+[![Docs](https://readthedocs.org/projects/arch-dotfiles/badge/?version=latest)](https://arch-dotfiles.readthedocs.io/en/latest/)
 [![Hyprland Guide](https://img.shields.io/badge/docs-Hyprland%20%26%20Wallpapers-89b4fa)](https://arch-dotfiles.readthedocs.io/en/latest/hyprland/#wallpaper-management-hyprpaper)
+[![Dotfiles Hub](https://img.shields.io/badge/ecosystem-arch--dotfiles-1793D1?logo=arch-linux&logoColor=white)](https://arch-dotfiles.readthedocs.io/en/latest/)
 [![Theme: Catppuccin Mocha](https://img.shields.io/badge/theme-Catppuccin%20Mocha-cba6f7)](https://github.com/catppuccin/catppuccin)
+[![Platform: Arch Linux](https://img.shields.io/badge/platform-Arch%20Linux%20%7C%20Wayland-1793D1?logo=arch-linux&logoColor=white)](https://archlinux.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](../LICENSE)
 
 [**Ecosystem Documentation**](https://arch-dotfiles.readthedocs.io/en/latest/) ·
-[Hyprland & Wallpaper Guide](https://arch-dotfiles.readthedocs.io/en/latest/hyprland/) ·
-[Installation Guide](https://arch-dotfiles.readthedocs.io/en/latest/installation/)
+[Hyprland & Wallpaper Guide](https://arch-dotfiles.readthedocs.io/en/latest/hyprland/#wallpaper-management-hyprpaper) ·
+[Installation Guide](https://arch-dotfiles.readthedocs.io/en/latest/installation/) ·
+[Configuration (`wallpaper.conf`)](wallpaper.conf) ·
+[Executable (`wallpaper.sh`)](wallpaper.sh)
 
 </div>
 
@@ -20,9 +25,9 @@ Global Default · Per-Monitor Overrides · Automatic Hot-Plug Restore · XDG Sta
 
 ## Overview
 
-`wallpaper` (`~/.config/wallpaper/wallpaper.sh`, linked to `~/.local/bin/wallpaper`) manages desktop backgrounds under Hyprland via **hyprpaper** — supporting both a **global default for all screens** and **independent per-monitor overrides** (e.g., for secondary or tertiary displays).
+`wallpaper` ([`wallpaper.sh`](wallpaper.sh), linked to `~/.local/bin/wallpaper`) manages desktop backgrounds under Hyprland via **hyprpaper** — supporting both a **global default for all screens** and **independent per-monitor overrides** (e.g., for secondary or tertiary displays).
 
-Wallpapers are loaded from the private library at `~/git/dotfiles/pictures` (and any additional directories configured in `~/.config/wallpaper/wallpaper.conf`). Because `pictures/` is excluded from the public repository via `.gitignore` for copyright reasons, it is managed as a standalone private Git repository via `adot wallpapers` (or `arch-dot wallpapers`). Subdirectories are scanned recursively.
+Wallpapers are loaded from the private library at `~/git/dotfiles/pictures` (and any additional directories configured in [`wallpaper.conf`](wallpaper.conf)). Because `pictures/` is excluded from the public repository via `.gitignore` for copyright reasons, it is managed as a standalone private Git repository via `adot wallpapers` (or `arch-dot wallpapers`). Subdirectories are scanned recursively.
 
 While built for the **Arch Linux + Hyprland** dotfiles setup, `wallpaper` works on any Linux distribution running Hyprland, `hyprpaper`, `jq`, and `fuzzel`.
 
@@ -153,8 +158,8 @@ Supported formats: `PNG`, `JPG/JPEG`, `WebP`, `GIF`, `BMP`, `AVIF`, `JXL`, `TIF/
 | :--- | :--- |
 | `~/git/dotfiles/pictures` | Private wallpaper repository (gitignored) |
 | `~/git/dotfiles/scripts/install-wallpapers.sh` | Helper script invoked by `adot wallpapers` / `adot update wallpapers` |
-| `~/.config/wallpaper/wallpaper.conf` | Search directories, fit mode (`cover\|contain\|tile\|fill`), notification toggle |
-| `~/.config/wallpaper/wallpaper.sh` | Main CLI & TUI executable (symlinked to `~/.local/bin/wallpaper`, alias `wp`) |
+| [`wallpaper.conf`](wallpaper.conf) (`~/.config/wallpaper/wallpaper.conf`) | Search directories, fit mode (`cover\|contain\|tile\|fill`), notification toggle |
+| [`wallpaper.sh`](wallpaper.sh) (`~/.config/wallpaper/wallpaper.sh`) | Main CLI & TUI executable (symlinked to `~/.local/bin/wallpaper`, alias `wp`) |
 | `~/.local/state/wallpaper/state` | Persistent default & per-monitor overrides (kept outside the Git repo) |
 | `~/.config/hypr/hyprpaper.conf` | Base `hyprpaper` daemon config (`splash = false`) |
 
