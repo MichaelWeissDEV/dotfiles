@@ -5,7 +5,7 @@
 #   - nvim    -> https://github.com/MichaelWeissDEV/nvim-config.git
 #   - tmux    -> https://github.com/MichaelWeissDEV/tmux-config.git
 #   - ghostty -> https://github.com/MichaelWeissDEV/ghostty-config.git
-#   - kitty   -> https://github.com/MichaelWeissDEV/kittiy-config.git
+#   - kitty   -> https://github.com/MichaelWeissDEV/kitty-config.git
 #   - foot    -> https://github.com/MichaelWeissDEV/foot-config.git
 #   - vim     -> https://github.com/MichaelWeissDEV/vim-config.git
 # ============================================================================
@@ -55,7 +55,7 @@ get_remote_url() {
         nvim)    echo "https://github.com/MichaelWeissDEV/nvim-config.git" ;;
         tmux)    echo "https://github.com/MichaelWeissDEV/tmux-config.git" ;;
         ghostty) echo "https://github.com/MichaelWeissDEV/ghostty-config.git" ;;
-        kitty)   echo "https://github.com/MichaelWeissDEV/kittiy-config.git" ;;
+        kitty)   echo "https://github.com/MichaelWeissDEV/kitty-config.git" ;;
         foot)    echo "https://github.com/MichaelWeissDEV/foot-config.git" ;;
         vim)     echo "https://github.com/MichaelWeissDEV/vim-config.git" ;;
         *)       return 1 ;;
@@ -225,7 +225,7 @@ Befehle:
   nvim                Nur den nvim-Subtree (MichaelWeissDEV/nvim-config) pullen
   tmux                Nur den tmux-Subtree (MichaelWeissDEV/tmux-config) pullen
   ghostty             Nur den ghostty-Subtree (MichaelWeissDEV/ghostty-config) pullen
-  kitty               Nur den kitty-Subtree (MichaelWeissDEV/kittiy-config) pullen
+  kitty               Nur den kitty-Subtree (MichaelWeissDEV/kitty-config) pullen
   foot                Nur den foot-Subtree (MichaelWeissDEV/foot-config) pullen
   vim                 Nur den vim-Subtree (MichaelWeissDEV/vim-config) pullen
   push [ziel]         Lokale Subtree-Commits nach Upstream pushen (nvim, tmux, ghostty, kitty, foot, vim oder all)

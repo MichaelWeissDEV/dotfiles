@@ -133,7 +133,7 @@ get_module_desc() {
         gtk-3.0)   echo "Catppuccin Mocha GTK3 theme & dark mode settings" ;;
         gtk-4.0)   echo "Catppuccin Mocha GTK4 theme & dark mode settings" ;;
         hypr)      echo "Hyprland compositor, slots 1..10/F1..F4, hyprlock & powermenu" ;;
-        kitty)     echo "GPU terminal with Powerline tabs [Git Subtree: kittiy-config]" ;;
+        kitty)     echo "GPU terminal with Powerline tabs [Git Subtree: kitty-config]" ;;
         libfm)     echo "PCManFM / libfm backend configuration" ;;
         nvim)      echo "Reproducible offline-capable Neovim IDE [Git Subtree: nvim-config]" ;;
         pcmanfm)   echo "Lightweight GUI file manager configuration" ;;
@@ -152,7 +152,7 @@ get_subtree_url() {
         nvim)    echo "https://github.com/MichaelWeissDEV/nvim-config.git" ;;
         tmux)    echo "https://github.com/MichaelWeissDEV/tmux-config.git" ;;
         ghostty) echo "https://github.com/MichaelWeissDEV/ghostty-config.git" ;;
-        kitty)   echo "https://github.com/MichaelWeissDEV/kittiy-config.git" ;;
+        kitty)   echo "https://github.com/MichaelWeissDEV/kitty-config.git" ;;
         foot)    echo "https://github.com/MichaelWeissDEV/foot-config.git" ;;
         vim)     echo "https://github.com/MichaelWeissDEV/vim-config.git" ;;
     esac
@@ -613,7 +613,7 @@ list_docs() {
     printf "  %-18s %-48s %s\n" "nvim-config"    "https://nvim-config.readthedocs.io/en/latest/"    "https://github.com/MichaelWeissDEV/nvim-config"
     printf "  %-18s %-48s %s\n" "tmux-config"    "https://tmux-config.readthedocs.io/en/latest/"    "https://github.com/MichaelWeissDEV/tmux-config"
     printf "  %-18s %-48s %s\n" "ghostty-config" "https://ghostty-config.readthedocs.io/en/latest/" "https://github.com/MichaelWeissDEV/ghostty-config"
-    printf "  %-18s %-48s %s\n" "kitty-config"   "https://kitty-config.readthedocs.io/en/latest/"   "https://github.com/MichaelWeissDEV/kittiy-config"
+    printf "  %-18s %-48s %s\n" "kitty-config"   "https://kitty-config.readthedocs.io/en/latest/"   "https://github.com/MichaelWeissDEV/kitty-config"
     printf "  %-18s %-48s %s\n" "vim-config"     "https://vim-config.readthedocs.io/en/latest/"     "https://github.com/MichaelWeissDEV/vim-config"
     echo ""
 }
