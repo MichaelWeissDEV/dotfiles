@@ -67,8 +67,8 @@ get_branch() {
 }
 
 ensure_remotes() {
+    local mod remote_name remote_url
     for mod in "${SUBTREE_MODULES[@]}"; do
-        local remote_name remote_url
         remote_name="$(get_remote_name "$mod")"
         remote_url="$(get_remote_url "$mod")"
 
@@ -101,8 +101,8 @@ remote_has_branch() {
 setup_subtrees() {
     ensure_remotes
 
+    local mod remote_name branch
     for mod in "${SUBTREE_MODULES[@]}"; do
-        local remote_name branch
         remote_name="$(get_remote_name "$mod")"
         branch="$(get_branch "$mod")"
 
@@ -139,6 +139,16 @@ pull_one() {
 
     info "Hole neueste Commits von $remote_name ($remote_url)..."
     git -C "$DOTFILES_DIR" fetch "$remote_name" "$branch"
+
+    local remote_sha local_split_sha
+    remote_sha="$(git -C "$DOTFILES_DIR" rev-parse "$remote_name/$branch")"
+    local_split_sha="$(git -C "$DOTFILES_DIR" subtree split --prefix="$mod" HEAD 2>/dev/null || true)"
+
+    if [[ -n "$local_split_sha" ]] && git -C "$DOTFILES_DIR" merge-base --is-ancestor "$remote_sha" "$local_split_sha" 2>/dev/null; then
+        ok "Subtree '$mod' ist bereits auf dem neuesten Stand (enthält $remote_name/$branch @ ${remote_sha:0:7})."
+        return 0
+    fi
+
     info "Aktualisiere Git-Subtree '$mod'..."
     git -C "$DOTFILES_DIR" subtree pull --prefix="$mod" "$remote_name" "$branch" --squash \
         -m "Update $mod subtree from upstream"
@@ -161,6 +171,7 @@ push_one() {
 
 push_subtree() {
     local target="${1:-all}"
+    local mod
     case "$target" in
         nvim|tmux|ghostty|kitty|foot|vim)
             push_one "$target"
@@ -181,8 +192,8 @@ show_status() {
     ensure_remotes
     printf "\n%-10s %-16s %-54s %-10s\n" "PFAD" "REMOTE" "GITHUB-URL" "UPSTREAM"
     printf "%-10s %-16s %-54s %-10s\n" "----------" "----------------" "------------------------------------------------------" "----------"
+    local mod remote_name remote_url branch state
     for mod in "${SUBTREE_MODULES[@]}"; do
-        local remote_name remote_url branch state
         remote_name="$(get_remote_name "$mod")"
         remote_url="$(get_remote_url "$mod")"
         branch="$(get_branch "$mod")"
@@ -217,6 +228,7 @@ EOF
 
 main() {
     local cmd="${1:-all}"
+    local mod
     case "$cmd" in
         all|pull|update)
             for mod in "${SUBTREE_MODULES[@]}"; do

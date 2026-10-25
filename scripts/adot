@@ -342,26 +342,63 @@ setup_system() {
 # ============================================================================
 # 6. UNIFIED UPDATE ENGINE (Everything or Granular Component)
 # ============================================================================
+pull_dotfiles_repo() {
+    if ! git -C "$DOTFILES_DIR" remote get-url origin >/dev/null 2>&1; then
+        return 0
+    fi
+
+    if [[ -f "$DOTFILES_DIR/.git/MERGE_HEAD" ]]; then
+        error "An unfinished Git merge is active in $DOTFILES_DIR!"
+        warn "Run 'git -C $DOTFILES_DIR merge --abort' (or resolve conflicts) before updating."
+        return 1
+    fi
+
+    if [[ -n "$(git -C "$DOTFILES_DIR" status --porcelain)" ]]; then
+        warn "Working tree in $DOTFILES_DIR has uncommitted changes – skipping 'git pull'."
+        return 1
+    fi
+
+    local branch
+    branch="$(git -C "$DOTFILES_DIR" rev-parse --abbrev-ref HEAD 2>/dev/null || echo "main")"
+    info "Fetching and updating $DOTFILES_DIR (origin/$branch)..."
+    git -C "$DOTFILES_DIR" fetch origin "$branch"
+
+    local local_sha remote_sha
+    local_sha="$(git -C "$DOTFILES_DIR" rev-parse HEAD)"
+    remote_sha="$(git -C "$DOTFILES_DIR" rev-parse "origin/$branch")"
+
+    if [[ "$local_sha" == "$remote_sha" ]]; then
+        ok "Main dotfiles repository is already up to date (${local_sha:0:7})."
+    elif git -C "$DOTFILES_DIR" merge-base --is-ancestor "$local_sha" "$remote_sha" 2>/dev/null; then
+        git -C "$DOTFILES_DIR" merge --ff-only "origin/$branch"
+        ok "Main dotfiles repository updated (${local_sha:0:7} -> ${remote_sha:0:7})."
+    elif git -C "$DOTFILES_DIR" merge-base --is-ancestor "$remote_sha" "$local_sha" 2>/dev/null; then
+        ok "Main dotfiles repository is ahead of origin/$branch (${local_sha:0:7} vs ${remote_sha:0:7} — run 'adot push' to publish)."
+    else
+        warn "Local branch '$branch' and 'origin/$branch' have diverged – manual merge/rebase required."
+        return 1
+    fi
+}
+
 update_target() {
     local target="${1:-all}"
     case "$target" in
         all)
-            section "1/6 Arch Linux System Packages (pacman)"
-            if command -v pacman >/dev/null 2>&1; then
-                sudo pacman -Syu --needed "${PACMAN_PACKAGES[@]}"
-            else
-                warn "pacman not found – skipping system package update."
+            section "1/6 Central Dotfiles Repository ($DOTFILES_DIR)"
+            local before_adot_hash after_adot_hash
+            before_adot_hash="$(sha256sum "$SCRIPTS_DIR/adot" 2>/dev/null | awk '{print $1}' || true)"
+            pull_dotfiles_repo || warn "Dotfiles repository pull skipped."
+            after_adot_hash="$(sha256sum "$SCRIPTS_DIR/adot" 2>/dev/null | awk '{print $1}' || true)"
+
+            if [[ -n "$before_adot_hash" && -n "$after_adot_hash" && "$before_adot_hash" != "$after_adot_hash" && "${ADOT_REEXEC:-0}" != "1" ]]; then
+                info "adot CLI was updated from remote – re-executing updated version..."
+                ADOT_REEXEC=1 exec "$SCRIPTS_DIR/adot" update "$@"
             fi
 
-            section "2/6 Central Dotfiles Repository ($DOTFILES_DIR)"
-            if git -C "$DOTFILES_DIR" remote get-url origin >/dev/null 2>&1; then
-                git -C "$DOTFILES_DIR" pull --ff-only origin main || warn "Dotfiles git pull skipped (local changes or unmerged commits)."
-            fi
-
-            section "3/6 Embedded Git Subtrees (${SUBTREE_MODULES[*]})"
+            section "2/6 Embedded Git Subtrees (${SUBTREE_MODULES[*]})"
             update_subtrees all || warn "Subtree update skipped."
 
-            section "4/6 Private Wallpaper Repository (pictures/)"
+            section "3/6 Private Wallpaper Repository (pictures/)"
             if [[ -d "$DOTFILES_DIR/pictures/.git" ]]; then
                 git -C "$DOTFILES_DIR/pictures" pull --ff-only || warn "Wallpaper repository pull skipped."
                 ok "Private wallpaper repository updated."
@@ -369,14 +406,26 @@ update_target() {
                 info "No private wallpaper git repo in pictures/ – skipping."
             fi
 
-            section "5/6 Oh My Zsh & Shell Plugins"
+            section "4/6 Oh My Zsh & Shell Plugins"
             update_oh_my_zsh
 
-            section "6/6 Refreshing Symlinks & CLI Binaries"
+            section "5/6 Refreshing Symlinks & CLI Binaries"
             setup_links
+
+            section "6/6 Arch Linux System Packages (pacman)"
+            if [[ "${ADOT_NO_SYSTEM:-0}" == "1" ]]; then
+                info "Skipping system package update (ADOT_NO_SYSTEM=1)."
+            elif command -v pacman >/dev/null 2>&1; then
+                sudo pacman -Syu --needed "${PACMAN_PACKAGES[@]}" || warn "System package update skipped or cancelled."
+            else
+                warn "pacman not found – skipping system package update."
+            fi
 
             printf "\n"
             ok "Complete ecosystem update ('adot update') finished successfully!"
+            ;;
+        config|configs|nosystem|user)
+            ADOT_NO_SYSTEM=1 update_target all
             ;;
         nvim|tmux|ghostty|kitty|foot|vim)
             section "Updating Git Subtree: $target"
@@ -390,7 +439,7 @@ update_target() {
             ;;
         dotfiles|repo|self)
             section "Updating Dotfiles Repository ($DOTFILES_DIR)"
-            git -C "$DOTFILES_DIR" pull --ff-only origin main
+            pull_dotfiles_repo
             setup_links
             ;;
         system|packages|pkgs|pacman)
@@ -410,7 +459,7 @@ update_target() {
             ;;
         *)
             error "Unknown update target: '$target'"
-            echo "Allowed targets: all, nvim, tmux, ghostty, kitty, foot, vim, subtrees, dotfiles, system/packages, zsh/omz, wallpapers, links"
+            echo "Allowed targets: all, config, nvim, tmux, ghostty, kitty, foot, vim, subtrees, dotfiles, system/packages, zsh/omz, wallpapers, links"
             exit 1
             ;;
     esac
