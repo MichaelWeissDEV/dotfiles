@@ -33,15 +33,15 @@ This directory contains the central command-line executable **`adot`** (also sym
 | **[`adot`](adot)** | `~/.local/bin/adot`, `~/.local/bin/arch-dot`, `~/.local/bin/arch-dotfiles` | Unified CLI program managing updates, status inspection, keybinding tables, and docs |
 | **[`install.sh`](install.sh)** | `./scripts/install.sh [all\|links\|packages\|subtrees\|omz]` | Complete Arch Linux installer (packages, Oh My Zsh, subtrees, symlinks, services) |
 | **[`install-links.sh`](install-links.sh)** | `adot links` (or `cfg-links`) | Portable symlink generator (links repo configs to `~/.config`, `$HOME`, `~/.local/bin`) |
-| **[`update-subtrees.sh`](update-subtrees.sh)** | `adot update subtrees` / `adot subtrees` | Pulls, verifies, and pushes the 5 standalone Git subtrees using squash merges |
+| **[`update-subtrees.sh`](update-subtrees.sh)** | `adot update subtrees` / `adot subtrees` | Pulls, verifies, and pushes the 6 standalone Git subtrees using squash merges |
 | **[`install-wallpapers.sh`](install-wallpapers.sh)** | `adot wallpapers [URL\|--update]` | Clones or updates the private wallpaper repository in `pictures/` |
 
 ## Quick Command Reference (`adot`)
 
 ```bash
-adot update           # Full update: system packages, repo, all 5 subtrees, OMZ, symlinks
-adot update nvim      # Update only a single subtree (nvim | tmux | ghostty | kitty | vim)
-adot status [--fetch] # Live dashboard: repo, symlinks, all 5 subtrees, OMZ, pacman
+adot update           # Full update: system packages, repo, all 6 subtrees, OMZ, symlinks
+adot update nvim      # Update only a single subtree (nvim | tmux | ghostty | kitty | foot | vim)
+adot status [--fetch] # Live dashboard: repo, symlinks, all 6 subtrees, OMZ, pacman
 adot list [category]  # List managed modules, subtrees, keys, commands, scripts, packages, docs
 adot keys [section]   # Print keybinding tables (hypr | nvim | vim | tmux | terminals | shell | all)
 adot commands         # Print custom shell commands, functions (j, ji, y, ...), and aliases

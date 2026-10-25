@@ -13,7 +13,7 @@
 [Shell & CLI](shell.md) ·
 [Git Subtrees](subtrees.md)
 
-The five standalone tool configurations in this ecosystem (**Neovim**, **tmux**, **Ghostty**, **Kitty**, and **Vim**) are maintained as independent GitHub repositories with their own **Read the Docs** sites, while being embedded directly into `~/git/dotfiles` using **Git Subtrees**.
+The six standalone tool configurations in this ecosystem (**Neovim**, **tmux**, **Ghostty**, **Kitty**, **Foot**, and **Vim**) are maintained as independent GitHub repositories with dedicated documentation, while being embedded directly into `~/git/dotfiles` using **Git Subtrees**.
 
 ---
 
@@ -25,9 +25,9 @@ Traditional Git submodules frequently create friction:
 - Automated installers can fail if external submodule pointers drift.
 
 **With Git Subtrees**:
-- All files for all 5 tools live directly inside `~/git/dotfiles`. A standard `git clone` gives you 100% of the working configuration immediately.
+- All files for all 6 tools live directly inside `~/git/dotfiles`. A standard `git clone` gives you 100% of the working configuration immediately.
 - Each tool can still be cloned standalone on any Linux, macOS, or Windows machine by users who only want that single component.
-- Changes made inside `nvim/`, `tmux/`, `ghostty/`, `kitty/`, or `vim/` can be pulled from or pushed back to their respective GitHub repositories at any time using `arch-dot subtrees` and `arch-dot push`.
+- Changes made inside `nvim/`, `tmux/`, `ghostty/`, `kitty/`, `foot/`, or `vim/` can be pulled from or pushed back to their respective GitHub repositories at any time using `arch-dot subtrees` and `arch-dot push`.
 
 ---
 
@@ -39,6 +39,7 @@ Traditional Git submodules frequently create friction:
 | **`tmux/`** | `tmux-remote` | `https://github.com/MichaelWeissDEV/tmux-config.git` | `main` | [tmux-config.readthedocs.io](https://tmux-config.readthedocs.io/en/latest/) |
 | **`ghostty/`** | `ghostty-remote` | `https://github.com/MichaelWeissDEV/ghostty-config.git` | `main` | [ghostty-config.readthedocs.io](https://ghostty-config.readthedocs.io/en/latest/) |
 | **`kitty/`** | `kitty-remote` | `https://github.com/MichaelWeissDEV/kittiy-config.git` | `main` | [kitty-config.readthedocs.io](https://kitty-config.readthedocs.io/en/latest/) |
+| **`foot/`** | `foot-remote` | `https://github.com/MichaelWeissDEV/foot-config.git` | `main` | [Terminals Guide](https://arch-dotfiles.readthedocs.io/en/latest/terminals/) |
 | **`vim/`** | `vim-remote` | `https://github.com/MichaelWeissDEV/vim-config.git` | `main` | [vim-config.readthedocs.io](https://vim-config.readthedocs.io/en/latest/) |
 
 ---
@@ -54,15 +55,15 @@ adot status
 # (or only subtrees: adot list subtrees / ~/git/dotfiles/scripts/update-subtrees.sh status)
 ```
 
-Verifies that all 5 remotes are configured in your local Git repository, shows the latest local commit for each subtree, and checks all symlinks. Add `--fetch` (`adot status --fetch`) to also fetch the latest remote SHA hashes from GitHub.
+Verifies that all 6 remotes are configured in your local Git repository, shows the latest local commit for each subtree, and checks all symlinks. Add `--fetch` (`adot status --fetch`) to also fetch the latest remote SHA hashes from GitHub.
 
 ### 2. Pull Updates from Upstream
 
 ```bash
-# Update EVERYTHING (system packages + dotfiles + all 5 subtrees + plugins):
+# Update EVERYTHING (system packages + dotfiles + all 6 subtrees + plugins):
 adot update
 
-# Pull all 5 subtrees only (using squash merges):
+# Pull all 6 subtrees only (using squash merges):
 adot update subtrees
 # (or: adot subtrees / cfg-subtrees)
 
@@ -71,22 +72,24 @@ adot update nvim
 adot update tmux
 adot update ghostty
 adot update kitty
+adot update foot
 adot update vim
 ```
 
 ### 3. Push Local Changes Upstream
 
-When you edit files inside `nvim/`, `tmux/`, `ghostty/`, `kitty/`, or `vim/`, commit them to `~/git/dotfiles` first, then push the subtree commits to the standalone GitHub repository:
+When you edit files inside `nvim/`, `tmux/`, `ghostty/`, `kitty/`, `foot/`, or `vim/`, commit them to `~/git/dotfiles` first, then push the subtree commits to the standalone GitHub repository:
 
 ```bash
 # Push changes for an individual component:
 adot push ghostty
 adot push kitty
+adot push foot
 adot push vim
 adot push nvim
 adot push tmux
 
-# Push changes across all 5 components:
+# Push changes across all 6 components:
 adot push all
 ```
 
@@ -104,6 +107,7 @@ git remote add nvim-remote    https://github.com/MichaelWeissDEV/nvim-config.git
 git remote add tmux-remote    https://github.com/MichaelWeissDEV/tmux-config.git
 git remote add ghostty-remote https://github.com/MichaelWeissDEV/ghostty-config.git
 git remote add kitty-remote   https://github.com/MichaelWeissDEV/kittiy-config.git
+git remote add foot-remote    https://github.com/MichaelWeissDEV/foot-config.git
 git remote add vim-remote     https://github.com/MichaelWeissDEV/vim-config.git
 
 # 2. Fetch and pull with squash:
@@ -125,4 +129,5 @@ git subtree push --prefix=nvim nvim-remote main
 | **tmux (`tmux-config`)** | [MichaelWeissDEV/tmux-config](https://github.com/MichaelWeissDEV/tmux-config) | [tmux-config.readthedocs.io](https://tmux-config.readthedocs.io/en/latest/) |
 | **Ghostty (`ghostty-config`)** | [MichaelWeissDEV/ghostty-config](https://github.com/MichaelWeissDEV/ghostty-config) | [ghostty-config.readthedocs.io](https://ghostty-config.readthedocs.io/en/latest/) |
 | **Kitty (`kitty-config`)** | [MichaelWeissDEV/kittiy-config](https://github.com/MichaelWeissDEV/kittiy-config) | [kitty-config.readthedocs.io](https://kitty-config.readthedocs.io/en/latest/) |
+| **Foot (`foot-config`)** | [MichaelWeissDEV/foot-config](https://github.com/MichaelWeissDEV/foot-config) | [Terminals Guide](https://arch-dotfiles.readthedocs.io/en/latest/terminals/) |
 | **Vim (`vim-config`)** | [MichaelWeissDEV/vim-config](https://github.com/MichaelWeissDEV/vim-config) | [vim-config.readthedocs.io](https://vim-config.readthedocs.io/en/latest/) |

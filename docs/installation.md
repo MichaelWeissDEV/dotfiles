@@ -20,7 +20,7 @@ This guide describes how to install, link, and maintain the full dotfiles ecosys
 ## Prerequisites
 
 - **Primary Target**: Arch Linux (clean installation with `pacman` and `sudo` access).
-- **Other Systems (Debian/Ubuntu, Fedora, macOS, WSL2)**: You can deploy all symlinks and use the terminal/editor configurations (`nvim`, `tmux`, `ghostty`, `kitty`, `vim`, `zsh`, `yazi`) by running `./scripts/install-links.sh` and installing the required packages with your system's native package manager.
+- **Other Systems (Debian/Ubuntu, Fedora, macOS, WSL2)**: You can deploy all symlinks and use the terminal/editor configurations (`nvim`, `tmux`, `ghostty`, `kitty`, `foot`, `vim`, `zsh`, `yazi`) by running `./scripts/install-links.sh` and installing the required packages with your system's native package manager.
 - **Graphic Environment (Desktop)**: Intel, AMD, or NVIDIA GPU with Wayland/KMS drivers.
 - **Session**: Standard TTY login (Hyprland is launched on demand via `start-hyprland`).
 
@@ -48,7 +48,7 @@ The primary installer script `scripts/install.sh` (which also installs the `arch
 
 During execution, the script:
 1. Updates package databases and installs all required Arch Linux official packages via `pacman -Syu --needed`.
-2. Verifies and configures all 5 Git subtree remotes (`nvim-remote`, `tmux-remote`, `ghostty-remote`, `kitty-remote`, `vim-remote`).
+2. Verifies and configures all 6 Git subtree remotes (`nvim-remote`, `tmux-remote`, `ghostty-remote`, `kitty-remote`, `foot-remote`, `vim-remote`).
 3. Clones Oh My Zsh (`~/.oh-my-zsh`) and installs `zsh-autosuggestions` and `zsh-syntax-highlighting`.
 4. Creates atomic symlinks from `~/git/dotfiles/` into `~/.config/`, `$HOME` (`~/.zshrc`, `~/.tmux.conf`, `~/.vimrc`), and `~/.local/bin/` (`arch-dot`, `arch-dotfiles`, `wallpaper`).
 5. Enables and starts background services (`NetworkManager.service`, `bluetooth.service`, `power-profiles-daemon.service`) and sets `/usr/bin/zsh` as the default login shell.
@@ -78,7 +78,7 @@ All configuration files live inside `~/git/dotfiles` and are linked into `~/.con
 | `wallpaper/wallpaper.sh` | `~/.local/bin/wallpaper` | Wallpaper CLI & Fuzzel TUI executable |
 | `ghostty/` | `~/.config/ghostty` | Ghostty terminal configuration ([Docs](https://ghostty-config.readthedocs.io/en/latest/)) |
 | `kitty/` | `~/.config/kitty` | Kitty terminal configuration ([Docs](https://kitty-config.readthedocs.io/en/latest/)) |
-| `foot/` | `~/.config/foot` | Foot Wayland terminal configuration ([Docs](terminals.md#3-foot-configfootfootini)) |
+| `foot/` | `~/.config/foot` | Foot Wayland terminal configuration ([Docs](terminals.md#3-foot-configfootfootini), [Repo](https://github.com/MichaelWeissDEV/foot-config)) |
 | `nvim/` | `~/.config/nvim` | Neovim IDE configuration ([Docs](https://nvim-config.readthedocs.io/en/latest/)) |
 | `vim/` | `~/.config/vim` | Vim configuration directory ([Docs](https://vim-config.readthedocs.io/en/latest/)) |
 | `vim/vimrc` | `~/.vimrc` | Primary Vim configuration file |
@@ -113,9 +113,9 @@ Once installed, the unified **`adot`** CLI program (also linked as **`arch-dot`*
 
 | Command | Alias Equivalent | Description |
 | :--- | :--- | :--- |
-| **`adot update`** *(or `arch-dot update`)* | `cfg-update` | **Update everything**: Arch Linux `pacman` packages, `~/git/dotfiles` repo, all 5 Git subtrees (`nvim`, `tmux`, `ghostty`, `kitty`, `vim`), private wallpapers (if cloned), Oh My Zsh + plugins, and refresh all symlinks |
-| **`adot update <target>`** | – | **Granular update**: update only a single subtree (`nvim`, `tmux`, `ghostty`, `kitty`, `vim`), `subtrees` (all 5), `dotfiles`, `system` (pacman), `zsh` (Oh My Zsh), or `wallpapers` |
-| **`adot status [--fetch]`** | – | Show live dashboard of repository state, all symlinks, all 5 subtrees (with optional remote SHA fetch), Oh My Zsh, `zoxide`, and installed `pacman` packages |
+| **`adot update`** *(or `arch-dot update`)* | `cfg-update` | **Update everything**: Arch Linux `pacman` packages, `~/git/dotfiles` repo, all 6 Git subtrees (`nvim`, `tmux`, `ghostty`, `kitty`, `foot`, `vim`), private wallpapers (if cloned), Oh My Zsh + plugins, and refresh all symlinks |
+| **`adot update <target>`** | – | **Granular update**: update only a single subtree (`nvim`, `tmux`, `ghostty`, `kitty`, `foot`, `vim`), `subtrees` (all 6), `dotfiles`, `system` (pacman), `zsh` (Oh My Zsh), or `wallpapers` |
+| **`adot status [--fetch]`** | – | Show live dashboard of repository state, all symlinks, all 6 subtrees (with optional remote SHA fetch), Oh My Zsh, `zoxide`, and installed `pacman` packages |
 | **`adot list [category]`** | – | List managed `modules`, `subtrees`, `keys`, `commands`, `scripts`, `packages`, or `docs` |
 | **`adot keys [section]`** | – | Print keybinding reference tables (`hypr`, `nvim`, `vim`, `tmux`, `terminals`, `shell`, or `all`) |
 | **`adot commands`** | – | List all custom CLI commands, shell functions (`j`/`ji`, `y`, `fznv`, ...), and aliases |
@@ -123,8 +123,8 @@ Once installed, the unified **`adot`** CLI program (also linked as **`arch-dot`*
 | **`adot docs`** | – | Display all 6 Read the Docs documentation URLs and GitHub repositories |
 | **`adot install`** | – | Run complete initial system provisioning |
 | **`adot links`** | `cfg-links` | Create/refresh all symlinks in `~/.config`, `~`, and `~/.local/bin` |
-| **`adot subtrees [mod]`** | `cfg-subtrees` | Pull all 5 Git subtrees (or a single module: `nvim\|tmux\|ghostty\|kitty\|vim`) from upstream |
-| **`adot push [mod]`** | – | Push local commits from a subtree back to its upstream GitHub repository (`nvim\|tmux\|ghostty\|kitty\|vim\|all`) |
+| **`adot subtrees [mod]`** | `cfg-subtrees` | Pull all 6 Git subtrees (or a single module: `nvim\|tmux\|ghostty\|kitty\|foot\|vim`) from upstream |
+| **`adot push [mod]`** | – | Push local commits from a subtree back to its upstream GitHub repository (`nvim\|tmux\|ghostty\|kitty\|foot\|vim\|all`) |
 | **`adot packages`** | – | Install or update required Arch Linux packages via `pacman` |
 | **`adot wallpapers [URL\|--update]`** | `cfg-wallpapers` | Clone or update the private wallpaper repository in `~/git/dotfiles/pictures` |
 | **`adot help`** | – | Display CLI usage overview |

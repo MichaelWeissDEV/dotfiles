@@ -48,9 +48,9 @@ Linked from `~/git/dotfiles/scripts/adot` to `~/.local/bin/adot`, `~/.local/bin/
 
 | Command | Action |
 | :--- | :--- |
-| `adot update` *(or `arch-dot update` / `arch-dotfiles update`)* | **Full ecosystem update**: updates Arch Linux `pacman` packages, pulls `~/git/dotfiles`, pulls all 5 Git subtrees (`nvim`, `tmux`, `ghostty`, `kitty`, `vim`), updates `pictures/` wallpapers (if cloned), updates Oh My Zsh & plugins, and refreshes all symlinks |
-| `adot update <target>` | **Granular update**: update only a specific target (`nvim`, `tmux`, `ghostty`, `kitty`, `vim`, `subtrees`, `dotfiles`, `system`, `zsh`, `wallpapers`, or `links`) |
-| `adot status [--fetch]` | **Live status dashboard**: displays git branch/commit/worktree state, `~/.local/bin` binaries, all 19 config symlinks, all 5 subtrees (with optional `--fetch` for remote GitHub SHAs), Oh My Zsh, `zoxide`, and `pacman` package status |
+| `adot update` *(or `arch-dot update` / `arch-dotfiles update`)* | **Full ecosystem update**: updates Arch Linux `pacman` packages, pulls `~/git/dotfiles`, pulls all 6 Git subtrees (`nvim`, `tmux`, `ghostty`, `kitty`, `foot`, `vim`), updates `pictures/` wallpapers (if cloned), updates Oh My Zsh & plugins, and refreshes all symlinks |
+| `adot update <target>` | **Granular update**: update only a specific target (`nvim`, `tmux`, `ghostty`, `kitty`, `foot`, `vim`, `subtrees`, `dotfiles`, `system`, `zsh`, `wallpapers`, or `links`) |
+| `adot status [--fetch]` | **Live status dashboard**: displays git branch/commit/worktree state, `~/.local/bin` binaries, all 19 config symlinks, all 6 subtrees (with optional `--fetch` for remote GitHub SHAs), Oh My Zsh, `zoxide`, and `pacman` package status |
 | `adot list [category]` | **List managed items**: `all` (default), `modules`, `subtrees`, `keys`, `commands`, `scripts`, `packages`, or `docs` |
 | `adot keys [section]` | **List custom keybindings**: print keybinding tables in the terminal (`hypr`, `nvim`, `vim`, `tmux`, `terminals`, `shell`, or `all`) |
 | `adot commands` | **List custom commands & aliases**: print all custom CLI commands, shell functions (`j`/`ji`, `y`, `fznv`, `fzv`), and aliases |
@@ -58,8 +58,8 @@ Linked from `~/git/dotfiles/scripts/adot` to `~/.local/bin/adot`, `~/.local/bin/
 | `adot docs` | **List documentation links**: display all 6 Read the Docs URLs and GitHub repository links |
 | `adot install` | Full initial setup (packages, subtrees, Oh My Zsh, symlinks, systemd services, login shell) |
 | `adot links` | Create/refresh all symlinks in `~/.config`, `~`, and `~/.local/bin` (safe on any OS, no sudo needed) |
-| `adot subtrees [target]` | Pull all 5 Git subtrees (or specify `nvim`, `tmux`, `ghostty`, `kitty`, or `vim`) from upstream |
-| `adot push [target]` | Push local subtree commits back to upstream GitHub (`nvim\|tmux\|ghostty\|kitty\|vim\|all`) |
+| `adot subtrees [target]` | Pull all 6 Git subtrees (or specify `nvim`, `tmux`, `ghostty`, `kitty`, `foot`, or `vim`) from upstream |
+| `adot push [target]` | Push local subtree commits back to upstream GitHub (`nvim\|tmux\|ghostty\|kitty\|foot\|vim\|all`) |
 | `adot packages` | Install or update required Arch Linux packages via `pacman -Syu --needed` |
 | `adot wallpapers [URL\|--update]` | Clone or update the private wallpaper repository (`~/git/dotfiles/pictures`) |
 | `adot path` | Print the root path of the dotfiles repository (`~/git/dotfiles`) |

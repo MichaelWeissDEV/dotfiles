@@ -33,13 +33,13 @@ This repository (`~/git/dotfiles`) is the central configuration hub for a comple
 - **Ready for Any Arch Linux System — Adaptable Everywhere**: Every component is structured so that anyone can install the entire environment out-of-the-box on **Arch Linux** with a single command (`adot install` or `./scripts/install.sh`). Because configurations are cleanly separated into modular directories and standalone subtrees, the setup (or individual parts of it) can also be run on **other Linux distributions, macOS, or WSL2** with only minor adjustments (such as package manager names or binary paths).
 - **Clean XDG Symlink Architecture**: All configuration directories reside in `~/git/dotfiles` and are symlinked into `~/.config/<module>` (plus `~/.zshrc`, `~/.tmux.conf`, `~/.vimrc`, and CLI programs in `~/.local/bin/`). Your `~/.config` directory remains completely free of `.git` clutter and runtime state.
 - **Unified CLI Program (`adot` / `arch-dot` / `arch-dotfiles`)**: Instead of remembering individual helper scripts, everything is managed through a single CLI program (`adot`, also accessible as `arch-dot` or `arch-dotfiles` in `~/.local/bin/`). Run `adot install` for initial provisioning, `adot update` to update the entire system (or `adot update nvim` for a single subtree), `adot status` to inspect the live state of all managed modules, and `adot list` / `adot keys` / `adot commands` / `adot scripts` to view all custom keybindings, commands, and scripts directly in the terminal.
-- **Self-Contained Git Subtrees**: Core tools (`nvim`, `tmux`, `ghostty`, `kitty`, `vim`) are maintained in their own dedicated repositories with their own Read the Docs sites, but are embedded directly via **Git Subtrees** — no `--recurse-submodules` required when cloning, no detached HEAD states.
+- **Self-Contained Git Subtrees**: Core tools (`nvim`, `tmux`, `ghostty`, `kitty`, `foot`, `vim`) are maintained in their own dedicated repositories with dedicated documentation, but are embedded directly via **Git Subtrees** — no `--recurse-submodules` required when cloning, no detached HEAD states.
 
 ---
 
 ## Documentation Hub
 
-The ecosystem is documented across six interconnected **Read the Docs** sites. The main hub covers the overall system, desktop, shell, and subtree orchestration, while each standalone tool provides its own deep-dive manual:
+The ecosystem is documented across six interconnected **Read the Docs** sites. The main hub covers the overall system, desktop, shell, and subtree orchestration, while the dedicated tool repositories provide their own deep-dive manuals for Neovim, tmux, Ghostty, Kitty, and Vim:
 
 | Project | Role | GitHub Repository | Documentation (Read the Docs) |
 | :--- | :--- | :--- | :--- |
@@ -49,6 +49,8 @@ The ecosystem is documented across six interconnected **Read the Docs** sites. T
 | **`ghostty-config`** | Minimalist GPU Terminal (Ghostty) | [`MichaelWeissDEV/ghostty-config`](https://github.com/MichaelWeissDEV/ghostty-config) | [**ghostty-config.readthedocs.io**](https://ghostty-config.readthedocs.io/en/latest/) |
 | **`kitty-config`** | GPU Terminal with Powerline Tabs (Kitty) | [`MichaelWeissDEV/kittiy-config`](https://github.com/MichaelWeissDEV/kittiy-config) | [**kitty-config.readthedocs.io**](https://kitty-config.readthedocs.io/en/latest/) |
 | **`vim-config`** | Zero-Plugin Standalone Vim Configuration | [`MichaelWeissDEV/vim-config`](https://github.com/MichaelWeissDEV/vim-config) | [**vim-config.readthedocs.io**](https://vim-config.readthedocs.io/en/latest/) |
+
+The **Foot** configuration is maintained as a standalone repository ([`MichaelWeissDEV/foot-config`](https://github.com/MichaelWeissDEV/foot-config)) and documented in the [Terminals Guide](https://arch-dotfiles.readthedocs.io/en/latest/terminals/).
 
 ---
 
@@ -63,7 +65,7 @@ The ecosystem is documented across six interconnected **Read the Docs** sites. T
 | **[`wallpaper/`](wallpaper/)** | [`wallpaper/wallpaper.sh`](wallpaper/wallpaper.sh), [`wallpaper/wallpaper.conf`](wallpaper/wallpaper.conf) | `~/.config/wallpaper`, `~/.local/bin/wallpaper` | [README](wallpaper/README.md) · [Guide](https://arch-dotfiles.readthedocs.io/en/latest/hyprland/#wallpaper-management-hyprpaper) |
 | **[`ghostty/`](ghostty/)** | [`ghostty/config`](ghostty/config) *(Git Subtree: `MichaelWeissDEV/ghostty-config`)* | `~/.config/ghostty` | [README](ghostty/README.md) · [Docs](https://ghostty-config.readthedocs.io/en/latest/) |
 | **[`kitty/`](kitty/)** | [`kitty/kitty.conf`](kitty/kitty.conf) *(Git Subtree: `MichaelWeissDEV/kittiy-config`)* | `~/.config/kitty` | [README](kitty/README.md) · [Docs](https://kitty-config.readthedocs.io/en/latest/) |
-| **[`foot/`](foot/)** | [`foot/foot.ini`](foot/foot.ini) | `~/.config/foot` | [README](foot/README.md) · [Guide](https://arch-dotfiles.readthedocs.io/en/latest/terminals/) |
+| **[`foot/`](foot/)** | [`foot/foot.ini`](foot/foot.ini) *(Git Subtree: `MichaelWeissDEV/foot-config`)* | `~/.config/foot` | [README](foot/README.md) · [Docs](https://arch-dotfiles.readthedocs.io/en/latest/terminals/) |
 | **[`nvim/`](nvim/)** | [`nvim/init.lua`](nvim/init.lua), [`nvim/lua/`](nvim/lua/) *(Git Subtree: `MichaelWeissDEV/nvim-config`)* | `~/.config/nvim` | [README](nvim/README.md) · [Docs](https://nvim-config.readthedocs.io/en/latest/) |
 | **[`tmux/`](tmux/)** | [`tmux/tmux.conf`](tmux/tmux.conf) *(Git Subtree: `MichaelWeissDEV/tmux-config`)* | `~/.config/tmux`, `~/.tmux.conf` | [README](tmux/README.md) · [Docs](https://tmux-config.readthedocs.io/en/latest/) |
 | **[`vim/`](vim/)** | [`vim/vimrc`](vim/vimrc) *(Git Subtree: `MichaelWeissDEV/vim-config`)* | `~/.config/vim`, `~/.vimrc` | [README](vim/README.md) · [Docs](https://vim-config.readthedocs.io/en/latest/) |
@@ -94,7 +96,7 @@ cd ~/git/dotfiles
 ./scripts/install-links.sh
 ```
 
-> **Using on other Linux distributions or macOS:** Run `./scripts/install-links.sh` (or install individual subtrees like `nvim`, `tmux`, `ghostty`, `kitty`, `vim`) and install the equivalent packages using your native package manager (`apt`, `dnf`, `brew`, etc.).
+> **Using on other Linux distributions or macOS:** Run `./scripts/install-links.sh` (or install individual subtrees like `nvim`, `tmux`, `ghostty`, `kitty`, `foot`, `vim`) and install the equivalent packages using your native package manager (`apt`, `dnf`, `brew`, etc.).
 
 ---
 
@@ -105,9 +107,9 @@ The installer links the unified CLI program **`adot`** (along with **`arch-dot`*
 ```bash
 # ── 1. INSTALL & UPDATE ───────────────────────────────────────────────────────
 adot install                 # Complete Arch Linux setup (pacman, subtrees, Oh My Zsh, symlinks, services)
-adot update                  # Update EVERYTHING (pacman, dotfiles, all 5 subtrees, wallpapers, OMZ, symlinks)
-adot update nvim             # Update only a single Git subtree (nvim | tmux | ghostty | kitty | vim)
-adot update subtrees         # Update all 5 Git subtrees from upstream
+adot update                  # Update EVERYTHING (pacman, dotfiles, all 6 subtrees, wallpapers, OMZ, symlinks)
+adot update nvim             # Update only a single Git subtree (nvim | tmux | ghostty | kitty | foot | vim)
+adot update subtrees         # Update all 6 Git subtrees from upstream
 adot update dotfiles         # Pull only the main ~/git/dotfiles repository
 adot update system           # Update only Arch Linux pacman packages
 adot update zsh              # Update only Oh My Zsh & Zsh plugins
@@ -120,7 +122,7 @@ adot status                  # Live dashboard: repo state, symlinks, subtree com
 adot status --fetch          # Same as above, plus fetch latest upstream SHA hashes from GitHub
 adot list                    # Full overview of modules, subtrees, scripts, commands & documentation URLs
 adot list modules            # List all 16 managed ~/.config modules and symlink targets
-adot list subtrees           # List all 5 embedded Git subtrees, remote names & upstream URLs
+adot list subtrees           # List all 6 embedded Git subtrees, remote names & upstream URLs
 adot list packages           # List all 43 managed Arch Linux packages and installed versions
 adot list docs               # List all 6 Read the Docs URLs and GitHub repositories
 
@@ -131,7 +133,7 @@ adot commands                # List all custom CLI commands, shell functions (j/
 adot scripts                 # List all CLI binaries in ~/.local/bin and helper scripts in ~/git/dotfiles
 
 # ── 4. SUBTREE PUSH & WALLPAPERS ──────────────────────────────────────────────
-adot push nvim               # Push local subtree commits to upstream GitHub (nvim|tmux|ghostty|kitty|vim|all)
+adot push nvim               # Push local subtree commits to upstream GitHub (nvim|tmux|ghostty|kitty|foot|vim|all)
 adot wallpapers <git-url>    # Clone private wallpaper repository into ~/git/dotfiles/pictures
 adot wallpapers --update     # Pull latest changes in private wallpaper repository
 ```
@@ -146,8 +148,8 @@ adot wallpapers --update     # Pull latest changes in private wallpaper reposito
 
 | Command / Alias | Action |
 | :--- | :--- |
-| **`adot update`** / **`arch-dot update`** / **`arch-dotfiles update`** | Update everything (`all`) or a specific target (`nvim`, `tmux`, `ghostty`, `kitty`, `vim`, `subtrees`, `dotfiles`, `system`, `zsh`, `wallpapers`) |
-| **`adot status [--fetch]`** | Show live status dashboard of repo, symlinks, all 5 subtrees, Oh My Zsh, `zoxide` & Arch packages |
+| **`adot update`** / **`arch-dot update`** / **`arch-dotfiles update`** | Update everything (`all`) or a specific target (`nvim`, `tmux`, `ghostty`, `kitty`, `foot`, `vim`, `subtrees`, `dotfiles`, `system`, `zsh`, `wallpapers`) |
+| **`adot status [--fetch]`** | Show live status dashboard of repo, symlinks, all 6 subtrees, Oh My Zsh, `zoxide` & Arch packages |
 | **`adot list [category]`** | List `modules`, `subtrees`, `keys`, `commands`, `scripts`, `packages`, or `docs` |
 | **`adot keys [section]`** | Print keybinding tables in terminal (`hypr`, `nvim`, `vim`, `tmux`, `terminals`, `shell`, or `all`) |
 | **`adot commands`** / **`adot scripts`** / **`adot docs`** | Print all custom commands & aliases / managed scripts / Read the Docs links |
@@ -205,7 +207,7 @@ Full reference: [`hypr/README.md`](hypr/README.md) & [Hyprland Docs](https://arc
 
 ### 1. Embedded Git Subtrees
 
-Because `nvim`, `tmux`, `ghostty`, `kitty`, and `vim` are embedded as **Git Subtrees**, all files are present immediately after a standard `git clone`.
+Because `nvim`, `tmux`, `ghostty`, `kitty`, `foot`, and `vim` are embedded as **Git Subtrees**, all files are present immediately after a standard `git clone`.
 
 | Subtree Path | Remote Name | Upstream GitHub Repository | Branch | Documentation |
 | :--- | :--- | :--- | :--- | :--- |
@@ -213,20 +215,21 @@ Because `nvim`, `tmux`, `ghostty`, `kitty`, and `vim` are embedded as **Git Subt
 | **`tmux/`** | `tmux-remote` | `https://github.com/MichaelWeissDEV/tmux-config.git` | `main` | [tmux-config.readthedocs.io](https://tmux-config.readthedocs.io/en/latest/) |
 | **`ghostty/`** | `ghostty-remote` | `https://github.com/MichaelWeissDEV/ghostty-config.git` | `main` | [ghostty-config.readthedocs.io](https://ghostty-config.readthedocs.io/en/latest/) |
 | **`kitty/`** | `kitty-remote` | `https://github.com/MichaelWeissDEV/kittiy-config.git` | `main` | [kitty-config.readthedocs.io](https://kitty-config.readthedocs.io/en/latest/) |
+| **`foot/`** | `foot-remote` | `https://github.com/MichaelWeissDEV/foot-config.git` | `main` | [Terminals Guide](https://arch-dotfiles.readthedocs.io/en/latest/terminals/) |
 | **`vim/`** | `vim-remote` | `https://github.com/MichaelWeissDEV/vim-config.git` | `main` | [vim-config.readthedocs.io](https://vim-config.readthedocs.io/en/latest/) |
 
 ```bash
-# Check status of all 5 subtrees & remotes:
+# Check status of all 6 subtrees & remotes:
 arch-dot status
 
-# Pull all 5 subtrees from upstream (or use: cfg-subtrees):
+# Pull all 6 subtrees from upstream (or use: cfg-subtrees):
 arch-dot subtrees
 
 # Pull a single subtree from upstream:
-arch-dot subtrees nvim       # (nvim | tmux | ghostty | kitty | vim)
+arch-dot subtrees nvim       # (nvim | tmux | ghostty | kitty | foot | vim)
 
 # Push local commits from a subtree directory back to its upstream repository:
-arch-dot push nvim           # (nvim | tmux | ghostty | kitty | vim | all)
+arch-dot push nvim           # (nvim | tmux | ghostty | kitty | foot | vim | all)
 ```
 
 <details>
@@ -235,11 +238,12 @@ arch-dot push nvim           # (nvim | tmux | ghostty | kitty | vim | all)
 ```bash
 cd ~/git/dotfiles
 
-# 1. Ensure all 5 remotes are registered (one-time setup after fresh clone):
+# 1. Ensure all 6 remotes are registered (one-time setup after fresh clone):
 git remote add nvim-remote    https://github.com/MichaelWeissDEV/nvim-config.git
 git remote add tmux-remote    https://github.com/MichaelWeissDEV/tmux-config.git
 git remote add ghostty-remote https://github.com/MichaelWeissDEV/ghostty-config.git
 git remote add kitty-remote   https://github.com/MichaelWeissDEV/kittiy-config.git
+git remote add foot-remote    https://github.com/MichaelWeissDEV/foot-config.git
 git remote add vim-remote     https://github.com/MichaelWeissDEV/vim-config.git
 
 # 2. Fetch and merge upstream changes with --squash:
@@ -247,6 +251,7 @@ git fetch nvim-remote main    && git subtree pull --prefix=nvim    nvim-remote  
 git fetch tmux-remote main    && git subtree pull --prefix=tmux    tmux-remote    main --squash -m "Update tmux subtree from upstream"
 git fetch ghostty-remote main && git subtree pull --prefix=ghostty ghostty-remote main --squash -m "Update ghostty subtree from upstream"
 git fetch kitty-remote main   && git subtree pull --prefix=kitty   kitty-remote   main --squash -m "Update kitty subtree from upstream"
+git fetch foot-remote main    && git subtree pull --prefix=foot    foot-remote    main --squash -m "Update foot subtree from upstream"
 git fetch vim-remote main     && git subtree pull --prefix=vim     vim-remote     main --squash -m "Update vim subtree from upstream"
 
 # 3. Push local commits back to the respective upstream repo:
@@ -254,6 +259,7 @@ git subtree push --prefix=nvim    nvim-remote    main
 git subtree push --prefix=tmux    tmux-remote    main
 git subtree push --prefix=ghostty ghostty-remote main
 git subtree push --prefix=kitty   kitty-remote   main
+git subtree push --prefix=foot    foot-remote    main
 git subtree push --prefix=vim     vim-remote     main
 ```
 

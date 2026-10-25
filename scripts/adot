@@ -12,7 +12,7 @@
 #   adot commands                       List all custom CLI commands, shell functions & aliases
 #   adot scripts                        List all helper scripts & CLI binaries
 #   adot subtrees [status|pull|push] [target]
-#   adot push [all|nvim|tmux|ghostty|kitty|vim]
+#   adot push [all|nvim|tmux|ghostty|kitty|foot|vim]
 #   adot links                          Create/refresh all symlinks in ~/.config, ~ & ~/.local/bin
 #   adot packages                       Install/update all managed Arch Linux packages via pacman
 #   adot wallpapers [URL|--update]      Clone or update private wallpaper repository (pictures/)
@@ -67,7 +67,7 @@ CONFIG_DIRS=(
     zsh
 )
 
-SUBTREE_MODULES=(nvim tmux ghostty kitty vim)
+SUBTREE_MODULES=(nvim tmux ghostty kitty foot vim)
 
 # Managed official Arch Linux packages
 PACMAN_PACKAGES=(
@@ -127,7 +127,7 @@ PACMAN_PACKAGES=(
 
 get_module_desc() {
     case "$1" in
-        foot)      echo "Lightweight Wayland terminal (Catppuccin Mocha, 0.90 opacity)" ;;
+        foot)      echo "Lightweight Wayland terminal [Git Subtree: foot-config]" ;;
         fuzzel)    echo "Wayland app launcher, window switcher & sudo askpass prompt" ;;
         ghostty)   echo "GPU terminal [Git Subtree: ghostty-config]" ;;
         gtk-3.0)   echo "Catppuccin Mocha GTK3 theme & dark mode settings" ;;
@@ -153,6 +153,7 @@ get_subtree_url() {
         tmux)    echo "https://github.com/MichaelWeissDEV/tmux-config.git" ;;
         ghostty) echo "https://github.com/MichaelWeissDEV/ghostty-config.git" ;;
         kitty)   echo "https://github.com/MichaelWeissDEV/kittiy-config.git" ;;
+        foot)    echo "https://github.com/MichaelWeissDEV/foot-config.git" ;;
         vim)     echo "https://github.com/MichaelWeissDEV/vim-config.git" ;;
     esac
 }
@@ -163,6 +164,7 @@ get_subtree_docs() {
         tmux)    echo "https://tmux-config.readthedocs.io/en/latest/" ;;
         ghostty) echo "https://ghostty-config.readthedocs.io/en/latest/" ;;
         kitty)   echo "https://kitty-config.readthedocs.io/en/latest/" ;;
+        foot)    echo "https://arch-dotfiles.readthedocs.io/en/latest/terminals/" ;;
         vim)     echo "https://vim-config.readthedocs.io/en/latest/" ;;
     esac
 }
@@ -182,7 +184,7 @@ install_packages() {
 }
 
 # ============================================================================
-# 2. GIT SUBTREES (nvim, tmux, ghostty, kitty & vim)
+# 2. GIT SUBTREES (nvim, tmux, ghostty, kitty, foot & vim)
 # ============================================================================
 setup_subtrees() {
     "$SCRIPTS_DIR/update-subtrees.sh" setup
@@ -376,13 +378,13 @@ update_target() {
             printf "\n"
             ok "Complete ecosystem update ('adot update') finished successfully!"
             ;;
-        nvim|tmux|ghostty|kitty|vim)
+        nvim|tmux|ghostty|kitty|foot|vim)
             section "Updating Git Subtree: $target"
             update_subtrees "$target"
             setup_links
             ;;
         subtrees|subtree)
-            section "Updating All 5 Git Subtrees (${SUBTREE_MODULES[*]})"
+            section "Updating All 6 Git Subtrees (${SUBTREE_MODULES[*]})"
             update_subtrees "${2:-all}"
             setup_links
             ;;
@@ -408,7 +410,7 @@ update_target() {
             ;;
         *)
             error "Unknown update target: '$target'"
-            echo "Allowed targets: all, nvim, tmux, ghostty, kitty, vim, subtrees, dotfiles, system/packages, zsh/omz, wallpapers, links"
+            echo "Allowed targets: all, nvim, tmux, ghostty, kitty, foot, vim, subtrees, dotfiles, system/packages, zsh/omz, wallpapers, links"
             exit 1
             ;;
     esac
@@ -473,7 +475,7 @@ show_status() {
         printf "  ${YELLOW}!${RESET} %d linked, %d missing/broken (run 'adot links' to fix).\n" "$linked_ok" "$linked_bad"
     fi
 
-    section "Embedded Git Subtrees (nvim, tmux, ghostty, kitty, vim)"
+    section "Embedded Git Subtrees (nvim, tmux, ghostty, kitty, foot, vim)"
     printf "  ${BOLD}%-10s %-15s %-34s %-s${RESET}\n" "MODULE" "REMOTE" "LAST LOCAL TOUCH" "UPSTREAM REPOSITORY"
     printf "  %-10s %-15s %-34s %-s\n" "----------" "---------------" "----------------------------------" "------------------------------------------------"
     for mod in "${SUBTREE_MODULES[@]}"; do
@@ -596,15 +598,15 @@ list_commands() {
     cat <<EOF
   ${BOLD}1. Ecosystem & System Management ('adot' / 'arch-dot' / 'arch-dotfiles'):${RESET}
     adot install                   Full Arch Linux setup (pacman, subtrees, Oh My Zsh, symlinks, services)
-    adot update                    Update EVERYTHING (pacman, dotfiles, all 5 subtrees, wallpapers, OMZ, links)
-    adot update <target>           Update a single target: nvim | tmux | ghostty | kitty | vim | subtrees |
+    adot update                    Update EVERYTHING (pacman, dotfiles, all 6 subtrees, wallpapers, OMZ, links)
+    adot update <target>           Update a single target: nvim | tmux | ghostty | kitty | foot | vim | subtrees |
                                    dotfiles | system | zsh | wallpapers | links
-    adot status [--fetch]          Show live status of repo, symlinks, all 5 subtrees, OMZ & pacman packages
+    adot status [--fetch]          Show live status of repo, symlinks, all 6 subtrees, OMZ & pacman packages
     adot list [category]           List modules, subtrees, keys, commands, scripts, packages, links, or docs
     adot keys [section]            Show keybindings (all | hypr | vim | nvim | tmux | terminals | shell)
     adot commands                  Show this overview of all custom commands, functions & aliases
     adot scripts                   Show all managed scripts and CLI binaries
-    adot subtrees [mod]            Pull all 5 Git subtrees (or a single subtree) from upstream GitHub
+    adot subtrees [mod]            Pull all 6 Git subtrees (or a single subtree) from upstream GitHub
     adot push [mod|all]            Push local subtree commits back to upstream GitHub repositories
     adot links                     Create/refresh all symlinks in ~/.config, ~, and ~/.local/bin
     adot packages                  Install/update all managed Arch Linux packages via pacman
@@ -834,12 +836,12 @@ push_target() {
         subtrees)
             "$SCRIPTS_DIR/update-subtrees.sh" push all
             ;;
-        nvim|tmux|ghostty|kitty|vim)
+        nvim|tmux|ghostty|kitty|foot|vim)
             "$SCRIPTS_DIR/update-subtrees.sh" push "$target"
             ;;
         *)
             error "Unknown push target: '$target'"
-            echo "Valid targets: all, dotfiles, subtrees, nvim, tmux, ghostty, kitty, vim"
+            echo "Valid targets: all, dotfiles, subtrees, nvim, tmux, ghostty, kitty, foot, vim"
             exit 1
             ;;
     esac
@@ -858,9 +860,9 @@ ${BOLD}USAGE:${RESET}
 ${BOLD}SETUP & UPDATE COMMANDS:${RESET}
   ${TEAL}install${RESET}                     Complete Arch Linux setup (pacman packages, subtrees, Oh My Zsh, symlinks, services)
   ${TEAL}update${RESET} [target]             Update everything (default) or a specific component:
-                              • ${BOLD}adot update${RESET}            Update system packages, dotfiles, all 5 subtrees, wallpapers, OMZ & links
-                              • ${BOLD}adot update <subtree>${RESET}  Update only one subtree (nvim | tmux | ghostty | kitty | vim)
-                              • ${BOLD}adot update subtrees${RESET}   Update all 5 Git subtrees from upstream
+                              • ${BOLD}adot update${RESET}            Update system packages, dotfiles, all 6 subtrees, wallpapers, OMZ & links
+                              • ${BOLD}adot update <subtree>${RESET}  Update only one subtree (nvim | tmux | ghostty | kitty | foot | vim)
+                              • ${BOLD}adot update subtrees${RESET}   Update all 6 Git subtrees from upstream
                               • ${BOLD}adot update dotfiles${RESET}   Pull only the main ~/git/dotfiles repository
                               • ${BOLD}adot update system${RESET}     Update only Arch Linux pacman packages
                               • ${BOLD}adot update zsh${RESET}        Update only Oh My Zsh & Zsh plugins
@@ -873,7 +875,7 @@ ${BOLD}INSPECTION, LISTING & REFERENCE COMMANDS:${RESET}
   ${TEAL}list${RESET} [category]             List managed items:
                               • ${BOLD}adot list${RESET}              Full overview (modules, subtrees, scripts, commands & docs)
                               • ${BOLD}adot list modules${RESET}      List all ${#CONFIG_DIRS[@]} managed ~/.config modules & symlink targets
-                              • ${BOLD}adot list subtrees${RESET}     List all 5 embedded Git subtrees & remote URLs
+                              • ${BOLD}adot list subtrees${RESET}     List all 6 embedded Git subtrees & remote URLs
                               • ${BOLD}adot list keys${RESET} [sec]   List custom keybindings (hypr|nvim|vim|tmux|terminals|shell|all)
                               • ${BOLD}adot list commands${RESET}     List all custom CLI commands, aliases & shell functions (incl. 'j' zoxide)
                               • ${BOLD}adot list scripts${RESET}      List all managed scripts & ~/.local/bin executables
@@ -885,8 +887,8 @@ ${BOLD}INSPECTION, LISTING & REFERENCE COMMANDS:${RESET}
   ${TEAL}docs${RESET}                        Shortcut for 'adot list docs'
 
 ${BOLD}SUBTREE & WALLPAPER COMMANDS:${RESET}
-  ${TEAL}subtrees${RESET} [mod|status]       Pull all 5 Git subtrees (or specify: nvim | tmux | ghostty | kitty | vim | status)
-  ${TEAL}push${RESET} [target]               Push commits to GitHub (all | dotfiles | subtrees | nvim | tmux | ghostty | kitty | vim)
+  ${TEAL}subtrees${RESET} [mod|status]       Pull all 6 Git subtrees (or specify: nvim | tmux | ghostty | kitty | foot | vim | status)
+  ${TEAL}push${RESET} [target]               Push commits to GitHub (all | dotfiles | subtrees | nvim | tmux | ghostty | kitty | foot | vim)
   ${TEAL}wallpapers${RESET} [URL|--update]   Clone or update the private wallpaper repository in ~/git/dotfiles/pictures
   ${TEAL}path${RESET}                        Print the dotfiles repository path ($DOTFILES_DIR)
   ${TEAL}help${RESET}                        Show this help message

@@ -6,15 +6,16 @@
 #   - tmux    -> https://github.com/MichaelWeissDEV/tmux-config.git
 #   - ghostty -> https://github.com/MichaelWeissDEV/ghostty-config.git
 #   - kitty   -> https://github.com/MichaelWeissDEV/kittiy-config.git
+#   - foot    -> https://github.com/MichaelWeissDEV/foot-config.git
 #   - vim     -> https://github.com/MichaelWeissDEV/vim-config.git
 # ============================================================================
 # Verwendung:
-#   ~/git/dotfiles/scripts/update-subtrees.sh                   Alle 5 Subtrees von Upstream pullen
-#   ~/git/dotfiles/scripts/update-subtrees.sh all               Alle 5 Subtrees von Upstream pullen
-#   ~/git/dotfiles/scripts/update-subtrees.sh <modul>           Einzelnen Subtree pullen (nvim|tmux|ghostty|kitty|vim)
+#   ~/git/dotfiles/scripts/update-subtrees.sh                   Alle 6 Subtrees von Upstream pullen
+#   ~/git/dotfiles/scripts/update-subtrees.sh all               Alle 6 Subtrees von Upstream pullen
+#   ~/git/dotfiles/scripts/update-subtrees.sh <modul>           Einzelnen Subtree pullen (nvim|tmux|ghostty|kitty|foot|vim)
 #   ~/git/dotfiles/scripts/update-subtrees.sh push [ziel]       Lokale Subtree-Commits nach Upstream pushen (all oder <modul>)
-#   ~/git/dotfiles/scripts/update-subtrees.sh setup             Alle 5 Git-Remotes & Subtrees prüfen/einrichten
-#   ~/git/dotfiles/scripts/update-subtrees.sh status            Remote-URLs & Upstream-Status aller 5 Subtrees anzeigen
+#   ~/git/dotfiles/scripts/update-subtrees.sh setup             Alle 6 Git-Remotes & Subtrees prüfen/einrichten
+#   ~/git/dotfiles/scripts/update-subtrees.sh status            Remote-URLs & Upstream-Status aller 6 Subtrees anzeigen
 # ============================================================================
 
 set -euo pipefail
@@ -35,7 +36,7 @@ warn()  { printf "${YELLOW}[WARN]${RESET}  %s\n" "$*"; }
 error() { printf "${RED}[ERROR]${RESET} %s\n" "$*" >&2; }
 
 # Alle verwalteten Subtree-Module in fester Reihenfolge
-SUBTREE_MODULES=(nvim tmux ghostty kitty vim)
+SUBTREE_MODULES=(nvim tmux ghostty kitty foot vim)
 
 get_remote_name() {
     case "$1" in
@@ -43,6 +44,7 @@ get_remote_name() {
         tmux)    echo "tmux-remote" ;;
         ghostty) echo "ghostty-remote" ;;
         kitty)   echo "kitty-remote" ;;
+        foot)    echo "foot-remote" ;;
         vim)     echo "vim-remote" ;;
         *)       return 1 ;;
     esac
@@ -54,6 +56,7 @@ get_remote_url() {
         tmux)    echo "https://github.com/MichaelWeissDEV/tmux-config.git" ;;
         ghostty) echo "https://github.com/MichaelWeissDEV/ghostty-config.git" ;;
         kitty)   echo "https://github.com/MichaelWeissDEV/kittiy-config.git" ;;
+        foot)    echo "https://github.com/MichaelWeissDEV/foot-config.git" ;;
         vim)     echo "https://github.com/MichaelWeissDEV/vim-config.git" ;;
         *)       return 1 ;;
     esac
@@ -115,7 +118,7 @@ setup_subtrees() {
         fi
     done
 
-    ok "Alle 5 Git-Subtrees (${SUBTREE_MODULES[*]}) und Remotes sind eingerichtet."
+    ok "Alle 6 Git-Subtrees (${SUBTREE_MODULES[*]}) und Remotes sind eingerichtet."
 }
 
 pull_one() {
@@ -159,7 +162,7 @@ push_one() {
 push_subtree() {
     local target="${1:-all}"
     case "$target" in
-        nvim|tmux|ghostty|kitty|vim)
+        nvim|tmux|ghostty|kitty|foot|vim)
             push_one "$target"
             ;;
         all)
@@ -168,7 +171,7 @@ push_subtree() {
             done
             ;;
         *)
-            error "Unbekanntes Push-Ziel: $target (erlaubt: nvim, tmux, ghostty, kitty, vim, all)"
+            error "Unbekanntes Push-Ziel: $target (erlaubt: nvim, tmux, ghostty, kitty, foot, vim, all)"
             exit 1
             ;;
     esac
@@ -198,15 +201,16 @@ usage() {
 Verwendung: $(basename "$0") [BEFEHL]
 
 Befehle:
-  all                 Alle 5 Git-Subtrees (nvim, tmux, ghostty, kitty, vim) von Upstream pullen (Standard)
+  all                 Alle 6 Git-Subtrees (nvim, tmux, ghostty, kitty, foot, vim) von Upstream pullen (Standard)
   nvim                Nur den nvim-Subtree (MichaelWeissDEV/nvim-config) pullen
   tmux                Nur den tmux-Subtree (MichaelWeissDEV/tmux-config) pullen
   ghostty             Nur den ghostty-Subtree (MichaelWeissDEV/ghostty-config) pullen
   kitty               Nur den kitty-Subtree (MichaelWeissDEV/kittiy-config) pullen
+  foot                Nur den foot-Subtree (MichaelWeissDEV/foot-config) pullen
   vim                 Nur den vim-Subtree (MichaelWeissDEV/vim-config) pullen
-  push [ziel]         Lokale Subtree-Commits nach Upstream pushen (nvim, tmux, ghostty, kitty, vim oder all)
+  push [ziel]         Lokale Subtree-Commits nach Upstream pushen (nvim, tmux, ghostty, kitty, foot, vim oder all)
   setup               Git-Remotes & Subtrees initial prüfen/einrichten
-  status              Status-Übersicht aller 5 Subtrees & Remotes anzeigen
+  status              Status-Übersicht aller 6 Subtrees & Remotes anzeigen
   help                Diese Hilfe anzeigen
 EOF
 }
@@ -220,7 +224,7 @@ main() {
             done
             ok "Alle Git-Subtrees (${SUBTREE_MODULES[*]}) wurden geprüft/aktualisiert!"
             ;;
-        nvim|tmux|ghostty|kitty|vim)
+        nvim|tmux|ghostty|kitty|foot|vim)
             pull_one "$cmd"
             ;;
         push)

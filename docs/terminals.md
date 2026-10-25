@@ -38,8 +38,8 @@ Regardless of which terminal emulator is active, you experience consistent visua
 | **Wayland Support** | Native Wayland (GTK4) | Native Wayland | Native Wayland |
 | **Tab Management** | Native GTK4 tabs | Powerline tabs | Multiplexer ([tmux](https://tmux-config.readthedocs.io/en/latest/)) |
 | **Config Reload Shortcut** | <kbd>Ctrl+Shift+,</kbd> | <kbd>Ctrl+Shift+F5</kbd> | Automatic / restart |
-| **Repository** | [MichaelWeissDEV/ghostty-config](https://github.com/MichaelWeissDEV/ghostty-config) | [MichaelWeissDEV/kittiy-config](https://github.com/MichaelWeissDEV/kittiy-config) | Included in `foot/` |
-| **Documentation** | [**ghostty-config.readthedocs.io**](https://ghostty-config.readthedocs.io/en/latest/) | [**kitty-config.readthedocs.io**](https://kitty-config.readthedocs.io/en/latest/) | Built-in man pages (`man foot.ini`) |
+| **Repository** | [MichaelWeissDEV/ghostty-config](https://github.com/MichaelWeissDEV/ghostty-config) | [MichaelWeissDEV/kittiy-config](https://github.com/MichaelWeissDEV/kittiy-config) | [MichaelWeissDEV/foot-config](https://github.com/MichaelWeissDEV/foot-config) |
+| **Documentation** | [**ghostty-config.readthedocs.io**](https://ghostty-config.readthedocs.io/en/latest/) | [**kitty-config.readthedocs.io**](https://kitty-config.readthedocs.io/en/latest/) | [Foot section](#3-foot-configfootfootini) · built-in man pages (`man foot.ini`) |
 
 ---
 
@@ -63,9 +63,11 @@ Managed via the Git subtree `MichaelWeissDEV/kittiy-config` (`adot update kitty`
 
 ### 3. Foot (`~/.config/foot/foot.ini`)
 
-Foot is an ultra-lightweight terminal designed strictly for Wayland. It starts instantaneously and operates with minimal CPU and memory overhead.
+Managed via the Git subtree `MichaelWeissDEV/foot-config` (`adot update foot`; see [Git Subtrees](subtrees.md)). Foot is an ultra-lightweight terminal designed strictly for Wayland. It starts instantaneously and operates with minimal CPU and memory overhead.
 
 - **Config path**: `~/.config/foot/foot.ini`
+- **GitHub Repository**: [MichaelWeissDEV/foot-config](https://github.com/MichaelWeissDEV/foot-config)
+- **Documentation**: This guide and the built-in `man foot.ini` reference
 
 ---
 

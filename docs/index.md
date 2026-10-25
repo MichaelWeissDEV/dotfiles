@@ -16,7 +16,7 @@
 Welcome to the comprehensive documentation for the **Arch Linux Dotfiles Ecosystem** (`arch-dotfiles`). This central repository (`~/git/dotfiles`) unites a complete Wayland desktop environment (**Arch Linux + Hyprland + Waybar + Fuzzel**) with customized GPU terminals, shells, multiplexers, and modal text editors styled uniformly in **Catppuccin Mocha**.
 
 :::{note}
-**Designed for Arch Linux — Adaptable to Any System**: Every configuration in this repository is built so that anyone can install the entire environment out-of-the-box on **Arch Linux** using a single command (`./scripts/install.sh` or `arch-dot install`). Because each component is cleanly modularized and the five core terminal/editor configurations live in their own self-contained repositories, you can also run this setup (or individual sub-projects) on **other Linux distributions, macOS, or WSL2** with only minimal adjustments (such as package manager names or binary paths).
+**Designed for Arch Linux — Adaptable to Any System**: Every configuration in this repository is built so that anyone can install the entire environment out-of-the-box on **Arch Linux** using a single command (`./scripts/install.sh` or `arch-dot install`). Because each component is cleanly modularized and the six core terminal/editor configurations live in their own self-contained repositories, you can also run this setup (or individual sub-projects) on **other Linux distributions, macOS, or WSL2** with only minimal adjustments (such as package manager names or binary paths).
 :::
 
 ---
@@ -39,10 +39,10 @@ Welcome to the comprehensive documentation for the **Arch Linux Dotfiles Ecosyst
      └─────────────────┘ └─────────────────┘   └─────────────────┘ └─────────────────┘
                                                 │
                                                 │ (Git Subtrees)
-              ┌─────────────────┬───────────────┼─────────────────┬─────────────────┐
-              ▼                 ▼               ▼                 ▼                 ▼
-       nvim-config         tmux-config     ghostty-config     kitty-config      vim-config
-        (Neovim)             (tmux)          (Ghostty)          (Kitty)           (Vim)
+              ┌───────────────┬───────────────┬─┼──────────────┬──────────────┬──────────────┬────────────┐
+              ▼               ▼               ▼                ▼              ▼              ▼
+       nvim-config      tmux-config     ghostty-config    kitty-config    foot-config     vim-config
+        (Neovim)          (tmux)          (Ghostty)        (Kitty)         (Foot)          (Vim)
 ```
 
 The ecosystem separates concerns into clean layers:
@@ -52,7 +52,7 @@ The ecosystem separates concerns into clean layers:
 4. **[Multi-Monitor Wallpapers (`wallpaper/`)](hyprland.md#wallpaper-management-hyprpaper)**: Custom `wallpaper` CLI and Fuzzel TUI managing `hyprpaper` with a global default and independent per-monitor overrides.
 5. **[Terminals (`ghostty/`, `kitty/`, `foot/`)](terminals.md)**: Ghostty, Kitty, and Foot all tuned to `0.90` background opacity with identical `JetBrainsMono Nerd Font` typography.
 6. **[Shell Environment (`zsh/`, `yazi/`)](shell.md)**: Zsh with Oh My Zsh, Catppuccin Mocha syntax highlighting, autosuggestions, smart directory jumping via `j` / `ji` (powered under the hood by `zoxide`), and fast aliases (`arch-dot`, `nv`, `v`, `y`, `tm`, `fznv`, `fzv`).
-7. **[Independent Git Subtrees](subtrees.md)**: Core editor and terminal configs reside in their own GitHub repositories with their own Read the Docs sites, embedded here via Git subtrees for zero-submodule cloning simplicity.
+7. **[Independent Git Subtrees](subtrees.md)**: Core editor and terminal configs reside in their own GitHub repositories with dedicated documentation, embedded here via Git subtrees for zero-submodule cloning simplicity.
 
 ---
 
@@ -125,8 +125,8 @@ The installer provisions `pacman` packages, symlinks, the `arch-dot` / `arch-dot
 From anywhere in your terminal, inspect status, list keybindings/commands, or update everything (or individual subtrees) with **`adot`** (also available as `arch-dot` or `arch-dotfiles`):
 
 ```bash
-adot update           # Update everything (pacman, dotfiles, all 5 subtrees, wallpapers, OMZ & symlinks)
-adot update nvim      # Update only a single subtree (nvim | tmux | ghostty | kitty | vim)
+adot update           # Update everything (pacman, dotfiles, all 6 subtrees, wallpapers, OMZ & symlinks)
+adot update nvim      # Update only a single subtree (nvim | tmux | ghostty | kitty | foot | vim)
 adot status           # Show live status of repo, symlinks, subtrees, Oh My Zsh, zoxide & packages
 adot list             # List all managed modules, subtrees, scripts, commands & docs
 adot keys [section]   # List custom keybindings (hypr | nvim | vim | tmux | terminals | shell | all)
