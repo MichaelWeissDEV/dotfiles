@@ -32,7 +32,7 @@ A minimalist, GPU-accelerated **Kitty** configuration ([`kitty.conf`](kitty.conf
 
 - **Official Catppuccin Mocha Palette**: Base `#1e1e2e`, Text `#cdd6f4`, Pastel Blue selection `#89b4fa`, solid Rosewater block cursor `#f5e0dc`, and Powerline-styled tabs.
 - **Uniform Transparency**: Subtle background transparency (`background_opacity 0.90`, `dynamic_background_opacity yes`), synchronized with `ghostty` and `foot`.
-- **Typography**: `JetBrainsMono Nerd Font` (`10.5pt`) with automatic bold/italic font selection.
+- **Typography**: `JetBrainsMonoNL Nerd Font` (`10.5pt`, No Ligatures variant with `disable_ligatures always`) and automatic bold/italic font selection.
 - **Minimalist & Responsive Behavior**:
   - Starts directly with `/usr/bin/zsh` (easily changed if your shell path differs on another OS).
   - Clean `8px` window padding (`window_padding_width 8`).
@@ -64,7 +64,7 @@ Full reference: [Kitty Keybindings Documentation](https://kitty-config.readthedo
 Works out-of-the-box on Arch Linux, Debian/Ubuntu, Fedora, macOS, and other Unix-like systems:
 
 ```bash
-git clone https://github.com/MichaelWeissDEV/kittiy-config.git ~/.config/kitty
+git clone https://github.com/MichaelWeissDEV/kitty-config.git ~/.config/kitty
 ```
 
 ### 2. Inside the Arch Linux Dotfiles Ecosystem (`~/git/dotfiles`)
@@ -92,7 +92,7 @@ adot push kitty
 
 ```bash
 # Add remote (one-time):
-git remote add kitty-remote https://github.com/MichaelWeissDEV/kittiy-config.git
+git remote add kitty-remote https://github.com/MichaelWeissDEV/kitty-config.git
 
 # Pull updates from upstream:
 git fetch kitty-remote main
@@ -116,5 +116,6 @@ This configuration is part of a unified development environment. Explore the ful
 | **Neovim (`nvim-config`)** | [`MichaelWeissDEV/nvim-config`](https://github.com/MichaelWeissDEV/nvim-config) | [nvim-config.readthedocs.io](https://nvim-config.readthedocs.io/en/latest/) |
 | **tmux (`tmux-config`)** | [`MichaelWeissDEV/tmux-config`](https://github.com/MichaelWeissDEV/tmux-config) | [tmux-config.readthedocs.io](https://tmux-config.readthedocs.io/en/latest/) |
 | **Ghostty (`ghostty-config`)** | [`MichaelWeissDEV/ghostty-config`](https://github.com/MichaelWeissDEV/ghostty-config) | [ghostty-config.readthedocs.io](https://ghostty-config.readthedocs.io/en/latest/) |
-| **Kitty (`kitty-config`)** | [`MichaelWeissDEV/kittiy-config`](https://github.com/MichaelWeissDEV/kittiy-config) | [kitty-config.readthedocs.io](https://kitty-config.readthedocs.io/en/latest/) |
+| **Kitty (`kitty-config`)** | [`MichaelWeissDEV/kitty-config`](https://github.com/MichaelWeissDEV/kitty-config) | [kitty-config.readthedocs.io](https://kitty-config.readthedocs.io/en/latest/) |
+| **Foot (`foot-config`)** | [`MichaelWeissDEV/foot-config`](https://github.com/MichaelWeissDEV/foot-config) | [Terminals Guide](https://arch-dotfiles.readthedocs.io/en/latest/terminals/) |
 | **Vim (`vim-config`)** | [`MichaelWeissDEV/vim-config`](https://github.com/MichaelWeissDEV/vim-config) | [vim-config.readthedocs.io](https://vim-config.readthedocs.io/en/latest/) |

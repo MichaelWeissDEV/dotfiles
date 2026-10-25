@@ -2,9 +2,12 @@
 # GHOSTTY KONFIGURATION - Official Catppuccin Mocha (Pastel Theme)
 # ============================================================================
 
-# Schriftart (identisch zu Kitty)
-font-family = JetBrainsMono Nerd Font
+# Schriftart (identisch zu Kitty & Foot, ohne Ligaturen)
+font-family = JetBrainsMonoNL Nerd Font
 font-size = 10.5
+font-feature = -calt
+font-feature = -liga
+font-feature = -dlig
 
 # Minimalistisches Layout, keine Titelleiste/Dekoration & direkt Zsh starten
 command = /usr/bin/zsh

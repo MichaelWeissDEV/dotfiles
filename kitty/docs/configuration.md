@@ -7,16 +7,18 @@ All settings are defined in `~/.config/kitty/kitty.conf`.
 ## Typography
 
 ```conf
-font_family      JetBrainsMono Nerd Font
+font_family      JetBrainsMonoNL Nerd Font
 bold_font        auto
 italic_font      auto
 bold_italic_font auto
 font_size        10.5
+disable_ligatures always
 ```
 
-- **`font_family`**: `JetBrainsMono Nerd Font` provides sharp code rendering and full glyph coverage.
+- **`font_family`**: `JetBrainsMonoNL Nerd Font` (`No Ligatures` variant) provides sharp code rendering and full glyph coverage without operator ligatures (`==`, `->`) or shifted characters (`*`).
 - **`bold_font` / `italic_font`**: Automatically selects the corresponding font weight/slant.
 - **`font_size`**: `10.5pt` balances information density and legibility.
+- **`disable_ligatures always`**: Ensures programming ligatures are completely disabled at all times.
 
 ---
 

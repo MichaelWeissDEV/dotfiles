@@ -7,7 +7,7 @@ This guide walks you through installing the **Ghostty** terminal emulator, secur
 ## Prerequisites
 
 1. **Ghostty terminal emulator**: Ghostty 1.0 or newer.
-2. **Nerd Font**: `JetBrainsMono Nerd Font` for icons, status indicators, and clean code rendering.
+2. **Nerd Font**: `JetBrainsMonoNL Nerd Font` (`ttf-jetbrains-mono-nerd`) for icons, status indicators, and clean ligature-free code rendering.
 3. **Shell**: `zsh` is configured as the default command in this setup (can be adjusted to `bash` or `fish` if preferred).
 
 ---

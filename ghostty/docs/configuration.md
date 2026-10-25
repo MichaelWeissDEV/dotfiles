@@ -7,12 +7,16 @@ All settings live in a single, well-documented file located at `~/.config/ghostt
 ## Typography
 
 ```ini
-font-family = JetBrainsMono Nerd Font
+font-family = JetBrainsMonoNL Nerd Font
 font-size = 10.5
+font-feature = -calt
+font-feature = -liga
+font-feature = -dlig
 ```
 
-- **`font-family`**: Uses `JetBrainsMono Nerd Font` to provide complete glyph support for Neovim, tmux, Waybar, and Yazi.
+- **`font-family`**: Uses `JetBrainsMonoNL Nerd Font` (`No Ligatures` variant) to provide complete glyph support for Neovim, tmux, Waybar, and Yazi without merging operators (`==`, `->`) or shifting characters (`*`).
 - **`font-size`**: Sized at `10.5pt` to match Kitty and Foot, providing high information density while preserving legibility on both 1080p and 1440p displays.
+- **`font-feature`**: Explicitly disables contextual alternates and ligatures (`-calt`, `-liga`, `-dlig`).
 
 ---
 

@@ -614,6 +614,7 @@ list_docs() {
     printf "  %-18s %-48s %s\n" "tmux-config"    "https://tmux-config.readthedocs.io/en/latest/"    "https://github.com/MichaelWeissDEV/tmux-config"
     printf "  %-18s %-48s %s\n" "ghostty-config" "https://ghostty-config.readthedocs.io/en/latest/" "https://github.com/MichaelWeissDEV/ghostty-config"
     printf "  %-18s %-48s %s\n" "kitty-config"   "https://kitty-config.readthedocs.io/en/latest/"   "https://github.com/MichaelWeissDEV/kitty-config"
+    printf "  %-18s %-48s %s\n" "foot-config"    "https://arch-dotfiles.readthedocs.io/en/latest/terminals/" "https://github.com/MichaelWeissDEV/foot-config"
     printf "  %-18s %-48s %s\n" "vim-config"     "https://vim-config.readthedocs.io/en/latest/"     "https://github.com/MichaelWeissDEV/vim-config"
     echo ""
 }
@@ -790,14 +791,14 @@ EOF
 EOF
     fi
 
-    if [[ "$filter" == "all" || "$filter" == "terminals" || "$filter" == "kitty" || "$filter" == "ghostty" ]]; then
-        section "Terminal Keybindings (Kitty & Ghostty)"
+    if [[ "$filter" == "all" || "$filter" == "terminals" || "$filter" == "kitty" || "$filter" == "ghostty" || "$filter" == "foot" ]]; then
+        section "Terminal Keybindings (Kitty, Ghostty & Foot)"
         cat <<EOF
     Ctrl + Shift + C / V      Copy to clipboard / Paste from clipboard
-    Ctrl + Shift + T          Open new tab
+    Ctrl + Shift + T          Open new tab (Kitty & Ghostty)
     Ctrl + Shift + F5         Live-reload Kitty config (~/.config/kitty/kitty.conf)
     Ctrl + Shift + ,          Live-reload Ghostty config (~/.config/ghostty/config)
-    Ctrl + Shift + = / -      Increase / decrease font size (Kitty; Ctrl + =/- in Ghostty)
+    Ctrl + Shift + = / -      Increase / decrease font size (Kitty; Ctrl + =/- in Ghostty & Foot)
 EOF
     fi
 

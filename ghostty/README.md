@@ -32,7 +32,7 @@ A clean, distraction-free **Ghostty** configuration ([`config`](config)) styled 
 
 - **Official Catppuccin Mocha Palette**: Base `#1e1e2e`, Text `#cdd6f4`, Pastel Blue selection `#89b4fa`, and solid Rosewater block cursor `#f5e0dc`.
 - **Uniform Transparency**: Subtle background transparency (`background-opacity = 0.90`), matched identically with sibling `kitty` and `foot` terminals.
-- **Typography**: `JetBrainsMono Nerd Font` (`10.5pt`) with complete Nerd Font and Powerline glyph coverage.
+- **Typography**: `JetBrainsMonoNL Nerd Font` (`10.5pt`, No Ligatures variant) with complete Nerd Font and Powerline glyph coverage and zero ligature character modifications.
 - **Minimalist Window Layout**:
   - No titlebar or window decorations (`window-decoration = none`, `gtk-titlebar = false`) for maximum screen real estate in tiling compositors.
   - Balanced `8px` horizontal and vertical padding (`window-padding-balance = true`).
@@ -116,5 +116,6 @@ This configuration is part of a unified development environment. Explore the ful
 | **Neovim (`nvim-config`)** | [`MichaelWeissDEV/nvim-config`](https://github.com/MichaelWeissDEV/nvim-config) | [nvim-config.readthedocs.io](https://nvim-config.readthedocs.io/en/latest/) |
 | **tmux (`tmux-config`)** | [`MichaelWeissDEV/tmux-config`](https://github.com/MichaelWeissDEV/tmux-config) | [tmux-config.readthedocs.io](https://tmux-config.readthedocs.io/en/latest/) |
 | **Ghostty (`ghostty-config`)** | [`MichaelWeissDEV/ghostty-config`](https://github.com/MichaelWeissDEV/ghostty-config) | [ghostty-config.readthedocs.io](https://ghostty-config.readthedocs.io/en/latest/) |
-| **Kitty (`kitty-config`)** | [`MichaelWeissDEV/kittiy-config`](https://github.com/MichaelWeissDEV/kittiy-config) | [kitty-config.readthedocs.io](https://kitty-config.readthedocs.io/en/latest/) |
+| **Kitty (`kitty-config`)** | [`MichaelWeissDEV/kitty-config`](https://github.com/MichaelWeissDEV/kitty-config) | [kitty-config.readthedocs.io](https://kitty-config.readthedocs.io/en/latest/) |
+| **Foot (`foot-config`)** | [`MichaelWeissDEV/foot-config`](https://github.com/MichaelWeissDEV/foot-config) | [Terminals Guide](https://arch-dotfiles.readthedocs.io/en/latest/terminals/) |
 | **Vim (`vim-config`)** | [`MichaelWeissDEV/vim-config`](https://github.com/MichaelWeissDEV/vim-config) | [vim-config.readthedocs.io](https://vim-config.readthedocs.io/en/latest/) |

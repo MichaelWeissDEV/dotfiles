@@ -18,7 +18,7 @@ A minimalist, high-performance **Ghostty** terminal configuration styled in the 
 
 - 🎨 **Official Catppuccin Mocha Theme**: Base `#1e1e2e`, foreground `#cdd6f4`, selection `#89b4fa`, and block cursor in Rosewater `#f5e0dc`.
 - 🪟 **Subtle Transparency**: Balanced `0.90` background opacity matching sibling Kitty and Foot configurations.
-- 🔤 **JetBrainsMono Nerd Font**: Sized at `10.5pt` with balanced padding (`8px` horizontal and vertical).
+- 🔤 **JetBrainsMonoNL Nerd Font**: Sized at `10.5pt` (No Ligatures variant) with balanced padding (`8px` horizontal and vertical).
 - ⚡ **Zero Bloat**: No window decorations or bulky titlebars (`window-decoration = none`, `gtk-titlebar = false`), starts directly with Zsh.
 - 🔄 **Ecosystem Consistency**: Configured to work seamlessly with Neovim splits, tmux pane switching, and Hyprland tiling.
 

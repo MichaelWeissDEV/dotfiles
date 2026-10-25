@@ -48,7 +48,7 @@ kitty @ set-background-opacity 0.85  # Increased transparency
 
 ### Why do some icons or powerline glyphs appear broken?
 
-The configuration relies on **JetBrainsMono Nerd Font**:
+The configuration relies on **JetBrainsMonoNL Nerd Font** (`ttf-jetbrains-mono-nerd`):
 - Ensure the font package is installed on your operating system:
   ```bash
   # Arch Linux

@@ -24,7 +24,7 @@ If glyphs or statusline icons appear as squares, question marks, or broken boxes
    ```
 2. Check that the name in `~/.config/ghostty/config` matches:
    ```ini
-   font-family = JetBrainsMono Nerd Font
+   font-family = JetBrainsMonoNL Nerd Font
    ```
 3. Update font caches:
    ```bash
@@ -48,7 +48,7 @@ If your system places Zsh at `/usr/local/bin/zsh` or if you prefer Bash:
 ## How do I toggle between Ghostty and Kitty?
 
 Both terminals in this dotfiles ecosystem are configured with:
-- Identical `JetBrainsMono Nerd Font 10.5` typography
+- Identical `JetBrainsMonoNL Nerd Font 10.5` typography (without ligatures)
 - Matching `0.90` Catppuccin Mocha opacity
 - Identical `8px` padding
 - Identical color palettes

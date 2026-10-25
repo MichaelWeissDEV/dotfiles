@@ -50,7 +50,7 @@ The ecosystem separates concerns into clean layers:
 2. **[Desktop Shell (`hypr/`)](hyprland.md)**: Hyprland tiling compositor tuned for instant reaction speed (zero animation lag), multi-monitor window jumping, cross-monitor slot pinning (`1..10` and `F1..F4`), and interactive fuzzy window switching (`windowswitcher.sh`).
 3. **[Status Bar & Launcher (`waybar/`, `fuzzel/`)](waybar.md)**: Waybar top panel with Catppuccin Mocha styling, audio/network controls, and a dual-mode power menu, paired with Fuzzel for app launching and `sudo` askpass prompts.
 4. **[Multi-Monitor Wallpapers (`wallpaper/`)](hyprland.md#wallpaper-management-hyprpaper)**: Custom `wallpaper` CLI and Fuzzel TUI managing `hyprpaper` with a global default and independent per-monitor overrides.
-5. **[Terminals (`ghostty/`, `kitty/`, `foot/`)](terminals.md)**: Ghostty, Kitty, and Foot all tuned to `0.90` background opacity with identical `JetBrainsMono Nerd Font` typography.
+5. **[Terminals (`ghostty/`, `kitty/`, `foot/`)](terminals.md)**: Ghostty, Kitty, and Foot all tuned to `0.90` background opacity with identical `JetBrainsMonoNL Nerd Font` (no-ligature) typography.
 6. **[Shell Environment (`zsh/`, `yazi/`)](shell.md)**: Zsh with Oh My Zsh, Catppuccin Mocha syntax highlighting, autosuggestions, smart directory jumping via `j` / `ji` (powered under the hood by `zoxide`), and fast aliases (`arch-dot`, `nv`, `v`, `y`, `tm`, `fznv`, `fzv`).
 7. **[Independent Git Subtrees](subtrees.md)**: Core editor and terminal configs reside in their own GitHub repositories with dedicated documentation, embedded here via Git subtrees for zero-submodule cloning simplicity.
 
@@ -93,7 +93,8 @@ All six projects in the ecosystem have dedicated **Read the Docs** manuals that 
 | **`nvim-config`** | Reproducible, Offline-Capable Neovim IDE | [MichaelWeissDEV/nvim-config](https://github.com/MichaelWeissDEV/nvim-config) | [nvim-config.readthedocs.io](https://nvim-config.readthedocs.io/en/latest/) |
 | **`tmux-config`** | Portable, Fast Terminal Multiplexer | [MichaelWeissDEV/tmux-config](https://github.com/MichaelWeissDEV/tmux-config) | [tmux-config.readthedocs.io](https://tmux-config.readthedocs.io/en/latest/) |
 | **`ghostty-config`** | Minimalist GPU Terminal (Ghostty) | [MichaelWeissDEV/ghostty-config](https://github.com/MichaelWeissDEV/ghostty-config) | [ghostty-config.readthedocs.io](https://ghostty-config.readthedocs.io/en/latest/) |
-| **`kitty-config`** | Scriptable GPU Terminal (Kitty) | [MichaelWeissDEV/kittiy-config](https://github.com/MichaelWeissDEV/kittiy-config) | [kitty-config.readthedocs.io](https://kitty-config.readthedocs.io/en/latest/) |
+| **`kitty-config`** | Scriptable GPU Terminal (Kitty) | [MichaelWeissDEV/kitty-config](https://github.com/MichaelWeissDEV/kitty-config) | [kitty-config.readthedocs.io](https://kitty-config.readthedocs.io/en/latest/) |
+| **`foot-config`** | Ultra-Lightweight Wayland Terminal (Foot) | [MichaelWeissDEV/foot-config](https://github.com/MichaelWeissDEV/foot-config) | [Terminals Guide](terminals.md) |
 | **`vim-config`** | Zero-Plugin Standalone Vim | [MichaelWeissDEV/vim-config](https://github.com/MichaelWeissDEV/vim-config) | [vim-config.readthedocs.io](https://vim-config.readthedocs.io/en/latest/) |
 
 ---

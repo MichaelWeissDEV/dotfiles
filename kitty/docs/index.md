@@ -4,9 +4,9 @@
 [![Dotfiles Hub](https://img.shields.io/badge/ecosystem-arch--dotfiles-1793D1?logo=arch-linux&logoColor=white)](https://arch-dotfiles.readthedocs.io/en/latest/)
 [![Theme: Catppuccin Mocha](https://img.shields.io/badge/theme-Catppuccin%20Mocha-cba6f7)](https://github.com/catppuccin/catppuccin)
 [![Platform: Linux | macOS](https://img.shields.io/badge/platform-Arch%20Linux%20%7C%20Linux%20%7C%20macOS-89b4fa)](https://sw.kovidgoyal.net/kitty/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/MichaelWeissDEV/kittiy-config/blob/main/LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/MichaelWeissDEV/kitty-config/blob/main/LICENSE)
 
-A clean, GPU-accelerated **Kitty** terminal configuration styled in the official **Catppuccin Mocha** palette with balanced transparency, JetBrainsMono Nerd Font typography, and Powerline tab styling.
+A clean, GPU-accelerated **Kitty** terminal configuration styled in the official **Catppuccin Mocha** palette with balanced transparency, JetBrainsMonoNL Nerd Font typography (no ligatures), and Powerline tab styling.
 
 :::{note}
 **Part of the Arch Dotfiles Ecosystem**: Built for **Arch Linux** as part of [`arch-dotfiles`](https://arch-dotfiles.readthedocs.io/en/latest/), this Kitty configuration provides instant rendering, zero audio bells, and a distraction-free terminal workflow that anyone can install on Arch Linux or adapt to **any Linux distribution or macOS**.
@@ -20,7 +20,7 @@ A clean, GPU-accelerated **Kitty** terminal configuration styled in the official
 - 🪟 **0.90 Opacity**: `background_opacity 0.90` and `dynamic_background_opacity yes` for transparent compositing on Wayland/X11.
 - 🔖 **Powerline Tabs**: Beautiful `powerline` styled tabs with active tab highlighting in Pastel Blue.
 - ⚡ **Instant Response**: `enable_audio_bell no`, `confirm_os_window_close 0`, and starts directly into `/usr/bin/zsh`.
-- 🔤 **JetBrainsMono Nerd Font**: Sized at `10.5pt` with `8px` padding.
+- 🔤 **JetBrainsMonoNL Nerd Font**: Sized at `10.5pt` (No Ligatures variant) with `8px` padding.
 
 ---
 
@@ -54,7 +54,7 @@ Vim (vim-config) <https://vim-config.readthedocs.io/en/latest/>
 ### Standalone Installation
 
 ```bash
-git clone https://github.com/MichaelWeissDEV/kittiy-config.git ~/.config/kitty
+git clone https://github.com/MichaelWeissDEV/kitty-config.git ~/.config/kitty
 kitty
 ```
 

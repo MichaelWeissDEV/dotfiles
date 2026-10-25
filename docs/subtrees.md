@@ -38,7 +38,7 @@ Traditional Git submodules frequently create friction:
 | **`nvim/`** | `nvim-remote` | `https://github.com/MichaelWeissDEV/nvim-config.git` | `main` | [nvim-config.readthedocs.io](https://nvim-config.readthedocs.io/en/latest/) |
 | **`tmux/`** | `tmux-remote` | `https://github.com/MichaelWeissDEV/tmux-config.git` | `main` | [tmux-config.readthedocs.io](https://tmux-config.readthedocs.io/en/latest/) |
 | **`ghostty/`** | `ghostty-remote` | `https://github.com/MichaelWeissDEV/ghostty-config.git` | `main` | [ghostty-config.readthedocs.io](https://ghostty-config.readthedocs.io/en/latest/) |
-| **`kitty/`** | `kitty-remote` | `https://github.com/MichaelWeissDEV/kittiy-config.git` | `main` | [kitty-config.readthedocs.io](https://kitty-config.readthedocs.io/en/latest/) |
+| **`kitty/`** | `kitty-remote` | `https://github.com/MichaelWeissDEV/kitty-config.git` | `main` | [kitty-config.readthedocs.io](https://kitty-config.readthedocs.io/en/latest/) |
 | **`foot/`** | `foot-remote` | `https://github.com/MichaelWeissDEV/foot-config.git` | `main` | [Terminals Guide](https://arch-dotfiles.readthedocs.io/en/latest/terminals/) |
 | **`vim/`** | `vim-remote` | `https://github.com/MichaelWeissDEV/vim-config.git` | `main` | [vim-config.readthedocs.io](https://vim-config.readthedocs.io/en/latest/) |
 
@@ -106,7 +106,7 @@ cd ~/git/dotfiles
 git remote add nvim-remote    https://github.com/MichaelWeissDEV/nvim-config.git
 git remote add tmux-remote    https://github.com/MichaelWeissDEV/tmux-config.git
 git remote add ghostty-remote https://github.com/MichaelWeissDEV/ghostty-config.git
-git remote add kitty-remote   https://github.com/MichaelWeissDEV/kittiy-config.git
+git remote add kitty-remote   https://github.com/MichaelWeissDEV/kitty-config.git
 git remote add foot-remote    https://github.com/MichaelWeissDEV/foot-config.git
 git remote add vim-remote     https://github.com/MichaelWeissDEV/vim-config.git
 
@@ -128,6 +128,6 @@ git subtree push --prefix=nvim nvim-remote main
 | **Neovim (`nvim-config`)** | [MichaelWeissDEV/nvim-config](https://github.com/MichaelWeissDEV/nvim-config) | [nvim-config.readthedocs.io](https://nvim-config.readthedocs.io/en/latest/) |
 | **tmux (`tmux-config`)** | [MichaelWeissDEV/tmux-config](https://github.com/MichaelWeissDEV/tmux-config) | [tmux-config.readthedocs.io](https://tmux-config.readthedocs.io/en/latest/) |
 | **Ghostty (`ghostty-config`)** | [MichaelWeissDEV/ghostty-config](https://github.com/MichaelWeissDEV/ghostty-config) | [ghostty-config.readthedocs.io](https://ghostty-config.readthedocs.io/en/latest/) |
-| **Kitty (`kitty-config`)** | [MichaelWeissDEV/kittiy-config](https://github.com/MichaelWeissDEV/kittiy-config) | [kitty-config.readthedocs.io](https://kitty-config.readthedocs.io/en/latest/) |
+| **Kitty (`kitty-config`)** | [MichaelWeissDEV/kitty-config](https://github.com/MichaelWeissDEV/kitty-config) | [kitty-config.readthedocs.io](https://kitty-config.readthedocs.io/en/latest/) |
 | **Foot (`foot-config`)** | [MichaelWeissDEV/foot-config](https://github.com/MichaelWeissDEV/foot-config) | [Terminals Guide](https://arch-dotfiles.readthedocs.io/en/latest/terminals/) |
 | **Vim (`vim-config`)** | [MichaelWeissDEV/vim-config](https://github.com/MichaelWeissDEV/vim-config) | [vim-config.readthedocs.io](https://vim-config.readthedocs.io/en/latest/) |

@@ -47,10 +47,9 @@ The ecosystem is documented across six interconnected **Read the Docs** sites. T
 | **`nvim-config`** | Reproducible, Offline-Capable Neovim IDE | [`MichaelWeissDEV/nvim-config`](https://github.com/MichaelWeissDEV/nvim-config) | [**nvim-config.readthedocs.io**](https://nvim-config.readthedocs.io/en/latest/) |
 | **`tmux-config`** | Portable, Fast Terminal Multiplexer | [`MichaelWeissDEV/tmux-config`](https://github.com/MichaelWeissDEV/tmux-config) | [**tmux-config.readthedocs.io**](https://tmux-config.readthedocs.io/en/latest/) |
 | **`ghostty-config`** | Minimalist GPU Terminal (Ghostty) | [`MichaelWeissDEV/ghostty-config`](https://github.com/MichaelWeissDEV/ghostty-config) | [**ghostty-config.readthedocs.io**](https://ghostty-config.readthedocs.io/en/latest/) |
-| **`kitty-config`** | GPU Terminal with Powerline Tabs (Kitty) | [`MichaelWeissDEV/kittiy-config`](https://github.com/MichaelWeissDEV/kittiy-config) | [**kitty-config.readthedocs.io**](https://kitty-config.readthedocs.io/en/latest/) |
+| **`kitty-config`** | GPU Terminal with Powerline Tabs (Kitty) | [`MichaelWeissDEV/kitty-config`](https://github.com/MichaelWeissDEV/kitty-config) | [**kitty-config.readthedocs.io**](https://kitty-config.readthedocs.io/en/latest/) |
+| **`foot-config`** | Ultra-Lightweight Wayland Terminal (Foot) | [`MichaelWeissDEV/foot-config`](https://github.com/MichaelWeissDEV/foot-config) | [**Terminals Guide**](https://arch-dotfiles.readthedocs.io/en/latest/terminals/) |
 | **`vim-config`** | Zero-Plugin Standalone Vim Configuration | [`MichaelWeissDEV/vim-config`](https://github.com/MichaelWeissDEV/vim-config) | [**vim-config.readthedocs.io**](https://vim-config.readthedocs.io/en/latest/) |
-
-The **Foot** configuration is maintained as a standalone repository ([`MichaelWeissDEV/foot-config`](https://github.com/MichaelWeissDEV/foot-config)) and documented in the [Terminals Guide](https://arch-dotfiles.readthedocs.io/en/latest/terminals/).
 
 ---
 
@@ -64,7 +63,7 @@ The **Foot** configuration is maintained as a standalone repository ([`MichaelWe
 | **[`fuzzel/`](fuzzel/)** | [`fuzzel/fuzzel.ini`](fuzzel/fuzzel.ini) | `~/.config/fuzzel` | [README](fuzzel/README.md) · [Guide](https://arch-dotfiles.readthedocs.io/en/latest/hyprland/#application-launcher--power-menu) |
 | **[`wallpaper/`](wallpaper/)** | [`wallpaper/wallpaper.sh`](wallpaper/wallpaper.sh), [`wallpaper/wallpaper.conf`](wallpaper/wallpaper.conf) | `~/.config/wallpaper`, `~/.local/bin/wallpaper` | [README](wallpaper/README.md) · [Guide](https://arch-dotfiles.readthedocs.io/en/latest/hyprland/#wallpaper-management-hyprpaper) |
 | **[`ghostty/`](ghostty/)** | [`ghostty/config`](ghostty/config) *(Git Subtree: `MichaelWeissDEV/ghostty-config`)* | `~/.config/ghostty` | [README](ghostty/README.md) · [Docs](https://ghostty-config.readthedocs.io/en/latest/) |
-| **[`kitty/`](kitty/)** | [`kitty/kitty.conf`](kitty/kitty.conf) *(Git Subtree: `MichaelWeissDEV/kittiy-config`)* | `~/.config/kitty` | [README](kitty/README.md) · [Docs](https://kitty-config.readthedocs.io/en/latest/) |
+| **[`kitty/`](kitty/)** | [`kitty/kitty.conf`](kitty/kitty.conf) *(Git Subtree: `MichaelWeissDEV/kitty-config`)* | `~/.config/kitty` | [README](kitty/README.md) · [Docs](https://kitty-config.readthedocs.io/en/latest/) |
 | **[`foot/`](foot/)** | [`foot/foot.ini`](foot/foot.ini) *(Git Subtree: `MichaelWeissDEV/foot-config`)* | `~/.config/foot` | [README](foot/README.md) · [Docs](https://arch-dotfiles.readthedocs.io/en/latest/terminals/) |
 | **[`nvim/`](nvim/)** | [`nvim/init.lua`](nvim/init.lua), [`nvim/lua/`](nvim/lua/) *(Git Subtree: `MichaelWeissDEV/nvim-config`)* | `~/.config/nvim` | [README](nvim/README.md) · [Docs](https://nvim-config.readthedocs.io/en/latest/) |
 | **[`tmux/`](tmux/)** | [`tmux/tmux.conf`](tmux/tmux.conf) *(Git Subtree: `MichaelWeissDEV/tmux-config`)* | `~/.config/tmux`, `~/.tmux.conf` | [README](tmux/README.md) · [Docs](https://tmux-config.readthedocs.io/en/latest/) |
@@ -214,7 +213,7 @@ Because `nvim`, `tmux`, `ghostty`, `kitty`, `foot`, and `vim` are embedded as **
 | **`nvim/`** | `nvim-remote` | `https://github.com/MichaelWeissDEV/nvim-config.git` | `main` | [nvim-config.readthedocs.io](https://nvim-config.readthedocs.io/en/latest/) |
 | **`tmux/`** | `tmux-remote` | `https://github.com/MichaelWeissDEV/tmux-config.git` | `main` | [tmux-config.readthedocs.io](https://tmux-config.readthedocs.io/en/latest/) |
 | **`ghostty/`** | `ghostty-remote` | `https://github.com/MichaelWeissDEV/ghostty-config.git` | `main` | [ghostty-config.readthedocs.io](https://ghostty-config.readthedocs.io/en/latest/) |
-| **`kitty/`** | `kitty-remote` | `https://github.com/MichaelWeissDEV/kittiy-config.git` | `main` | [kitty-config.readthedocs.io](https://kitty-config.readthedocs.io/en/latest/) |
+| **`kitty/`** | `kitty-remote` | `https://github.com/MichaelWeissDEV/kitty-config.git` | `main` | [kitty-config.readthedocs.io](https://kitty-config.readthedocs.io/en/latest/) |
 | **`foot/`** | `foot-remote` | `https://github.com/MichaelWeissDEV/foot-config.git` | `main` | [Terminals Guide](https://arch-dotfiles.readthedocs.io/en/latest/terminals/) |
 | **`vim/`** | `vim-remote` | `https://github.com/MichaelWeissDEV/vim-config.git` | `main` | [vim-config.readthedocs.io](https://vim-config.readthedocs.io/en/latest/) |
 
@@ -242,7 +241,7 @@ cd ~/git/dotfiles
 git remote add nvim-remote    https://github.com/MichaelWeissDEV/nvim-config.git
 git remote add tmux-remote    https://github.com/MichaelWeissDEV/tmux-config.git
 git remote add ghostty-remote https://github.com/MichaelWeissDEV/ghostty-config.git
-git remote add kitty-remote   https://github.com/MichaelWeissDEV/kittiy-config.git
+git remote add kitty-remote   https://github.com/MichaelWeissDEV/kitty-config.git
 git remote add foot-remote    https://github.com/MichaelWeissDEV/foot-config.git
 git remote add vim-remote     https://github.com/MichaelWeissDEV/vim-config.git
 

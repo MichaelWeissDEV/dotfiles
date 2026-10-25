@@ -23,7 +23,7 @@ Regardless of which terminal emulator is active, you experience consistent visua
 
 - 🎨 **Palette**: Official **Catppuccin Mocha** pastel colors (`#1e1e2e` base, `#cdd6f4` text, `#89b4fa` pastel blue selection, `#f5e0dc` rosewater block cursor).
 - 🪟 **Transparency**: Uniform `0.90` background opacity for smooth compositing on Wayland.
-- 🔤 **Typography**: **JetBrainsMono Nerd Font** (`10.5pt`) with `8px` window padding and complete Powerline/Nerd Font glyphs.
+- 🔤 **Typography**: **JetBrainsMonoNL Nerd Font** (`10.5pt`, No Ligatures variant) with `8px` window padding, complete Powerline/Nerd Font glyphs, and zero operator ligatures (`==`, `->`, `*` remain unmodified).
 - 🐚 **Default Shell**: Automatically launches into `/usr/bin/zsh` with Oh My Zsh (see [Shell Guide](shell.md)).
 - 🔔 **Bell**: Audio bell disabled across all emulators (`enable_audio_bell no`, `urgent=no`).
 
@@ -38,7 +38,7 @@ Regardless of which terminal emulator is active, you experience consistent visua
 | **Wayland Support** | Native Wayland (GTK4) | Native Wayland | Native Wayland |
 | **Tab Management** | Native GTK4 tabs | Powerline tabs | Multiplexer ([tmux](https://tmux-config.readthedocs.io/en/latest/)) |
 | **Config Reload Shortcut** | <kbd>Ctrl+Shift+,</kbd> | <kbd>Ctrl+Shift+F5</kbd> | Automatic / restart |
-| **Repository** | [MichaelWeissDEV/ghostty-config](https://github.com/MichaelWeissDEV/ghostty-config) | [MichaelWeissDEV/kittiy-config](https://github.com/MichaelWeissDEV/kittiy-config) | [MichaelWeissDEV/foot-config](https://github.com/MichaelWeissDEV/foot-config) |
+| **Repository** | [MichaelWeissDEV/ghostty-config](https://github.com/MichaelWeissDEV/ghostty-config) | [MichaelWeissDEV/kitty-config](https://github.com/MichaelWeissDEV/kitty-config) | [MichaelWeissDEV/foot-config](https://github.com/MichaelWeissDEV/foot-config) |
 | **Documentation** | [**ghostty-config.readthedocs.io**](https://ghostty-config.readthedocs.io/en/latest/) | [**kitty-config.readthedocs.io**](https://kitty-config.readthedocs.io/en/latest/) | [Foot section](#3-foot-configfootfootini) · built-in man pages (`man foot.ini`) |
 
 ---
@@ -55,10 +55,10 @@ Managed via the Git subtree `MichaelWeissDEV/ghostty-config` (`adot update ghost
 
 ### 2. Kitty (`~/.config/kitty/kitty.conf`)
 
-Managed via the Git subtree `MichaelWeissDEV/kittiy-config` (`adot update kitty`; see [Git Subtrees](subtrees.md)). Kitty provides mature graphics protocols, kitten automation scripts, dynamic background opacity, and a custom Catppuccin Powerline tab bar.
+Managed via the Git subtree `MichaelWeissDEV/kitty-config` (`adot update kitty`; see [Git Subtrees](subtrees.md)). Kitty provides mature graphics protocols, kitten automation scripts, dynamic background opacity, and a custom Catppuccin Powerline tab bar.
 
 - **Config path**: `~/.config/kitty/kitty.conf`
-- **GitHub Repository**: [MichaelWeissDEV/kittiy-config](https://github.com/MichaelWeissDEV/kittiy-config)
+- **GitHub Repository**: [MichaelWeissDEV/kitty-config](https://github.com/MichaelWeissDEV/kitty-config)
 - **Full Documentation**: [kitty-config.readthedocs.io](https://kitty-config.readthedocs.io/en/latest/)
 
 ### 3. Foot (`~/.config/foot/foot.ini`)
@@ -92,5 +92,6 @@ To switch your default terminal to Ghostty or Foot, change `local terminal = "gh
 | **Neovim (`nvim-config`)** | [MichaelWeissDEV/nvim-config](https://github.com/MichaelWeissDEV/nvim-config) | [nvim-config.readthedocs.io](https://nvim-config.readthedocs.io/en/latest/) |
 | **tmux (`tmux-config`)** | [MichaelWeissDEV/tmux-config](https://github.com/MichaelWeissDEV/tmux-config) | [tmux-config.readthedocs.io](https://tmux-config.readthedocs.io/en/latest/) |
 | **Ghostty (`ghostty-config`)** | [MichaelWeissDEV/ghostty-config](https://github.com/MichaelWeissDEV/ghostty-config) | [ghostty-config.readthedocs.io](https://ghostty-config.readthedocs.io/en/latest/) |
-| **Kitty (`kitty-config`)** | [MichaelWeissDEV/kittiy-config](https://github.com/MichaelWeissDEV/kittiy-config) | [kitty-config.readthedocs.io](https://kitty-config.readthedocs.io/en/latest/) |
+| **Kitty (`kitty-config`)** | [MichaelWeissDEV/kitty-config](https://github.com/MichaelWeissDEV/kitty-config) | [kitty-config.readthedocs.io](https://kitty-config.readthedocs.io/en/latest/) |
+| **Foot (`foot-config`)** | [MichaelWeissDEV/foot-config](https://github.com/MichaelWeissDEV/foot-config) | [Terminals Guide](terminals.md) |
 | **Vim (`vim-config`)** | [MichaelWeissDEV/vim-config](https://github.com/MichaelWeissDEV/vim-config) | [vim-config.readthedocs.io](https://vim-config.readthedocs.io/en/latest/) |

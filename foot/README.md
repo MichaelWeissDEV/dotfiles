@@ -29,7 +29,7 @@ The configuration is embedded into the main dotfiles repository as a **Git subtr
 
 - **Catppuccin Mocha palette**: complete 16-color regular and bright palette matching the Ghostty and Kitty configurations.
 - **Consistent transparency**: `alpha=0.90`, synchronized with the other terminals in the ecosystem.
-- **Clean typography**: `JetBrainsMono Nerd Font` at `10.5pt` with `8x8` padding.
+- **Clean typography**: `JetBrainsMonoNL Nerd Font` (`No Ligatures` variant) at `10.5pt` with `8x8` padding — full Nerd Font icon coverage without ligatures (`==`, `->`, `*` stay unmodified).
 - **Minimal cursor styling**: a solid block cursor in Rosewater (`#f5e0dc`) on Base (`#1e1e2e`).
 - **Dark color scheme**: defined through `[colors-dark]`, with matching selection colors.
 - **Quiet operation**: no urgent hints or desktop notifications on bell events.
@@ -46,7 +46,7 @@ The configuration is embedded into the main dotfiles repository as a **Git subtr
 | Setting | Value |
 | :--- | :--- |
 | `shell` | `/usr/bin/zsh` |
-| `font` | `JetBrainsMono Nerd Font:size=10.5` |
+| `font` | `JetBrainsMonoNL Nerd Font:size=10.5` |
 | `pad` | `8x8` |
 | `alpha` | `0.90` |
 | `background` / `foreground` | `#1e1e2e` / `#cdd6f4` |
@@ -103,7 +103,7 @@ adot push foot     # push local subtree commits upstream
 ## Requirements
 
 - **Foot** — install with `sudo pacman -S foot` on Arch Linux.
-- **JetBrainsMono Nerd Font** — install with `sudo pacman -S ttf-jetbrains-mono-nerd`.
+- **JetBrainsMonoNL Nerd Font** — install with `sudo pacman -S ttf-jetbrains-mono-nerd`.
 - **Zsh** — installed at `/usr/bin/zsh`; adjust `shell=` in `foot.ini` if your shell lives elsewhere.
 - **Wayland compositor** — Foot runs natively on Wayland (e.g. Hyprland or Sway).
 
@@ -114,7 +114,7 @@ adot push foot     # push local subtree commits upstream
 | **Arch Dotfiles Hub** | [`MichaelWeissDEV/dotfiles`](https://github.com/MichaelWeissDEV/dotfiles) | [arch-dotfiles.readthedocs.io](https://arch-dotfiles.readthedocs.io/en/latest/) |
 | **Foot (`foot-config`)** | [`MichaelWeissDEV/foot-config`](https://github.com/MichaelWeissDEV/foot-config) | [Terminals Guide](https://arch-dotfiles.readthedocs.io/en/latest/terminals/) |
 | **Ghostty (`ghostty-config`)** | [`MichaelWeissDEV/ghostty-config`](https://github.com/MichaelWeissDEV/ghostty-config) | [ghostty-config.readthedocs.io](https://ghostty-config.readthedocs.io/en/latest/) |
-| **Kitty (`kittiy-config`)** | [`MichaelWeissDEV/kittiy-config`](https://github.com/MichaelWeissDEV/kittiy-config) | [kitty-config.readthedocs.io](https://kitty-config.readthedocs.io/en/latest/) |
+| **Kitty (`kitty-config`)** | [`MichaelWeissDEV/kitty-config`](https://github.com/MichaelWeissDEV/kitty-config) | [kitty-config.readthedocs.io](https://kitty-config.readthedocs.io/en/latest/) |
 | **Neovim (`nvim-config`)** | [`MichaelWeissDEV/nvim-config`](https://github.com/MichaelWeissDEV/nvim-config) | [nvim-config.readthedocs.io](https://nvim-config.readthedocs.io/en/latest/) |
 | **tmux (`tmux-config`)** | [`MichaelWeissDEV/tmux-config`](https://github.com/MichaelWeissDEV/tmux-config) | [tmux-config.readthedocs.io](https://tmux-config.readthedocs.io/en/latest/) |
 | **Vim (`vim-config`)** | [`MichaelWeissDEV/vim-config`](https://github.com/MichaelWeissDEV/vim-config) | [vim-config.readthedocs.io](https://vim-config.readthedocs.io/en/latest/) |

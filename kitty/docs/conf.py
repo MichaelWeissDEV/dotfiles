@@ -1,4 +1,4 @@
-"""Sphinx configuration for kittiy-config documentation.
+"""Sphinx configuration for kitty-config documentation.
 Builds with Sphinx + MyST + Furo.
 """
 
@@ -42,7 +42,7 @@ myst_heading_anchors = 3
 html_theme = "furo"
 html_title = "kitty-config docs"
 html_theme_options = {
-    "source_repository": "https://github.com/MichaelWeissDEV/kittiy-config",
+    "source_repository": "https://github.com/MichaelWeissDEV/kitty-config",
     "source_branch": "main",
     "source_directory": "docs/",
     "light_css_variables": {

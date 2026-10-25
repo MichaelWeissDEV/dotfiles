@@ -7,7 +7,7 @@ This guide covers installing the **Kitty** terminal emulator, securing font requ
 ## Prerequisites
 
 1. **Kitty terminal emulator**: Version 0.28 or newer.
-2. **Nerd Font**: `JetBrainsMono Nerd Font` for status icons, Neovim file tree symbols, and Powerline glyphs.
+2. **Nerd Font**: `JetBrainsMonoNL Nerd Font` (`ttf-jetbrains-mono-nerd`) for status icons, Neovim file tree symbols, Powerline glyphs, and ligature-free code rendering.
 3. **Shell**: Configured to spawn `/usr/bin/zsh`.
 
 ---
@@ -47,8 +47,8 @@ Clone the repository directly into your XDG configuration directory:
 # Backup any existing configuration
 [ -d ~/.config/kitty ] && mv ~/.config/kitty ~/.config/kitty.bak
 
-# Clone kittiy-config
-git clone https://github.com/MichaelWeissDEV/kittiy-config.git ~/.config/kitty
+# Clone kitty-config
+git clone https://github.com/MichaelWeissDEV/kitty-config.git ~/.config/kitty
 ```
 
 ### Route B: Inside the Arch Dotfiles Hub
