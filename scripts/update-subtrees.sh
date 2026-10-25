@@ -163,6 +163,15 @@ push_one() {
     branch="$(get_branch "$mod")"
 
     ensure_remotes
+    check_clean_worktree || return 1
+
+    if remote_has_branch "$remote_name" "$branch"; then
+        git -C "$DOTFILES_DIR" fetch "$remote_name" "$branch" >/dev/null 2>&1 || true
+        if git -C "$DOTFILES_DIR" diff --quiet "HEAD:$mod" "$remote_name/$branch" 2>/dev/null; then
+            ok "Subtree '$mod/' ist auf $remote_name/$branch bereits aktuell (keine Änderungen zu pushen)."
+            return 0
+        fi
+    fi
 
     info "Pushe Subtree '$mod/' nach $remote_name ($remote_url -> $branch)..."
     git -C "$DOTFILES_DIR" subtree push --prefix="$mod" "$remote_name" "$branch"

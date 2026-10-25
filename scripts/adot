@@ -868,29 +868,71 @@ handle_list() {
     esac
 }
 
+push_dotfiles_repo() {
+    if ! git -C "$DOTFILES_DIR" remote get-url origin >/dev/null 2>&1; then
+        error "No 'origin' remote configured in $DOTFILES_DIR."
+        return 1
+    fi
+
+    if [[ -f "$DOTFILES_DIR/.git/MERGE_HEAD" ]]; then
+        error "An unfinished Git merge is active in $DOTFILES_DIR! Resolve or abort before pushing."
+        return 1
+    fi
+
+    if [[ -n "$(git -C "$DOTFILES_DIR" status --porcelain)" ]]; then
+        warn "Uncommitted changes exist in $DOTFILES_DIR (commit them first so they are included in the push)."
+    fi
+
+    local branch
+    branch="$(git -C "$DOTFILES_DIR" rev-parse --abbrev-ref HEAD 2>/dev/null || echo "main")"
+    info "Pushing main dotfiles repository ($DOTFILES_DIR -> origin/$branch)..."
+    git -C "$DOTFILES_DIR" push origin "$branch"
+    ok "Main dotfiles repository pushed to origin/$branch."
+}
+
 push_target() {
     local target="${1:-all}"
     case "$target" in
         all)
-            info "Pushing main dotfiles repository ($DOTFILES_DIR -> origin)..."
-            git -C "$DOTFILES_DIR" push origin "$(git -C "$DOTFILES_DIR" rev-parse --abbrev-ref HEAD)"
-            ok "Main dotfiles repository pushed to origin."
+            section "1/2 Pushing Central Dotfiles Repository ($DOTFILES_DIR -> origin)"
+            push_dotfiles_repo
+
+            section "2/2 Pushing Embedded Git Subtrees (${SUBTREE_MODULES[*]})"
             "$SCRIPTS_DIR/update-subtrees.sh" push all
+
+            if [[ -d "$DOTFILES_DIR/pictures/.git" ]]; then
+                section "Pushing Private Wallpaper Repository (pictures/)"
+                git -C "$DOTFILES_DIR/pictures" push
+                ok "Private wallpaper repository pushed."
+            fi
+
+            printf "\n"
+            ok "All updates pushed to remote repositories ('adot push')!"
             ;;
-        dotfiles|main|repo|origin)
-            info "Pushing main dotfiles repository ($DOTFILES_DIR -> origin)..."
-            git -C "$DOTFILES_DIR" push origin "$(git -C "$DOTFILES_DIR" rev-parse --abbrev-ref HEAD)"
-            ok "Main dotfiles repository pushed to origin."
+        dotfiles|main|repo|origin|self)
+            section "Pushing Central Dotfiles Repository ($DOTFILES_DIR -> origin)"
+            push_dotfiles_repo
             ;;
-        subtrees)
-            "$SCRIPTS_DIR/update-subtrees.sh" push all
+        subtrees|subtree)
+            section "Pushing All 6 Git Subtrees (${SUBTREE_MODULES[*]})"
+            "$SCRIPTS_DIR/update-subtrees.sh" push "${2:-all}"
             ;;
         nvim|tmux|ghostty|kitty|foot|vim)
+            section "Pushing Git Subtree: $target"
             "$SCRIPTS_DIR/update-subtrees.sh" push "$target"
+            ;;
+        wallpapers|pictures|wp)
+            if [[ -d "$DOTFILES_DIR/pictures/.git" ]]; then
+                section "Pushing Private Wallpaper Repository (pictures/)"
+                git -C "$DOTFILES_DIR/pictures" push
+                ok "Private wallpaper repository pushed."
+            else
+                warn "No private wallpaper git repo in pictures/."
+            fi
             ;;
         *)
             error "Unknown push target: '$target'"
-            echo "Valid targets: all, dotfiles, subtrees, nvim, tmux, ghostty, kitty, foot, vim"
+            echo "Valid targets: all, dotfiles, subtrees, nvim, tmux, ghostty, kitty, foot, vim, wallpapers"
             exit 1
             ;;
     esac
@@ -989,7 +1031,7 @@ main() {
             ;;
         push)
             shift || true
-            push_target "${1:-all}"
+            push_target "${1:-all}" "${2:-}"
             ;;
         packages|pkgs)
             install_packages
