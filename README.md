@@ -9,13 +9,17 @@ macOS · Linux · WSL2 · MSYS2/Cygwin
 
 [![CI](https://github.com/MichaelWeissDEV/tmux-config/actions/workflows/ci.yml/badge.svg)](https://github.com/MichaelWeissDEV/tmux-config/actions/workflows/ci.yml)
 [![Docs](https://readthedocs.org/projects/tmux-config/badge/?version=latest)](https://tmux-config.readthedocs.io/en/latest/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Dotfiles Hub](https://img.shields.io/badge/ecosystem-arch--dotfiles-1793D1?logo=arch-linux&logoColor=white)](https://arch-dotfiles.readthedocs.io/en/latest/)
+[![Theme: Catppuccin Mocha](https://img.shields.io/badge/theme-Catppuccin%20Mocha-cba6f7)](https://github.com/catppuccin/catppuccin)
 [![tmux 3.3+](https://img.shields.io/badge/tmux-3.3%2B-1BB91F?logo=tmux&logoColor=white)](https://github.com/tmux/tmux)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-[**Documentation**](https://tmux-config.readthedocs.io) ·
+[**Documentation**](https://tmux-config.readthedocs.io/en/latest/) ·
 [Installation](https://tmux-config.readthedocs.io/en/latest/getting-started/installation/) ·
-[Configuration](https://tmux-config.readthedocs.io/en/latest/configuration/) ·
-[Keybindings](https://tmux-config.readthedocs.io/en/latest/keybindings/quick/)
+[Configuration Guide](https://tmux-config.readthedocs.io/en/latest/configuration/) ·
+[Configuration File (`tmux.conf`)](tmux.conf) ·
+[Keybindings](https://tmux-config.readthedocs.io/en/latest/keybindings/quick/) ·
+[Arch Dotfiles Hub](https://arch-dotfiles.readthedocs.io/en/latest/)
 
 </div>
 
@@ -133,22 +137,15 @@ tmux **3.3+**, and a UTF-8 locale. No Nerd Font, no Python, no plugin manager.
 
 ## Layout
 
-```
-tmux.conf              loader
-config/                core: options, keys, copy mode, clipboard, theme, status
-capabilities/          detect.conf, terminal.conf, symbols.conf
-terminals/             targeted fixes for known-broken terminals
-plugins/               one adapter per plugin
-vendor/                vendored plugins (git subtree) — no plugin manager
-vendor-manifest/       upstream, pinned revision, licence per plugin
-keys/                  the key registry: upstream (captured from tmux),
-                       custom, and the generated merge
-local-options.conf     yours, gitignored, loaded BEFORE the modules
-local.conf             yours, gitignored, loaded last
-scripts/               info · doctor · check · check-key-conflicts
-                       key-explorer · update-vendor · doc generators
-tests/run              behaviour tests across TERM/locale/SSH environments
-```
+| Path | Role |
+| :--- | :--- |
+| **[`tmux.conf`](tmux.conf)** | Main configuration loader (`source-file` chain) |
+| **[`config/`](config/)** | Core modules: options, key tables, copy mode, clipboard, status line |
+| **[`config/themes/`](config/themes/)** | Theme definitions (including `catppuccin-mocha.conf`) |
+| **[`capabilities/`](capabilities/)** | Auto-detection: `detect.conf`, `terminal.conf`, `symbols.conf` |
+| **[`plugins/`](plugins/)** | Adapters for vendored plugins |
+| **[`vendor/`](vendor/)** | Vendored plugins via Git Subtree (no TPM needed) |
+| **[`scripts/`](scripts/)** | Diagnostic tools (`info`, `doctor`, `check`), key explorer |
 
 ## Development
 
@@ -163,7 +160,8 @@ tests/run              behaviour tests across TERM/locale/SSH environments
 ./scripts/gen-options.py > docs/reference/options.md  # after changing options
 ./scripts/gen-upstream-keys                           # capture this tmux's keymap
 
-pip install -r requirements-docs.txt && mkdocs serve  # preview the docs
+pip install -r requirements-docs.txt
+make -C docs dirhtml   # strict documentation build, like Read the Docs
 ```
 
 `check` verifies that no Ctrl key is globally intercepted, that no key is bound
@@ -218,6 +216,23 @@ Die vollständige Dokumentation ist auf Englisch:
 [tmux-config.readthedocs.io](https://tmux-config.readthedocs.io)
 
 </details>
+
+## Connected Dotfiles Ecosystem
+
+This configuration is part of the modular **Arch Linux Dotfiles** ecosystem, designed so anyone can install it out-of-the-box on Arch Linux or run it standalone on any Linux distribution, macOS, or WSL2/MSYS2:
+
+| Component | Repository | Documentation |
+| :--- | :--- | :--- |
+| **Arch Dotfiles Hub** *(Main System)* | [`MichaelWeissDEV/dotfiles`](https://github.com/MichaelWeissDEV/dotfiles) | [arch-dotfiles.readthedocs.io](https://arch-dotfiles.readthedocs.io/en/latest/) |
+| **Neovim (`nvim-config`)** | [`MichaelWeissDEV/nvim-config`](https://github.com/MichaelWeissDEV/nvim-config) | [nvim-config.readthedocs.io](https://nvim-config.readthedocs.io/en/latest/) |
+| **tmux (`tmux-config`)** | [`MichaelWeissDEV/tmux-config`](https://github.com/MichaelWeissDEV/tmux-config) | [tmux-config.readthedocs.io](https://tmux-config.readthedocs.io/en/latest/) |
+| **Ghostty (`ghostty-config`)** | [`MichaelWeissDEV/ghostty-config`](https://github.com/MichaelWeissDEV/ghostty-config) | [ghostty-config.readthedocs.io](https://ghostty-config.readthedocs.io/en/latest/) |
+| **Kitty (`kitty-config`)** | [`MichaelWeissDEV/kittiy-config`](https://github.com/MichaelWeissDEV/kittiy-config) | [kitty-config.readthedocs.io](https://kitty-config.readthedocs.io/en/latest/) |
+| **Vim (`vim-config`)** | [`MichaelWeissDEV/vim-config`](https://github.com/MichaelWeissDEV/vim-config) | [vim-config.readthedocs.io](https://vim-config.readthedocs.io/en/latest/) |
+
+Inside `~/git/dotfiles`, update this subtree or the entire ecosystem via `adot update tmux` or `adot update` (also linked as `arch-dot` / `arch-dotfiles`).
+
+---
 
 ## Contributing
 
