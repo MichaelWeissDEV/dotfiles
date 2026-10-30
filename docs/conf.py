@@ -38,7 +38,6 @@ myst_enable_extensions = [
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", ".venv"]
 
 myst_heading_anchors = 3
-suppress_warnings = ["myst.header", "myst.xref_missing"]
 
 html_theme = "furo"
 html_title = "arch-dotfiles docs"

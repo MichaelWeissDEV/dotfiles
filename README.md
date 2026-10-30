@@ -2,6 +2,10 @@
 
 **Einmal installieren. In einzelnen Repositories entwickeln. Mit `pacman -Syu` aktualisieren.**
 
+**[Vollständige Dokumentation](https://arch-dotfiles.readthedocs.io/en/latest/)** ·
+[Komponenten](https://arch-dotfiles.readthedocs.io/en/latest/components/) ·
+[Installation prüfen](https://arch-dotfiles.readthedocs.io/en/latest/verification/)
+
 Dieses Repository enthält Installer, Paketverwaltung und die signierte
 Pacman-Registry. Die 16 Konfigurationen liegen in **eigenen GitHub-Repositories**,
 nicht mehr als Subtrees oder Konfigurationskopien in diesem Repository.

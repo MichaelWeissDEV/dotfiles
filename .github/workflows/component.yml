@@ -1,0 +1,42 @@
+name: Component package safety
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    name: Safe package and documentation
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      ARCH_DOTFILES_SOURCE_ROOT: ${{ github.workspace }}/.sources
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          path: .sources/${{ github.event.repository.name }}
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: MichaelWeissDEV/dotfiles
+          ref: main
+          persist-credentials: false
+          path: tooling
+      - name: Validate component without changing the runner system
+        id: contract
+        run: python3 tooling/packaging/arch/check-component.py --repository "$GITHUB_REPOSITORY" --github-output "$GITHUB_OUTPUT"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        if: steps.contract.outputs.docs == 'true'
+        with:
+          python-version: ${{ steps.contract.outputs.python }}
+          cache: pip
+          cache-dependency-path: .sources/${{ github.event.repository.name }}/docs/requirements.txt
+      - name: Build documentation with the Read the Docs Python version
+        if: steps.contract.outputs.docs == 'true'
+        env:
+          COMPONENT: .sources/${{ github.event.repository.name }}
+        run: |
+          python -m pip install -r "$COMPONENT/docs/requirements.txt"
+          sphinx-build -W --keep-going -b dirhtml "$COMPONENT/docs" "$RUNNER_TEMP/component-docs"

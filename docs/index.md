@@ -16,6 +16,8 @@ Start: [Installation](installation.md) ·
 
 installation
 arch-package
+components
+verification
 hyprland
 waybar
 terminals
