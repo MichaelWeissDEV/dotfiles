@@ -1,3 +1,0 @@
-# Fixture
-
-Some *markdown* text.

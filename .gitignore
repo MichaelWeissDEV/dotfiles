@@ -10,11 +10,11 @@
 .DS_Store
 
 # Lokale Tmux-Overrides (falls angelegt)
-tmux/local.conf
-tmux/local-options.conf
+packages/arch-dotfiles-tmux/config/local.conf
+packages/arch-dotfiles-tmux/config/local-options.conf
 
 # Individuelle Monitor-Anordnung (pro Rechner, nicht versionieren)
-hypr/monitors.local.lua
+packages/arch-dotfiles-hypr/config/monitors.local.lua
 
 # Dokumentations-Builds (Sphinx & MkDocs)
 _build/
@@ -27,3 +27,9 @@ __pycache__/
 # Wird separat geklont und ist bewusst NICHT Teil des öffentlichen Dotfiles-Repos.
 # Einrichtung: ~/git/dotfiles/scripts/install-wallpapers.sh <git-url>
 pictures/
+
+# Arch package build output (contains generated sources and binary packages)
+packaging/arch/build/
+packaging/arch/repo/
+.sources/
+/sources.json

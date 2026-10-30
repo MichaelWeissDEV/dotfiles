@@ -1,0 +1,18 @@
+post_install() {
+    cat <<'MESSAGE'
+==> Install individual arch-dotfiles-<module> packages or the arch-dotfiles metapackage.
+==> Run WITHOUT sudo: arch-dotfiles-config activate [module ...]
+==> Existing settings are backed up; personal configuration stays user-owned.
+==> No services or login shells were changed automatically.
+==> See /usr/share/doc/arch-dotfiles/README.md
+MESSAGE
+}
+
+post_upgrade() {
+    echo '==> Run WITHOUT sudo: arch-dotfiles-config update (keeps personal edits).'
+}
+
+pre_remove() {
+    echo '==> Before removing, each activated user should run: arch-dotfiles-config deactivate'
+    echo '==> Home directories, backups, wallpapers and personal edits are never deleted by pacman.'
+}

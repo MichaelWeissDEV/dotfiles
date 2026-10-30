@@ -11,7 +11,7 @@
 [Waybar Panel](waybar.md) ·
 [Terminals](terminals.md) ·
 [Shell & CLI](shell.md) ·
-[Git Subtrees](subtrees.md)
+[Paket-Migration](subtrees.md)
 
 Hyprland (`~/.config/hypr/hyprland.lua`) serves as the primary Wayland tiling compositor in the [`arch-dotfiles`](https://arch-dotfiles.readthedocs.io/en/latest/) ecosystem. It is engineered for **instant reaction speeds**, **maximum screen real estate**, **multi-monitor workspace agility**, and **seamless cross-monitor window recall**.
 
@@ -152,11 +152,28 @@ Workspaces are created dynamically as needed:
 
 | Keybinding | Command | Action |
 | :--- | :--- | :--- |
-| <kbd>Print</kbd> | `grim - \| tee ~/Downloads/screenshot-*.png \| wl-copy` | Capture full screen screenshot to `~/Downloads/` and Wayland clipboard |
-| <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> | `grim -g "$(slurp)" - \| tee ~/Downloads/screenshot-*.png \| wl-copy` | Select region with `slurp`, save to `~/Downloads/` and copy to clipboard |
+| <kbd>Print</kbd> or <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> | `screenshot region` | Select region, save/copy, then annotate with Satty |
+| <kbd>Super</kbd> + <kbd>Print</kbd> | `screenshot full` | Capture all screens, save/copy, then annotate with Satty |
 | `XF86AudioRaiseVolume` / `LowerVolume` | `wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+/-` | Increase / decrease volume in 5% steps (capped at 100%) |
 | `XF86AudioMute` / `XF86AudioMicMute` | `wpctl set-mute ... toggle` | Toggle speaker mute / microphone mute |
 | `XF86MonBrightnessUp` / `Down` | `brightnessctl -e4 -n2 set 5%+/-` | Increase / decrease screen brightness in 5% steps |
+
+### Snipping Tool
+
+Install `grim`, `slurp`, `wl-clipboard` and `satty` (Arch:
+`sudo pacman -S --needed grim slurp wl-clipboard satty`). Run `adot links` to
+install the `screenshot` command and the **Screenshot** application entry in Fuzzel.
+
+Press **Print**, draw a rectangle, and use Satty to add arrows, text, highlights
+or blur. **Enter / Ctrl+C** copies the edited image, saves it and closes Satty;
+**Ctrl+S** saves to file. Escape during selection cancels without taking a capture.
+The original capture is saved and copied before the editor opens, so closing
+the editor without saving retains the original.
+
+Files go to `~/Downloads/screenshot-*.png` (override with `SCREENSHOT_DIR`).
+If Satty is not installed, capture/save/copy still work without annotation.
+`screenshot` or `screenshot region` selects a region; `screenshot full` captures
+all screens.
 
 ---
 

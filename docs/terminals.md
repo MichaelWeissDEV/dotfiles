@@ -11,7 +11,7 @@
 [Waybar Panel](waybar.md) ·
 [Terminals](terminals.md) ·
 [Shell & CLI](shell.md) ·
-[Git Subtrees](subtrees.md)
+[Paket-Migration](subtrees.md)
 
 The [`arch-dotfiles`](https://arch-dotfiles.readthedocs.io/en/latest/) ecosystem provides three pre-configured terminal emulators: **Ghostty**, **Kitty**, and **Foot**. Each is tuned to deliver identical typography, window transparency, and **Catppuccin Mocha** color fidelity.
 
@@ -47,7 +47,7 @@ Regardless of which terminal emulator is active, you experience consistent visua
 
 ### 1. Ghostty (`~/.config/ghostty/config`)
 
-Managed via the Git subtree `MichaelWeissDEV/ghostty-config` (`adot update ghostty`; see [Git Subtrees](subtrees.md)). Ghostty is a modern GPU-accelerated terminal written in Zig featuring native GTK4/Wayland rendering and zero window decorations (`window-decoration = none`).
+Managed by `arch-dotfiles-ghostty`; install and update through [Pacman](arch-package.md). Ghostty is a modern GPU-accelerated terminal written in Zig featuring native GTK4/Wayland rendering and zero window decorations (`window-decoration = none`).
 
 - **Config path**: `~/.config/ghostty/config`
 - **GitHub Repository**: [MichaelWeissDEV/ghostty-config](https://github.com/MichaelWeissDEV/ghostty-config)
@@ -55,7 +55,7 @@ Managed via the Git subtree `MichaelWeissDEV/ghostty-config` (`adot update ghost
 
 ### 2. Kitty (`~/.config/kitty/kitty.conf`)
 
-Managed via the Git subtree `MichaelWeissDEV/kitty-config` (`adot update kitty`; see [Git Subtrees](subtrees.md)). Kitty provides mature graphics protocols, kitten automation scripts, dynamic background opacity, and a custom Catppuccin Powerline tab bar.
+Managed by `arch-dotfiles-kitty`; install and update through [Pacman](arch-package.md). Kitty provides mature graphics protocols, kitten automation scripts, dynamic background opacity, and a custom Catppuccin Powerline tab bar.
 
 - **Config path**: `~/.config/kitty/kitty.conf`
 - **GitHub Repository**: [MichaelWeissDEV/kitty-config](https://github.com/MichaelWeissDEV/kitty-config)
@@ -63,7 +63,7 @@ Managed via the Git subtree `MichaelWeissDEV/kitty-config` (`adot update kitty`;
 
 ### 3. Foot (`~/.config/foot/foot.ini`)
 
-Managed via the Git subtree `MichaelWeissDEV/foot-config` (`adot update foot`; see [Git Subtrees](subtrees.md)). Foot is an ultra-lightweight terminal designed strictly for Wayland. It starts instantaneously and operates with minimal CPU and memory overhead.
+Managed by `arch-dotfiles-foot`; install and update through [Pacman](arch-package.md). Foot is an ultra-lightweight terminal designed strictly for Wayland. It starts instantaneously and operates with minimal CPU and memory overhead.
 
 - **Config path**: `~/.config/foot/foot.ini`
 - **GitHub Repository**: [MichaelWeissDEV/foot-config](https://github.com/MichaelWeissDEV/foot-config)

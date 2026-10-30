@@ -1,0 +1,191 @@
+name: Arch packages
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+  schedule:
+    - cron: '*/5 * * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: arch-packages-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: archlinux:base-devel
+    env:
+      ARCH_DOTFILES_SOURCE_ROOT: ${{ github.workspace }}/.sources
+    outputs:
+      changed: ${{ steps.plan.outputs.changed }}
+    steps:
+      - name: Install build tools
+        run: pacman -Syu --noconfirm --needed git python github-cli gnupg
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Prepare unprivileged builder
+        run: |
+          useradd --create-home builder
+          chown -R builder:builder "$GITHUB_WORKSPACE"
+          mkdir -p /tmp/previous
+          chown builder:builder /tmp/previous
+      - name: Clone independent component main branches
+        run: runuser -u builder -- python scripts/clone-repos.py --root .sources --https
+      - name: Download published packages for version-safe reuse
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh release view repo --json tagName >/dev/null 2>&1; then
+            gh release download repo --dir /tmp/previous \
+              --pattern '*.pkg.tar.zst' --pattern '*.pkg.tar.zst.sig' --pattern '*.source.sha256' --pattern sources.json
+            chown -R builder:builder /tmp/previous
+          else
+            # Distinguish first publication from a broken API/authentication request.
+            gh api "repos/$GH_REPO/releases?per_page=100" > /tmp/releases.json
+            python -c 'import json; assert not any(r["tag_name"] == "repo" for r in json.load(open("/tmp/releases.json")))'
+          fi
+      - name: Detect changed source commits
+        id: plan
+        shell: bash
+        run: |
+          changed="$(runuser -u builder -- python packaging/arch/snapshot.py --compare /tmp/previous/sources.json)"
+          echo "changed=$changed" >> "$GITHUB_OUTPUT"
+      - name: Build and test all packages without installing them
+        if: steps.plan.outputs.changed == 'true'
+        run: runuser -u builder -- bash packaging/arch/build.sh --reuse-from /tmp/previous all
+      - name: Validate package contents and ownership
+        if: steps.plan.outputs.changed == 'true'
+        run: runuser -u builder -- python packaging/arch/check-artifacts.py
+      - name: Gather artifacts
+        if: steps.plan.outputs.changed == 'true'
+        shell: bash
+        run: |
+          mkdir -p artifacts
+          cp sources.json artifacts/
+          find packaging/arch/build -mindepth 2 -maxdepth 2 -type f \( -name '*.pkg.tar.zst' -o -name '*.pkg.tar.zst.sig' -o -name '*.source.sha256' \) -exec cp '{}' artifacts/ \;
+      - uses: actions/upload-artifact@v4
+        if: steps.plan.outputs.changed == 'true'
+        with:
+          name: arch-packages
+          path: artifacts/
+          if-no-files-found: error
+
+  publish:
+    if: needs.build.outputs.changed == 'true' && github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    container: archlinux:base-devel
+    environment: pacman-repository
+    permissions:
+      contents: write
+    concurrency:
+      group: pacman-repository-publish
+      cancel-in-progress: false
+    steps:
+      - name: Install repository tools
+        run: pacman -Syu --noconfirm --needed git python github-cli gnupg
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: arch-packages
+          path: packaging/arch/build/release
+      - name: Reconcile with the latest published repository
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! gh release view repo --json assets > /tmp/current-assets.json; then
+            gh api "repos/$GH_REPO/releases?per_page=100" > /tmp/releases.json
+            python -c 'import json; assert not any(r["tag_name"] == "repo" for r in json.load(open("/tmp/releases.json")))'
+            exit 0
+          fi
+          has_asset() {
+            python -c 'import json,sys; sys.exit(0 if any(a["name"] == sys.argv[1] for a in json.load(open("/tmp/current-assets.json"))["assets"]) else 1)' "$1"
+          }
+          for source in packaging/arch/build/release/*.source.sha256; do
+            name="${source##*/}"
+            package="${name%.source.sha256}"
+            if has_asset "$name"; then
+              gh release download repo --pattern "$name" --output /tmp/published-source.sha256 --clobber
+              cmp "$source" /tmp/published-source.sha256
+              # Same source can produce different build metadata. Always reuse
+              # the canonical published bytes before calculating repository hashes.
+              gh release download repo --pattern "$package" --pattern "$package.sig" \
+                --dir packaging/arch/build/release --clobber
+            elif has_asset "$package"; then
+              echo "Incomplete published version: $package has no source fingerprint." >&2
+              exit 1
+            fi
+          done
+          if has_asset arch-dotfiles.db.tar.gz; then
+            mkdir -p packaging/arch/repo
+            gh release download repo --dir packaging/arch/repo \
+              --pattern arch-dotfiles.db.tar.gz --pattern arch-dotfiles.db.tar.gz.sig \
+              --pattern arch-dotfiles.files.tar.gz --pattern arch-dotfiles.files.tar.gz.sig
+          fi
+      - name: Sign packages and repository databases
+        env:
+          PACMAN_SIGNING_KEY: ${{ secrets.PACMAN_SIGNING_KEY }}
+          GPG_PASSPHRASE: ${{ secrets.PACMAN_SIGNING_PASSPHRASE }}
+          SIGNING_KEY: ${{ vars.PACMAN_SIGNING_FINGERPRINT }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          export GNUPGHOME="$(mktemp -d)"
+          trap 'gpgconf --kill gpg-agent' EXIT
+          printf '%s' "$PACMAN_SIGNING_KEY" | gpg --batch --import
+          bash packaging/arch/create-repo.sh
+          cp packaging/arch/build/release/sources.json packaging/arch/repo/sources.json
+      - name: Publish versioned packages first, databases last
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          if ! gh release view repo >/dev/null 2>&1; then
+            gh release create repo --target "$GITHUB_SHA" --title 'Pacman package repository' \
+              --notes 'Signed Arch Linux packages. Setup: packaging/arch/README.md' --latest=false
+          fi
+          gh release view repo --json assets > /tmp/assets.json
+          # A second build may have published while this build was running.
+          # Never point a database at different bytes under an existing filename.
+          for file in packaging/arch/repo/*.source.sha256; do
+            name="${file##*/}"
+            if python -c 'import json,sys; sys.exit(0 if any(a["name"] == sys.argv[1] for a in json.load(open("/tmp/assets.json"))["assets"]) else 1)' "$name"; then
+              gh release download repo --pattern "$name" --output /tmp/published-source.sha256 --clobber
+              cmp "$file" /tmp/published-source.sha256
+            fi
+          done
+          for file in packaging/arch/repo/*.pkg.tar.zst*; do
+            name="${file##*/}"
+            if ! python -c 'import json,sys; sys.exit(0 if any(a["name"] == sys.argv[1] for a in json.load(open("/tmp/assets.json"))["assets"]) else 1)' "$name"; then
+              gh release upload repo "$file"
+            fi
+          done
+          gh release upload repo packaging/arch/repo/arch-dotfiles-key.asc --clobber
+          gh release upload repo packaging/arch/repo/sources.json --clobber
+          gh release upload repo \
+            packaging/arch/repo/arch-dotfiles.db \
+            packaging/arch/repo/arch-dotfiles.db.sig \
+            packaging/arch/repo/arch-dotfiles.db.tar.gz \
+            packaging/arch/repo/arch-dotfiles.db.tar.gz.sig \
+            packaging/arch/repo/arch-dotfiles.files \
+            packaging/arch/repo/arch-dotfiles.files.sig \
+            packaging/arch/repo/arch-dotfiles.files.tar.gz \
+            packaging/arch/repo/arch-dotfiles.files.tar.gz.sig --clobber

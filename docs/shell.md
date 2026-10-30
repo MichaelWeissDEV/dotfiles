@@ -11,7 +11,7 @@
 [Waybar Panel](waybar.md) ·
 [Terminals](terminals.md) ·
 [Shell & CLI](shell.md) ·
-[Git Subtrees](subtrees.md)
+[Paket-Migration](subtrees.md)
 
 The command-line environment centers on **Zsh** (`~/.config/zsh/zshrc` and `~/.config/zsh/aliases.zsh`) enhanced with **Oh My Zsh**, Catppuccin Mocha syntax highlighting, asynchronous autosuggestions, FZF integration, and custom CLI tools (`adot` / `arch-dot` / `arch-dotfiles` and `wallpaper`).
 
@@ -40,34 +40,33 @@ The command-line environment centers on **Zsh** (`~/.config/zsh/zshrc` and `~/.c
 
 ---
 
-## Custom CLI Programs (`~/.local/bin`)
+## Custom CLI Programs (`/usr/bin`)
 
 ### 1. `adot` / `arch-dot` / `arch-dotfiles` (Unified Ecosystem & Dotfiles Manager)
 
-Linked from `~/git/dotfiles/scripts/adot` to `~/.local/bin/adot`, `~/.local/bin/arch-dot`, and `~/.local/bin/arch-dotfiles`. Rather than invoking separate scripts manually, `adot` provides a single program for installing, updating (all or individual components), checking system/subtree state, and listing all custom keybindings, commands, and scripts:
+Provided by `arch-dotfiles-core` as `/usr/bin/adot`, `arch-dot`, and
+`arch-dotfiles`. Updates use Pacman exclusively; there are no runtime subtree
+pulls or Git clones. See [package setup and activation](arch-package.md).
 
 | Command | Action |
 | :--- | :--- |
-| `adot update` *(or `arch-dot update` / `arch-dotfiles update`)* | **Full ecosystem update**: updates Arch Linux `pacman` packages, pulls `~/git/dotfiles`, pulls all 6 Git subtrees (`nvim`, `tmux`, `ghostty`, `kitty`, `foot`, `vim`), updates `pictures/` wallpapers (if cloned), updates Oh My Zsh & plugins, and refreshes all symlinks |
-| `adot update <target>` | **Granular update**: update only a specific target (`nvim`, `tmux`, `ghostty`, `kitty`, `foot`, `vim`, `subtrees`, `dotfiles`, `system`, `zsh`, `wallpapers`, or `links`) |
-| `adot status [--fetch]` | **Live status dashboard**: displays git branch/commit/worktree state, `~/.local/bin` binaries, all 19 config symlinks, all 6 subtrees (with optional `--fetch` for remote GitHub SHAs), Oh My Zsh, `zoxide`, and `pacman` package status |
-| `adot list [category]` | **List managed items**: `all` (default), `modules`, `subtrees`, `keys`, `commands`, `scripts`, `packages`, or `docs` |
-| `adot keys [section]` | **List custom keybindings**: print keybinding tables in the terminal (`hypr`, `nvim`, `vim`, `tmux`, `terminals`, `shell`, or `all`) |
-| `adot commands` | **List custom commands & aliases**: print all custom CLI commands, shell functions (`j`/`ji`, `y`, `fznv`, `fzv`), and aliases |
-| `adot scripts` | **List scripts & binaries**: list all executables in `~/.local/bin` and internal helper scripts in `scripts/`, `hypr/`, and `wallpaper/` |
-| `adot docs` | **List documentation links**: display all 6 Read the Docs URLs and GitHub repository links |
-| `adot install` | Full initial setup (packages, subtrees, Oh My Zsh, symlinks, systemd services, login shell) |
-| `adot links` | Create/refresh all symlinks in `~/.config`, `~`, and `~/.local/bin` (safe on any OS, no sudo needed) |
-| `adot subtrees [target]` | Pull all 6 Git subtrees (or specify `nvim`, `tmux`, `ghostty`, `kitty`, `foot`, or `vim`) from upstream |
-| `adot push [target]` | Push local subtree commits back to upstream GitHub (`nvim\|tmux\|ghostty\|kitty\|foot\|vim\|all`) |
-| `adot packages` | Install or update required Arch Linux packages via `pacman -Syu --needed` |
-| `adot wallpapers [URL\|--update]` | Clone or update the private wallpaper repository (`~/git/dotfiles/pictures`) |
-| `adot path` | Print the root path of the dotfiles repository (`~/git/dotfiles`) |
+| `adot update` | Run `sudo pacman -Syu`, then safely synchronize user copies |
+| `adot sync` | Synchronize defaults only, e.g. after running Pacman yourself |
+| `adot status` | Inspect activation and user configuration paths |
+| `adot list` | List installed dotfiles packages |
+| `adot keys` / `adot docs` | Show documentation locations |
+| `adot commands` | Show package-management commands |
+| `adot scripts` | Show available helper binaries |
+| `adot install [module ...]` / `adot links [module ...]` | Activate installed modules without sudo |
+| `adot deactivate [module ...]` | Restore previous settings |
+| `adot packages [package ...]` | Install selected packages with `pacman -Syu --needed` (default: metapackage) |
+| `adot path` | Print the editable user configuration directory |
 | `adot help` | Display help message and subcommands |
 
 ### 2. `wallpaper` (Multi-Monitor Wallpaper Manager)
 
-Linked from `~/git/dotfiles/wallpaper/wallpaper.sh` to `~/.local/bin/wallpaper` (alias: `wp`):
+Provided by `arch-dotfiles-wallpaper`; prefers the activated user script
+`~/.config/wallpaper/wallpaper.sh` (alias: `wp`):
 
 | Command | Action |
 | :--- | :--- |
@@ -79,7 +78,7 @@ Linked from `~/git/dotfiles/wallpaper/wallpaper.sh` to `~/.local/bin/wallpaper` 
 | `wallpaper clear <MON> \| --all` | Clear override for `<MON>` or all monitors |
 | `wallpaper current` | Show saved state and active wallpapers per connected monitor |
 | `wallpaper next` / `wallpaper prev` / `wallpaper random` | Cycle to next, previous, or random wallpaper |
-| `wallpaper add <file>... [--move] [--set]` | Copy/move image(s) into `~/git/dotfiles/pictures` and optionally apply |
+| `wallpaper add <file>... [--move] [--set]` | Copy/move images into the user library and optionally apply |
 | `wallpaper apply` / `wallpaper reload` | Apply saved state / restart `hyprpaper` and re-apply |
 | `wallpaper dirs` / `wallpaper open` / `wallpaper doctor` | Show configured directories / open in file manager / run diagnostics |
 
@@ -91,12 +90,9 @@ Linked from `~/git/dotfiles/wallpaper/wallpaper.sh` to `~/.local/bin/wallpaper` 
 
 | Alias | Command Executed | Purpose |
 | :--- | :--- | :--- |
-| `dotfiles` | `cd "$HOME/git/dotfiles"` | Jump directly to the dotfiles repository |
-| `adot` / `arch-dot` / `arch-dotfiles` | `"$HOME/git/dotfiles/scripts/adot"` | Run the unified dotfiles manager CLI program |
-| `cfg-update` | `"$HOME/git/dotfiles/scripts/adot" update` | Shortcut for `adot update` |
-| `cfg-links` | `"$HOME/git/dotfiles/scripts/adot" links` | Shortcut for `adot links` |
-| `cfg-subtrees` | `"$HOME/git/dotfiles/scripts/adot" subtrees` | Shortcut for `adot subtrees` |
-| `cfg-wallpapers` | `"$HOME/git/dotfiles/scripts/adot" wallpapers` | Shortcut for `adot wallpapers` |
+| `dotfiles` | `cd "${XDG_DATA_HOME:-$HOME/.local/share}/arch-dotfiles/config"` | Jump to editable configuration copies |
+| `cfg-update` | `adot update` | Full system upgrade and user sync |
+| `cfg-links` | `arch-dotfiles-config activate` | Activate installed modules |
 | `wp` | `wallpaper` | Short alias for the wallpaper manager |
 
 ### Text Editors & Interactive Fuzzy Openers

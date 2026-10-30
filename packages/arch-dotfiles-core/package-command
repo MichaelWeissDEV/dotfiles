@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Prefer the activated, user-editable configuration; fall back to package defaults.
+set -euo pipefail
+case "${0##*/}" in
+    screenshot) relative=hypr/screenshot.sh ;;
+    wallpaper) relative=wallpaper/wallpaper.sh ;;
+    *) exit 2 ;;
+esac
+script="${XDG_CONFIG_HOME:-$HOME/.config}/$relative"
+if [[ ! -f "$script" ]]; then
+    script="/usr/share/arch-dotfiles/$relative"
+fi
+exec bash "$script" "$@"

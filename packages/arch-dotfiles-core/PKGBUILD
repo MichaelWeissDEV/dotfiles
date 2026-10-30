@@ -1,0 +1,18 @@
+# Package-local recipe. Stage checksummed sources with packaging/arch/build.sh.
+pkgname=arch-dotfiles-core
+pkgver=0.3.0
+pkgrel=1
+pkgdesc='Per-user dotfiles activation and package management'
+arch=('any')
+url='https://github.com/MichaelWeissDEV/dotfiles'
+license=('LicenseRef-arch-dotfiles-bundle')
+depends=('python' 'bash' 'coreutils' 'pacman' 'sudo' 'gawk')
+optdepends=()
+options=('!strip')
+source=('payload.tar.gz')
+sha256sums=('__SOURCE_SHA256__')
+install=arch-dotfiles.install
+
+package() {
+    cp -a "$srcdir/usr" "$pkgdir/"
+}

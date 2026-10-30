@@ -1,0 +1,17 @@
+# Package-local recipe. Stage checksummed sources with packaging/arch/build.sh.
+pkgname=arch-dotfiles
+pkgver=0.3.0
+pkgrel=1
+pkgdesc='Complete dotfiles environment (optional metapackage)'
+arch=('any')
+url='https://github.com/MichaelWeissDEV/dotfiles'
+license=('LicenseRef-arch-dotfiles-bundle')
+depends=('pipewire' 'pipewire-alsa' 'pipewire-pulse' 'pipewire-jack' 'wireplumber' 'gst-plugin-pipewire' 'networkmanager' 'bluez' 'power-profiles-daemon' 'noto-fonts' 'man-db' 'man-pages' 'arch-dotfiles-foot' 'arch-dotfiles-fuzzel' 'arch-dotfiles-ghostty' 'arch-dotfiles-gtk-3.0' 'arch-dotfiles-gtk-4.0' 'arch-dotfiles-hypr' 'arch-dotfiles-kitty' 'arch-dotfiles-libfm' 'arch-dotfiles-nvim' 'arch-dotfiles-pcmanfm' 'arch-dotfiles-tmux' 'arch-dotfiles-vim' 'arch-dotfiles-wallpaper' 'arch-dotfiles-waybar' 'arch-dotfiles-yazi' 'arch-dotfiles-zsh')
+optdepends=()
+options=('!strip')
+source=('payload.tar.gz')
+sha256sums=('__SOURCE_SHA256__')
+
+package() {
+    cp -a "$srcdir/usr" "$pkgdir/"
+}

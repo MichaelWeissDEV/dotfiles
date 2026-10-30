@@ -1,0 +1,18 @@
+{
+  "foot": "MichaelWeissDEV/foot-config",
+  "fuzzel": "MichaelWeissDEV/fuzzel-config",
+  "ghostty": "MichaelWeissDEV/ghostty-config",
+  "gtk-3.0": "MichaelWeissDEV/gtk3-config",
+  "gtk-4.0": "MichaelWeissDEV/gtk4-config",
+  "hypr": "MichaelWeissDEV/hypr-config",
+  "kitty": "MichaelWeissDEV/kitty-config",
+  "libfm": "MichaelWeissDEV/libfm-config",
+  "nvim": "MichaelWeissDEV/nvim-config",
+  "pcmanfm": "MichaelWeissDEV/pcmanfm-config",
+  "tmux": "MichaelWeissDEV/tmux-config",
+  "vim": "MichaelWeissDEV/vim-config",
+  "wallpaper": "MichaelWeissDEV/wallpaper-config",
+  "waybar": "MichaelWeissDEV/waybar-config",
+  "yazi": "MichaelWeissDEV/yazi-config",
+  "zsh": "MichaelWeissDEV/zsh-config"
+}

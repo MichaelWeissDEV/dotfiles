@@ -1,0 +1,21 @@
+{
+  "arch-dotfiles-core": {"kind": "core", "description": "Per-user dotfiles activation and package management", "depends": ["python", "bash", "coreutils", "pacman", "sudo", "gawk"]},
+  "arch-dotfiles-oh-my-zsh": {"kind": "oh-my-zsh", "description": "Pinned, pacman-managed Oh My Zsh runtime", "depends": ["zsh", "git"]},
+  "arch-dotfiles-foot": {"module": "foot"},
+  "arch-dotfiles-fuzzel": {"module": "fuzzel"},
+  "arch-dotfiles-ghostty": {"module": "ghostty"},
+  "arch-dotfiles-gtk-3.0": {"module": "gtk-3.0"},
+  "arch-dotfiles-gtk-4.0": {"module": "gtk-4.0"},
+  "arch-dotfiles-hypr": {"module": "hypr"},
+  "arch-dotfiles-kitty": {"module": "kitty"},
+  "arch-dotfiles-libfm": {"module": "libfm"},
+  "arch-dotfiles-nvim": {"module": "nvim"},
+  "arch-dotfiles-pcmanfm": {"module": "pcmanfm"},
+  "arch-dotfiles-tmux": {"module": "tmux"},
+  "arch-dotfiles-vim": {"module": "vim"},
+  "arch-dotfiles-wallpaper": {"module": "wallpaper"},
+  "arch-dotfiles-waybar": {"module": "waybar"},
+  "arch-dotfiles-yazi": {"module": "yazi"},
+  "arch-dotfiles-zsh": {"module": "zsh"},
+  "arch-dotfiles": {"kind": "meta", "description": "Complete dotfiles environment (optional metapackage)", "depends": ["pipewire", "pipewire-alsa", "pipewire-pulse", "pipewire-jack", "wireplumber", "gst-plugin-pipewire", "networkmanager", "bluez", "power-profiles-daemon", "noto-fonts", "man-db", "man-pages"]}
+}

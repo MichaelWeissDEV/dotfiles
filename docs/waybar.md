@@ -11,7 +11,7 @@
 [Waybar Panel](waybar.md) ·
 [Terminals](terminals.md) ·
 [Shell & CLI](shell.md) ·
-[Git Subtrees](subtrees.md)
+[Paket-Migration](subtrees.md)
 
 Waybar provides the top desktop panel for the [Hyprland](hyprland.md) session, offering at-a-glance telemetry, workspace state, audio controls, and an integrated system power menu.
 

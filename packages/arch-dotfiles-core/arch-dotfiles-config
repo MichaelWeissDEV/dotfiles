@@ -1,0 +1,274 @@
+#!/usr/bin/python3
+"""Per-user activation of pacman-owned defaults. Never remove user configurations."""
+
+import argparse
+import fcntl
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import shutil
+import sys
+import uuid
+
+
+def exists(path):
+    return path.exists() or path.is_symlink()
+
+
+def fingerprint(path):
+    if path.is_symlink():
+        return "link:" + os.readlink(path)
+    if path.is_file():
+        return "sha256:" + hashlib.sha256(path.read_bytes()).hexdigest()
+    return None
+
+
+def save_json(path, value):
+    temporary = path.with_suffix(".tmp")
+    temporary.write_text(json.dumps(value, indent=2) + "\n")
+    temporary.replace(path)
+
+
+class Config:
+    def __init__(self, defaults, home=None, selected=None):
+        self.defaults = Path(defaults).absolute()
+        self.home = Path(home or Path.home()).absolute()
+        config = Path(os.environ.get("XDG_CONFIG_HOME") or self.home / ".config")
+        # tmux and several other upstream configs explicitly use ~/.config.
+        if config != self.home / ".config":
+            raise RuntimeError("This bundle requires XDG_CONFIG_HOME=~/.config (or unset).")
+        self.config = config
+        data = Path(os.environ.get("XDG_DATA_HOME") or self.home / ".local/share")
+        state = Path(os.environ.get("XDG_STATE_HOME") or self.home / ".local/state")
+        if not data.is_absolute() or not state.is_absolute():
+            raise RuntimeError("XDG data/state directories must be absolute paths.")
+        self.data = data
+        self.work = data / "arch-dotfiles/config"
+        self.state = state / "arch-dotfiles"
+        self.activation = self.state / "activation.json"
+        self.baseline = self.state / "baseline.json"
+        self.selected = selected
+        if selected and any(not re.fullmatch(r"[a-z0-9][a-z0-9.-]*", m) for m in selected):
+            raise RuntimeError("Invalid module selection.")
+
+    def modules(self):
+        inventory = self.defaults / "modules.d"
+        modules = []
+        if inventory.is_dir():
+            for path in sorted(inventory.iterdir()):
+                if path.is_symlink() or not path.is_file():
+                    raise RuntimeError("Invalid package module inventory.")
+                values = path.read_text().splitlines()
+                if values != [path.name]:
+                    raise RuntimeError("Invalid package module inventory.")
+                modules.extend(values)
+        elif (self.defaults / "MODULES").exists():
+            # Migration from the old all-in-one package.
+            modules = (self.defaults / "MODULES").read_text().splitlines()
+        if any(not re.fullmatch(r"[a-z0-9][a-z0-9.-]*", m) for m in modules):
+            raise RuntimeError("Invalid package module inventory.")
+        if self.selected:
+            missing = set(self.selected) - set(modules)
+            if missing:
+                raise RuntimeError("Modules not installed: " + ", ".join(sorted(missing)))
+            return sorted(set(self.selected))
+        return modules
+
+    def destinations(self, modules):
+        links = [(self.config / m, self.work / m) for m in modules]
+        links += [(self.home / name, self.work / target) for name, target in (
+            (".zshrc", "zsh/zshrc"), (".tmux.conf", "tmux/tmux.conf"),
+            (".vimrc", "vim/vimrc"),
+        ) if target.split("/")[0] in modules]
+        bin_dir = self.home / ".local/bin"
+        if "hypr" in modules:
+            links += [(bin_dir / "screenshot", self.work / "hypr/screenshot.sh"),
+                      (self.data / "applications/dotfiles-screenshot.desktop",
+                       self.work / "hypr/screenshot.desktop")]
+        if "wallpaper" in modules:
+            links += [(bin_dir / "wallpaper", self.work / "wallpaper/wallpaper.sh")]
+        return links
+
+    def entry_module(self, entry):
+        """Infer ownership for activation journals created by the previous bundle."""
+        try:
+            return Path(entry["target"]).relative_to(self.work).parts[0]
+        except ValueError:
+            return "core"
+
+    @staticmethod
+    def own_link(path, target):
+        return path.is_symlink() and os.readlink(path) == str(target)
+
+    def safe_destination(self, relative):
+        path = self.work
+        # Never follow a user-created directory symlink while synchronizing defaults.
+        for part in relative.parts[:-1]:
+            path = path / part
+            if path.is_symlink():
+                raise RuntimeError(f"Refusing to update through directory symlink: {path}")
+        return self.work / relative
+
+    def update(self, modules=None):
+        old = json.loads(self.baseline.read_text()) if self.baseline.exists() else {}
+        for key in old:
+            relative = Path(key)
+            if not relative.parts or relative.is_absolute() or ".." in relative.parts:
+                raise RuntimeError("Unsafe baseline entry.")
+        if modules is None:
+            modules = self.modules()
+            if self.activation.exists() and not self.selected:
+                active = {self.entry_module(e) for e in json.loads(self.activation.read_text())}
+                modules = [m for m in modules if m in active]
+        # Keep inactive/uninstalled modules' user copies and baseline intact.
+        new = {key: value for key, value in old.items() if Path(key).parts[0] not in modules}
+        pending = 0
+        self.work.mkdir(parents=True, exist_ok=True)
+        if self.work.is_symlink():
+            raise RuntimeError(f"Workspace must not be a symlink: {self.work}")
+        for module in modules:
+            source_root = self.defaults / module
+            if not source_root.is_dir() or source_root.is_symlink():
+                raise RuntimeError(f"Missing module: {source_root}")
+            for source in sorted(source_root.rglob("*")):
+                if source.is_dir() and not source.is_symlink():
+                    continue
+                relative = source.relative_to(self.defaults)
+                target = self.safe_destination(relative)
+                key = str(relative)
+                current = fingerprint(target)
+                new[key] = fingerprint(source)
+                if current == new[key]:
+                    continue
+                if not exists(target) or (current is not None and current == old.get(key)):
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    if target.is_symlink() or (source.is_symlink() and exists(target)):
+                        target.unlink()
+                    shutil.copy2(source, target, follow_symlinks=False)
+                elif current != new[key]:
+                    candidate = target.with_name(target.name + ".pacnew")
+                    index = 0
+                    while exists(candidate) and fingerprint(candidate) != new[key]:
+                        index += 1
+                        candidate = target.with_name(target.name + f".pacnew.{index}")
+                    if not exists(candidate):
+                        shutil.copy2(source, candidate, follow_symlinks=False)
+                    print(f"Keep personal changes; new default: {candidate}")
+                    pending += 1
+        for key, previous in old.items():
+            if key in new:
+                continue
+            relative = Path(key)
+            target = self.safe_destination(relative)
+            if previous is not None and fingerprint(target) == previous:
+                target.unlink()
+        save_json(self.baseline, new)
+        (self.work / "pictures").mkdir(exist_ok=True)
+        print(f"Defaults synchronized; {pending} file(s) require manual merging.")
+
+    def activate(self):
+        modules = self.modules()
+        if not modules:
+            raise RuntimeError("No configuration packages installed. Install an arch-dotfiles-<module> package first.")
+        entries = []
+        if self.activation.exists():
+            entries = json.loads(self.activation.read_text())
+            if not entries or not all(self.own_link(Path(e["path"]), e["target"]) for e in entries):
+                raise RuntimeError("Activation is incomplete/changed. Run deactivate before activating again.")
+        active_paths = {e["path"] for e in entries}
+        # Save machine-local overrides before replacing an existing repo symlink.
+        overrides = {}
+        for relative in ("hypr/monitors.local.lua", "tmux/local.conf", "tmux/local-options.conf"):
+            if relative.split("/")[0] not in modules:
+                continue
+            source = self.config / relative
+            if source.is_file() and not exists(self.work / relative):
+                overrides[relative] = source.read_bytes()
+        self.update(modules)
+        for relative, content in overrides.items():
+            (self.work / relative).write_bytes(content)
+        backup_dir = self.state / "backups" / uuid.uuid4().hex
+        save_json(self.activation, entries)
+        for index, (path, target) in enumerate(self.destinations(modules)):
+            if str(path) in active_paths:
+                continue
+            path.parent.mkdir(parents=True, exist_ok=True)
+            backup = backup_dir / str(index) if exists(path) else None
+            entry = {"path": str(path), "target": str(target),
+                     "backup": str(backup) if backup else None}
+            entries.append(entry)
+            # Journal before moving anything: deactivate can recover interrupted setup.
+            save_json(self.activation, entries)
+            if backup:
+                backup.parent.mkdir(parents=True, exist_ok=True)
+                shutil.move(str(path), str(backup))
+            path.symlink_to(target)
+        print("Activated. Existing settings are backed up; log out/in to use the desktop configuration.")
+
+    def deactivate(self):
+        if not self.activation.exists():
+            print("Not active. Personal configuration copies are retained.")
+            return
+        entries = json.loads(self.activation.read_text())
+        remaining = list(entries)
+        conflicts = []
+        for entry in reversed(entries):
+            if self.selected and self.entry_module(entry) not in self.selected:
+                continue
+            path = Path(entry["path"])
+            backup = Path(entry["backup"]) if entry["backup"] else None
+            if self.own_link(path, entry["target"]):
+                path.unlink()
+            if backup and exists(backup):
+                if exists(path):
+                    conflicts.append(str(path))
+                    print(f"Keep replaced path: {path}; original backup: {backup}")
+                    continue
+                path.parent.mkdir(parents=True, exist_ok=True)
+                shutil.move(str(backup), str(path))
+            remaining.remove(entry)
+            save_json(self.activation, remaining)
+        if conflicts:
+            raise RuntimeError("Some paths were changed after activation. Resolve the paths above and retry deactivate.")
+        if not remaining:
+            self.activation.unlink()
+        print(f"Deactivated; previous settings restored. Personal files retained in {self.work}")
+
+    def status(self):
+        if not self.activation.exists():
+            print("Not active.")
+        else:
+            entries = json.loads(self.activation.read_text())
+            changed = [e["path"] for e in entries if not self.own_link(Path(e["path"]), e["target"])]
+            print("Active." if not changed else "Changed/incomplete activation: " + ", ".join(changed))
+        print(f"User configuration: {self.work}\nState and backups: {self.state}")
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("command", choices=("activate", "deactivate", "update", "status"))
+    parser.add_argument("modules", nargs="*", help="Module names, e.g. nvim tmux (default: all installed/active modules)")
+    parser.add_argument("--if-active", action="store_true", help=argparse.SUPPRESS)
+    parser.add_argument("--defaults", default="/usr/share/arch-dotfiles", help=argparse.SUPPRESS)
+    args = parser.parse_args()
+    if os.geteuid() == 0:
+        parser.error("Run as your normal user, without sudo. pacman alone manages /usr.")
+    os.umask(0o077)
+    try:
+        config = Config(args.defaults, selected=args.modules or None)
+        if args.if_active and not config.activation.exists():
+            return 0
+        config.state.mkdir(parents=True, exist_ok=True)
+        with (config.state / ".lock").open("a") as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX)
+            getattr(config, args.command)()
+    except (OSError, ValueError, RuntimeError) as error:
+        print(f"arch-dotfiles-config: {error}", file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

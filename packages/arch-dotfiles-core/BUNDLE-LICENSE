@@ -1,0 +1,8 @@
+The original arch-dotfiles configuration and packaging code is licensed under
+the MIT License (see LICENSE).
+
+This bundle also contains unmodified/vendored Neovim and tmux plugins and a
+pinned Oh My Zsh source release. These components retain their own licenses;
+the original LICENSE, LICENSE.md, COPYING and similar files are preserved next
+to each component under /usr/share/arch-dotfiles/{nvim,tmux,oh-my-zsh}.
+The MIT License for arch-dotfiles does not replace those third-party licenses.
