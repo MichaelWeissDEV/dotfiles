@@ -13,6 +13,11 @@ spec.loader.exec_module(source)
 
 
 class PackageLayoutTest(unittest.TestCase):
+    def test_versioning_rejects_shallow_history(self):
+        with patch.object(source.subprocess, "check_output", return_value="true\n"):
+            with self.assertRaisesRegex(RuntimeError, "Full Git history"):
+                source.revision(ROOT)
+
     def test_each_package_has_independent_recipe_and_correct_dependencies(self):
         for name, data in source.REGISTRY.items():
             with self.subTest(package=name):

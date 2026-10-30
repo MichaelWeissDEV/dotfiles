@@ -38,6 +38,9 @@ def package_recipe(name):
 
 
 def revision(root):
+    shallow = subprocess.check_output(["git", "-C", str(root), "rev-parse", "--is-shallow-repository"], text=True).strip()
+    if shallow == "true":
+        raise RuntimeError(f"Full Git history required for monotonic package versions: {root}")
     count = subprocess.check_output(["git", "-C", str(root), "rev-list", "--count", "HEAD"], text=True).strip()
     commit = subprocess.check_output(["git", "-C", str(root), "rev-parse", "--short=12", "HEAD"], text=True).strip()
     dirty = bool(subprocess.check_output(["git", "-C", str(root), "status", "--porcelain", "--untracked-files=no"]))
