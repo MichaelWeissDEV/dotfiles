@@ -26,6 +26,30 @@ Hyprland (`~/.config/hypr/hyprland.lua`) serves as the primary Wayland tiling co
 
 ---
 
+## Personal Monitor Layout (Git-Ignored)
+
+The shared configuration automatically detects monitors at scale `1`. Individual
+layouts belong in `~/.config/hypr/monitors.local.lua`, which is loaded after the
+default monitor rules and excluded from Git. No personal monitor layout needs to
+be committed, even when `~/.config/hypr` points into the dotfiles repository.
+
+```bash
+# Create once; preserve an existing local configuration:
+cp -n ~/.config/hypr/monitors.example.lua ~/.config/hypr/monitors.local.lua
+hyprctl monitors all
+$EDITOR ~/.config/hypr/monitors.local.lua
+hyprctl reload
+hyprctl configerrors
+```
+
+Uncomment and adapt the template's `hl.monitor({...})` rules: `output` is the
+connector name, `mode` is `WIDTHxHEIGHT@HZ`, and `position` is `XxY` in logical
+pixels. Local edits require `hyprctl reload`. Without the local file, automatic
+placement remains active. `XDG_CONFIG_HOME` is respected when set. Back up the
+local file separately: it is not part of Git and `git clean -fdx` can delete it.
+
+---
+
 ## Application Launchers & System Controls
 
 The primary modifier key (`SUPER`) is the **Windows / Super key**.

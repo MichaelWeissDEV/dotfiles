@@ -36,11 +36,44 @@ While pre-configured for **Arch Linux** via the central [`arch-dotfiles`](https:
 | File | Path | Description |
 | :--- | :--- | :--- |
 | **[`hyprland.lua`](hyprland.lua)** | `~/.config/hypr/hyprland.lua` | Main Hyprland configuration (Lua syntax), keybindings, monitor rules, autostart |
+| **[`monitors.example.lua`](monitors.example.lua)** | `~/.config/hypr/monitors.example.lua` | Template for per-machine monitor rules |
+| **`monitors.local.lua`** *(optional, gitignored)* | `~/.config/hypr/monitors.local.lua` | Personal monitor layout, loaded after the default monitor rules |
 | **[`hyprpaper.conf`](hyprpaper.conf)** | `~/.config/hypr/hyprpaper.conf` | Background wallpaper loader configuration |
 | **[`hyprlock.conf`](hyprlock.conf)** | `~/.config/hypr/hyprlock.conf` | Screen locker styled in Catppuccin Mocha pastel palette |
 | **[`askpass.sh`](askpass.sh)** | `~/.config/hypr/askpass.sh` | Graphical `sudo` askpass prompt using Fuzzel password mode |
 | **[`powermenu.sh`](powermenu.sh)** | `~/.config/hypr/powermenu.sh` | Interactive top-right Fuzzel power menu (Shutdown, Reboot, Suspend, Lock, Logout) |
 | **[`windowswitcher.sh`](windowswitcher.sh)** | `~/.config/hypr/windowswitcher.sh` | Fuzzy window switcher across all monitors (`SUPER + G`) |
+
+---
+
+## Personal Monitor Layout (Not Stored in Git)
+
+By default, monitors use their preferred mode, automatic positioning, and scale `1`.
+For a custom layout, create a local configuration once (do not overwrite an existing one):
+
+```bash
+cp -n ~/.config/hypr/monitors.example.lua ~/.config/hypr/monitors.local.lua
+hyprctl monitors all
+$EDITOR ~/.config/hypr/monitors.local.lua
+hyprctl reload
+hyprctl configerrors
+```
+
+Uncomment and adjust the example `hl.monitor({...})` rules. `output` selects the
+connector, `mode` specifies `WIDTHxHEIGHT@HZ`, and `position` specifies `XxY` in
+logical pixels (resolution divided by scale). With scale `1`, a monitor directly
+below a 1080-pixel-high screen starts at `Y = 1080`.
+
+`monitors.local.lua` is optional and loaded **after** the defaults. It is excluded
+by the repository's `.gitignore`, even though `~/.config/hypr` is a symlink into
+the repository. Each user/machine can therefore maintain a different layout
+without changing shared configuration or including personal monitor data in commits.
+Only the loader and template are shared. If `XDG_CONFIG_HOME` is set, that
+directory is used instead of `~/.config`. Run `hyprctl reload` after local edits.
+To return to automatic positioning, rename the local file to
+`monitors.local.lua.bak` and reload. Keep a separate backup of your personal
+file: ignored files are not restored by cloning Git and can be removed by
+`git clean -fdx`.
 
 ---
 

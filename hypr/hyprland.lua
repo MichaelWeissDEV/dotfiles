@@ -3,6 +3,9 @@
 -- Dokumentation aller Tastenkombinationen: ~/.config/hypr/README.md
 -- ============================================================================
 
+local home        = os.getenv("HOME") or "/home/mweiss"
+local config_home = os.getenv("XDG_CONFIG_HOME") or (home .. "/.config")
+
 ------------------
 ---- MONITORS ----
 ------------------
@@ -22,11 +25,19 @@ hl.monitor({
     scale    = 1.0,
 })
 
+-- Optionale, Git-ignorierte Monitor-Regeln pro Rechner (siehe monitors.example.lua).
+-- Nach den Standardregeln laden, damit lokale Einstellungen Vorrang haben.
+local monitor_config = config_home .. "/hypr/monitors.local.lua"
+local monitor_file = io.open(monitor_config, "r")
+if monitor_file then
+    monitor_file:close()
+    dofile(monitor_config)
+end
+
 
 ---------------------
 ---- MY PROGRAMS ----
 ---------------------
-local home        = os.getenv("HOME") or "/home/mweiss"
 local terminal    = "kitty"
 local menu        = "pkill -x fuzzel || fuzzel"
 local browser     = "firefox"

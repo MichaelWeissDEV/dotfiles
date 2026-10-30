@@ -13,6 +13,9 @@
 tmux/local.conf
 tmux/local-options.conf
 
+# Individuelle Monitor-Anordnung (pro Rechner, nicht versionieren)
+hypr/monitors.local.lua
+
 # Dokumentations-Builds (Sphinx & MkDocs)
 _build/
 docs/_build/
