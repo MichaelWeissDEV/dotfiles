@@ -200,11 +200,13 @@ wallpaper set city.png --all
 # Clear a monitor's override so it reverts to the global default:
 wallpaper monitor DP-1 default
 
-# Add a new wallpaper image into ~/git/dotfiles/pictures and apply it:
+# Add a new wallpaper image to the user library and apply it:
 wallpaper add ~/Downloads/mountain.jpg --set
 ```
 
-- Wallpapers reside in `~/git/dotfiles/pictures`, a private Git repository excluded via `.gitignore` (copyright) and managed via `arch-dot wallpapers <git-url>` or `arch-dot wallpapers --update`.
+- Wallpapers can reside in `~/Pictures/Wallpapers` or the user library under
+  `~/.local/share/arch-dotfiles/config/pictures`. Private images are not included
+  in the package; back them up separately.
 - Persistent monitor state is stored in `~/.local/state/wallpaper/state` (outside the Git worktree) and automatically restored on login and monitor hot-plug.
 
 ---
