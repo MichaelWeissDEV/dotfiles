@@ -29,9 +29,9 @@ muss vor einer erneuten Installer-Nutzung überprüft werden.
 
 ## Registry frisch halten
 
-Die Registry wird aus dem hub-Repository heraus gebaut. Ein Push löst auf GitHub
-selbst **keinen** Registry-Build aus, und Cronpläne werden gedrosselt. Deshalb
-vergleicht `arch-dotfiles-registry-kick` die veröffentlichte `sources.json`
+Die Registry wird aus dem Hub-Repository heraus gebaut. Nach erfolgreicher
+Komponentenprüfung fordert ein Push auf `main` den zentralen Build direkt an.
+Zusätzlich vergleicht `arch-dotfiles-registry-kick` die veröffentlichte `sources.json`
 (alle Komponenten-Commits plus hub) mit dem `main` jeder Quelle und startet
 den zentralen `Arch packages`-Workflow genau dann, wenn ein Paket hinter `main`
 zurückliegt. Der Dispatch ist nur eine Anfrage — gebaut, signiert und
@@ -47,6 +47,27 @@ Ohne `gh` oder ohne `gh auth login` beendet sich das Skript mit Hinweis und
 Exit 0 — die Verantwortung liegt dann beim halbstündigen Cron des
 `Arch packages`-Workflows. Ein „GitHub not reachable“ ist eine Verzögerung und
 wird beim nächsten Timer-Tick wiederholt, kein Fehler.
+
+### Push bis Paket
+
+1. `git push origin main` im Komponenten-Repository startet dessen Workflow
+   `Package safety`. Pull Requests prüfen ebenfalls, veröffentlichen aber nicht.
+2. Nur nach erfolgreicher Prüfung fordert der Workflow mit dem Actions-Secret
+   `DOTFILES_DISPATCH_TOKEN` den Workflow `Arch packages` im Hub an. Das Secret
+   muss Zugriff auf GitHub Actions im Hub haben; sein Wert gehört nie in Git.
+   Ein fehlendes oder ungültiges Secret lässt den Dispatch-Job sichtbar scheitern.
+3. Der Hub klont die Komponenten auf `main`, prüft und baut die Pakete, testet
+   Installation und Updates isoliert und veröffentlicht signierte Pakete und
+   Repository-Datenbanken. Ein Push auf den Hub startet denselben Workflow direkt.
+4. `sudo pacman -Syu` installiert veröffentlichte Updates. `adot sync` gleicht
+   anschließend die Benutzerkopie ab; der optionale Sync-Timer erledigt dies
+   ebenfalls. Änderungen des Benutzers bleiben erhalten; abweichende neue
+   Vorgaben landen als `.pacnew` daneben und müssen geprüft werden.
+
+Der Dispatch fordert einen Build an, er garantiert weder einen erfolgreichen
+Build noch einen festen Veröffentlichungszeitpunkt. GitHub Actions und die
+Signierungsumgebung müssen verfügbar sein. Der Registry-Timer und der Cron
+sind zusätzliche Wiederholungsmöglichkeiten, keine Paket-Updater.
 
 ## Automatische Sicherheitsprüfungen
 

@@ -8,10 +8,8 @@ on:
   workflow_dispatch:
   schedule:
     # Safety net only. GitHub throttles short cron schedules badly, so fresh
-    # commits reach the registry mainly through the opt-in local
-    # arch-dotfiles-registry-kick.timer (see packages/arch-dotfiles-core/),
-    # which compares the published sources.json with component main and
-    # dispatches this workflow directly.
+    # Component main pushes dispatch after their package safety check. The
+    # opt-in local registry-kick timer is an additional reconciliation path.
     - cron: '*/30 * * * *'
 
 permissions:

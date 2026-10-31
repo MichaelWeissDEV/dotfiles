@@ -83,6 +83,16 @@ class ConfigTest(unittest.TestCase):
         self.assertEqual(migrated.read_text(), "my machine, not packaged")
         self.assertEqual((target / "monitors.local.lua").read_text(), migrated.read_text())
 
+    def test_local_monitor_layout_survives_repeated_package_updates(self):
+        self.config.activate()
+        local = self.config.work / "hypr/monitors.local.lua"
+        local.write_text("personal monitor layout")
+        for value in ("new default", "another default"):
+            (self.defaults / "hypr/example").write_text(value)
+            self.config.update()
+            self.assertEqual(local.read_text(), "personal monitor layout")
+        self.assertNotIn("hypr/monitors.local.lua", json.loads(self.config.baseline.read_text()))
+
     def test_personal_workspace_edits_survive_deactivation(self):
         self.config.activate()
         edited = self.config.work / "hypr/example"

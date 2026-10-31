@@ -31,14 +31,14 @@ Updates: `adot update` oder `sudo pacman -Syu` gefolgt von
 `arch-dotfiles-sync.timer` die Defaults automatisch. Eigene Änderungen werden
 nicht überschrieben; neue Defaults erscheinen als `.pacnew`.
 
-Für die Pacman-Registry gilt: ein Push löst auf GitHub selbst **keinen**
-Registry-Build aus (kein Cross-Repository-Trigger, GitHub drosselt Cronpläne).
-Der opt-in Timer `arch-dotfiles-registry-kick.timer` (enthalten in
-`arch-dotfiles-core`) überbrückt das: er vergleicht die veröffentlichte
+Ein Push auf `main` einer Komponente fordert nach erfolgreicher Paketprüfung
+automatisch einen zentralen Registry-Build an. Der optionale Timer
+`arch-dotfiles-registry-kick.timer` (enthalten in `arch-dotfiles-core`)
+ist eine zusätzliche Absicherung: Er vergleicht die veröffentlichte
 `sources.json` mit `main` aller Komponenten und des hubs und startet den
 zentralen `Arch packages`-Workflow genau dann, wenn ein Paket hinter
 `main` zurückliegt. Voraussetzung ist ein angemeldeter `gh` (`gh auth login`);
-ohne ihn übernimmt der halbstündige Fallback-Cron des Workflows. Nichts wird
+ohne ihn bleibt der halbstündige, möglicherweise verzögerte Fallback-Cron. Nichts wird
 hier gebaut oder signiert — der Dispatch ist nur eine Anfrage an die bestehenden
 Sicherheits- und Veröffentlichungsschritte.
 

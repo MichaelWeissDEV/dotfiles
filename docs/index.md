@@ -17,12 +17,25 @@ Start: [Installation](installation.md) ·
 installation
 arch-package
 components
+pakete
+tastenkombinationen
 verification
 hyprland
 waybar
 terminals
 shell
 subtrees
+```
+
+```{toctree}
+:caption: Handbücher der Komponenten
+:maxdepth: 1
+
+Neovim <https://nvim-config.readthedocs.io/en/latest/>
+tmux <https://tmux-config.readthedocs.io/en/latest/>
+Vim <https://vim-config.readthedocs.io/en/latest/>
+Kitty <https://kitty-config.readthedocs.io/en/latest/>
+Ghostty <https://ghostty-config.readthedocs.io/en/latest/>
 ```
 
 Die Anwendungsanleitungen beschreiben weiterhin die Konfiguration unter

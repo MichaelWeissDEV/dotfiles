@@ -2,6 +2,9 @@ name: Component package safety
 
 on:
   workflow_call:
+    secrets:
+      DOTFILES_DISPATCH_TOKEN:
+        required: false
 
 permissions:
   contents: read
@@ -40,3 +43,21 @@ jobs:
         run: |
           python -m pip install -r "$COMPONENT/docs/requirements.txt"
           sphinx-build -W --keep-going -b dirhtml "$COMPONENT/docs" "$RUNNER_TEMP/component-docs"
+
+  dispatch:
+    name: Request registry rebuild
+    needs: contract
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Dispatch central package workflow
+        env:
+          GH_TOKEN: ${{ secrets.DOTFILES_DISPATCH_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "$GH_TOKEN" ]; then
+            echo 'DOTFILES_DISPATCH_TOKEN is missing; configure the repository secret.' >&2
+            exit 1
+          fi
+          gh workflow run packages.yml --repo MichaelWeissDEV/dotfiles --ref main

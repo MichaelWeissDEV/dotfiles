@@ -28,10 +28,12 @@ cd ../nvim-config
 git push origin main
 ```
 
-Die Registry prüft `main` alle fünf Minuten. Erst nach erfolgreicher Prüfung,
-Build und Signierung ist die neue Paketversion per `-Syu` verfügbar. GitHub kann
-Zeitpläne verzögern. Ein sofortiger Start ist über `gh workflow run packages.yml
--R MichaelWeissDEV/dotfiles` möglich.
+Nach einem Push auf `main` fordert der Komponenten-Workflow nach erfolgreicher
+Paketprüfung automatisch einen zentralen Build an. Zusätzlich prüft ein lokaler,
+optionaler Registry-Timer die veröffentlichten Commits. Der GitHub-Cron
+ist lediglich ein unzuverlässiger Fallback; ein manueller Start ist mit
+`gh workflow run packages.yml -R MichaelWeissDEV/dotfiles` möglich. Erst nach
+erfolgreichem Build und Signierung ist die neue Paketversion per `-Syu` verfügbar.
 
 ## Neovim
 
