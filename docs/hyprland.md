@@ -19,10 +19,10 @@ Hyprland (`~/.config/hypr/hyprland.lua`) serves as the primary Wayland tiling co
 
 ## Design Philosophy
 
-- ⚡ **Instant Reactions**: Animations, shadows, and blur are intentionally disabled (`animations.enabled = false`, `blur.enabled = false`, `shadow.enabled = false`) for zero perceptual latency and minimal GPU overhead.
-- 📐 **Maximum Screen Space**: Zero inner/outer gaps (`gaps_in = 0`, `gaps_out = 0`), sharp unrounded corners (`rounding = 0`), and a crisp `1px` border (`#89b4fa` Pastel Blue when active, `#313244` Surface0 when inactive).
-- 📺 **Zero Lost Windows**: Jump back to your last active window across any monitor (`ALT + Tab`), cycle all open windows (`ALT + SHIFT + Tab`), filter via Fuzzel (`SUPER + G`), or pin critical windows to persistent cross-monitor slots (`1..10` and `F1..F4`).
-- 🖥️ **TTY Launch**: No display manager bloat. Log into the Linux TTY and start the graphical session with `start-hyprland`.
+- **Responsiveness**: Animations, shadows, and blur are disabled (`animations.enabled = false`, `blur.enabled = false`, `shadow.enabled = false`).
+- **Screen space**: No inner or outer gaps, unrounded corners and a `1px` border.
+- **Window navigation**: Return to the previous window (`Alt + Tab`), cycle windows (`Alt + Shift + Tab`), search with Fuzzel (`Super + G`), or use cross-monitor slots.
+- **TTY launch**: Log into a Linux TTY and start the session with `start-hyprland`.
 
 ---
 

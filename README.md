@@ -84,8 +84,8 @@ git commit -m "Adjust editor configuration"
 git push origin main
 ```
 
-Die Registry prüft die `main`-Stände **alle fünf Minuten**. GitHub kann geplante
-Läufe verzögern; hinzu kommt die Build-Zeit. Nach dem erfolgreichen Build erhält
+Nach einem Push auf `main` fordert die erfolgreiche Paketprüfung automatisch den
+zentralen Registry-Build an. Hinzu kommen Warte- und Build-Zeit. Nach dessen Erfolg erhält
 das nächste `pacman -Syu` die neue Version. Es ist kein manuelles Versionsbumpen
 für normale Konfigurationsänderungen erforderlich. Sofortiger Build-Start für
 Maintainer:
