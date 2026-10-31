@@ -1,5 +1,5 @@
 {
-  "arch-dotfiles-core": {"kind": "core", "description": "Per-user dotfiles activation and package management", "depends": ["python", "bash", "coreutils", "pacman", "sudo", "gawk"]},
+  "arch-dotfiles-core": {"kind": "core", "description": "Per-user dotfiles activation and package management", "depends": ["python", "bash", "coreutils", "pacman", "sudo", "gawk", "util-linux"]},
   "arch-dotfiles-oh-my-zsh": {"kind": "oh-my-zsh", "description": "Pinned, pacman-managed Oh My Zsh runtime", "depends": ["zsh", "git"]},
   "arch-dotfiles-foot": {"module": "foot"},
   "arch-dotfiles-fuzzel": {"module": "fuzzel"},

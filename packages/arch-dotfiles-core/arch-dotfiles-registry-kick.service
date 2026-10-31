@@ -1,0 +1,8 @@
+[Unit]
+Description=Reconcile the pacman registry with component main
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/arch-dotfiles-registry-kick
+UMask=0077
+TimeoutSec=600

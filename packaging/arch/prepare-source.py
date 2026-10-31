@@ -20,7 +20,9 @@ REPOSITORIES = json.loads((ROOT / "repositories.json").read_text())
 SOURCE_ROOT = Path(os.environ.get("ARCH_DOTFILES_SOURCE_ROOT", ROOT.parent))
 PRIVATE = {"hypr/monitors.local.lua", "tmux/local.conf", "tmux/local-options.conf"}
 CORE_FILES = ("adot", "arch-dotfiles-config", "package-command", "arch-dotfiles.install",
-              "BUNDLE-LICENSE", "arch-dotfiles-sync.service", "arch-dotfiles-sync.timer")
+              "BUNDLE-LICENSE", "arch-dotfiles-sync.service", "arch-dotfiles-sync.timer",
+              "arch-dotfiles-registry-kick", "arch-dotfiles-registry-kick.service",
+              "arch-dotfiles-registry-kick.timer")
 
 
 def tracked_files(root=None):
@@ -139,7 +141,7 @@ def stage(name, destination, tracked=None):
     elif data.get("kind") == "core":
         for filename in CORE_FILES:
             source = package / filename
-            if filename in ("adot", "arch-dotfiles-config"):
+            if filename in ("adot", "arch-dotfiles-config", "arch-dotfiles-registry-kick"):
                 target = destination / "usr/bin" / filename
             elif filename.endswith((".service", ".timer")):
                 target = destination / "usr/lib/systemd/user" / filename
@@ -148,7 +150,8 @@ def stage(name, destination, tracked=None):
             else:
                 target = share / filename
             copy(source, target)
-            if filename in ("adot", "arch-dotfiles-config", "package-command"):
+            if filename in ("adot", "arch-dotfiles-config", "package-command",
+                            "arch-dotfiles-registry-kick"):
                 target.chmod(0o755)
         for alias in ("arch-dot", "arch-dotfiles"):
             (destination / "usr/bin" / alias).symlink_to("adot")

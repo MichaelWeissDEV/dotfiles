@@ -27,6 +27,27 @@ editieren, Aktivierung als root ausführen oder mit `--overwrite '*'` Konflikte
 verdecken. Ein vorhandener gleichnamiger manueller Pacman-Repository-Abschnitt
 muss vor einer erneuten Installer-Nutzung überprüft werden.
 
+## Registry frisch halten
+
+Die Registry wird aus dem hub-Repository heraus gebaut. Ein Push löst auf GitHub
+selbst **keinen** Registry-Build aus, und Cronpläne werden gedrosselt. Deshalb
+vergleicht `arch-dotfiles-registry-kick` die veröffentlichte `sources.json`
+(alle Komponenten-Commits plus hub) mit dem `main` jeder Quelle und startet
+den zentralen `Arch packages`-Workflow genau dann, wenn ein Paket hinter `main`
+zurückliegt. Der Dispatch ist nur eine Anfrage — gebaut, signiert und
+veröffentlicht wird ausschließlich der geprüfte hub-Workflow.
+
+```bash
+arch-dotfiles-registry-kick          # vergleicht, dispatcht nur bei Drift
+systemctl --user status arch-dotfiles-registry-kick.timer
+journalctl --user -u arch-dotfiles-registry-kick.service -n 30 --no-pager
+```
+
+Ohne `gh` oder ohne `gh auth login` beendet sich das Skript mit Hinweis und
+Exit 0 — die Verantwortung liegt dann beim halbstündigen Cron des
+`Arch packages`-Workflows. Ein „GitHub not reachable“ ist eine Verzögerung und
+wird beim nächsten Timer-Tick wiederholt, kein Fehler.
+
 ## Automatische Sicherheitsprüfungen
 
 - Jedes Komponenten-Repository prüft auf Push und Pull Request sein Paket-Rezept,

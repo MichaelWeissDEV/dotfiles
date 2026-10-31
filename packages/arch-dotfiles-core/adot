@@ -40,13 +40,14 @@ adot status / adot list       inspect activation / installed packages
 HELP
         ;;
     scripts)
-        printf '%s\n' /usr/bin/adot /usr/bin/arch-dotfiles-config
+        printf '%s\n' /usr/bin/adot /usr/bin/arch-dotfiles-config /usr/bin/arch-dotfiles-registry-kick
         for script in screenshot wallpaper; do command -v "$script" || true; done ;;
     subtrees|subtree|pull|push|wallpapers)
         echo 'Subtree/Git updates have been retired. Use pacman -Syu; manage private pictures separately.' >&2
         exit 1 ;;
     help|-h|--help)
         "$0" commands
-        printf '%s\n' 'Optional automatic user sync: systemctl --user enable --now arch-dotfiles-sync.timer' ;;
+        printf '%s\n' 'Optional automatic user sync: systemctl --user enable --now arch-dotfiles-sync.timer'
+        printf '%s\n' 'Optional automatic registry reconciliation (needs gh auth): systemctl --user enable --now arch-dotfiles-registry-kick.timer' ;;
     *) echo "Unknown command: $1" >&2; exit 2 ;;
 esac

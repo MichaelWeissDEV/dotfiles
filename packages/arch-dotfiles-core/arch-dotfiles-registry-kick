@@ -1,0 +1,124 @@
+#!/usr/bin/env bash
+# ==============================================================================
+#  arch-dotfiles-registry-kick — reconcile the pacman registry with main
+# ==============================================================================
+#
+#  Usage: arch-dotfiles-registry-kick
+#
+#  Component pushes do not trigger the registry build: GitHub fires no
+#  cross-repo workflow without a shared token, and scheduled runs are
+#  throttled to minutes-to-hours on most accounts. This command closes the
+#  gap the honest way. It compares what the published registry was built
+#  from (sources.json, which names every component commit plus the hub)
+#  with the current main of each of those repositories, and dispatches the
+#  "Arch packages" workflow in MichaelWeissDEV/dotfiles when they disagree.
+#
+#  The dispatch is a REQUEST only. The hub workflow re-runs its own safety
+#  pipeline — recipes, syntax, generated docs, smoke installs, gated
+#  signing — and re-publishes byte-identical unchanged packages. This
+#  command builds, signs and uploads nothing, so a wrong comparison here
+#  costs at worst a harmless no-op build, never a bad registry.
+#
+#  Expected conditions exit 0 with a reason on stderr:
+#    * github-cli missing or unauthenticated — this machine cannot dispatch,
+#      so the repository cron stays responsible for freshness
+#    * GitHub temporarily unreachable — the timer simply reruns
+#
+#  Exit 1 is for errors that cannot be transient. Inspect with
+#  journalctl --user -u arch-dotfiles-registry-kick
+#
+#  Opt-in timer: systemctl --user enable --now arch-dotfiles-registry-kick.timer
+#
+#  Only one reconciliation runs at a time; a second invocation yields.
+# ==============================================================================
+
+set -euo pipefail
+
+REPO='MichaelWeissDEV/dotfiles'
+WORKFLOW='Arch packages'
+
+case "${1:-}" in
+    "") ;;
+    -h|--help|help) printf 'usage: %s\n' "${0##*/}"; exit 0 ;;
+    *) printf 'usage: %s\n' "${0##*/}" >&2; exit 2 ;;
+esac
+
+state="${XDG_STATE_HOME:-${HOME}/.local/state}/arch-dotfiles"
+mkdir -p -- "${state}"
+exec 200> "${state}/registry-kick.lock"
+if ! flock -n 200; then
+    printf '%s\n' 'another reconciliation is already running' >&2
+    exit 0
+fi
+
+tmp="$(mktemp -d)"
+trap 'rm -rf -- "${tmp}"' EXIT
+
+gh="$(command -v gh 2>/dev/null || true)"
+if [ -z "${gh}" ] && [ -x "${HOME}/.local/bin/gh" ]; then gh="${HOME}/.local/bin/gh"; fi
+[ -n "${gh}" ] || {
+    printf '%s\n' 'github-cli not installed — dispatch impossible, reconciliation stays with the cron.' >&2
+    exit 0
+}
+"${gh}" auth status >/dev/null 2>&1 || {
+    printf '%s\n' 'github-cli unauthenticated — run: gh auth login' >&2
+    exit 0
+}
+
+: > "${tmp}/expected.tsv"
+unpublished=0
+
+# What the registry was built from: the main commit of the hub plus every
+# component, one "<repository>\t<commit>" line each. Without a published
+# registry nothing can be compared, and everything counts as behind main.
+asset_id="$("${gh}" api "repos/${REPO}/releases/tags/repo" --jq '.assets[] | select(.name == "sources.json") | .id' 2>/dev/null)" \
+    || unpublished=1
+if [ -z "${asset_id}" ]; then
+    unpublished=1
+fi
+if [ "${unpublished}" = 1 ]; then
+    printf '%s\n' 'no published registry release yet — requesting a build' >&2
+else
+    "${gh}" api -H 'Accept: application/octet-stream' "repos/${REPO}/releases/assets/${asset_id}" \
+        | python3 -c '
+import json, sys
+hub = sys.argv[1]
+data = json.load(sys.stdin)
+pairs = []
+if data.get("distribution"):
+    pairs.append((hub, data["distribution"]))
+for item in data.get("components", {}).values():
+    pairs.append((item["repository"], item["commit"]))
+for repo, commit in sorted(pairs):
+    print(f"{repo}\t{commit}")
+' "${REPO}" > "${tmp}/expected.tsv"
+fi
+
+if [ "${unpublished}" = 0 ]; then
+    stale=()
+    while IFS=$'\t' read -r repository published; do
+        [ -n "${repository}" ] || continue
+        current="$("${gh}" api "repos/${repository}/branches/main" --jq .commit.sha)" || {
+            printf '%s\n' "GitHub not reachable (${repository}) — retrying on the next timer tick" >&2
+            exit 0
+        }
+        if [ "${current}" != "${published}" ]; then
+            stale+=("${repository}  ${current}  vs  ${published:-nothing published}")
+        fi
+    done < "${tmp}/expected.tsv"
+
+    if [ "${#stale[@]}" -eq 0 ]; then
+        exit 0
+    fi
+    printf '%s\n' 'the published registry is behind main:'
+    for line in "${stale[@]}"; do
+        printf '  %s\n' "${line}"
+    done
+    printf '%s\n' "dispatching '${WORKFLOW}' in ${REPO} (${#stale[@]} source(s) ahead)"
+fi
+
+if ! "${gh}" workflow run "${WORKFLOW}" --repo "${REPO}"; then
+    printf '%s\n' "could not dispatch '${WORKFLOW}' in ${REPO}" >&2
+    exit 1
+fi
+printf '%s\n' "dispatched '${WORKFLOW}' in ${REPO}"

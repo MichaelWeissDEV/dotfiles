@@ -1,0 +1,9 @@
+[Unit]
+Description=Reconcile the pacman registry with component main
+
+[Timer]
+OnStartupSec=3min
+OnUnitActiveSec=10min
+
+[Install]
+WantedBy=timers.target

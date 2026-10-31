@@ -7,7 +7,12 @@ on:
     tags: ['v*']
   workflow_dispatch:
   schedule:
-    - cron: '*/5 * * * *'
+    # Safety net only. GitHub throttles short cron schedules badly, so fresh
+    # commits reach the registry mainly through the opt-in local
+    # arch-dotfiles-registry-kick.timer (see packages/arch-dotfiles-core/),
+    # which compares the published sources.json with component main and
+    # dispatches this workflow directly.
+    - cron: '*/30 * * * *'
 
 permissions:
   contents: read
