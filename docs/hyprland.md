@@ -28,7 +28,9 @@ Hyprland (`~/.config/hypr/hyprland.lua`) serves as the primary Wayland tiling co
 
 ## Personal Monitor Layout (Git-Ignored)
 
-The shared configuration automatically detects monitors at scale `1`. Individual
+The shared configuration automatically detects monitors at scale `1` and places
+new outputs to the right of existing monitors (`auto-right`). Explicit local rules
+take precedence, so existing personal layouts are preserved. Individual
 layouts belong in `~/.config/hypr/monitors.local.lua`, which is loaded after the
 default monitor rules and excluded from Git. No personal monitor layout needs to
 be committed, even when `~/.config/hypr` points into the dotfiles repository.
@@ -154,15 +156,17 @@ Workspaces are created dynamically as needed:
 | :--- | :--- | :--- |
 | <kbd>Print</kbd> or <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> | `screenshot region` | Select region, save/copy, then annotate with Satty |
 | <kbd>Super</kbd> + <kbd>Print</kbd> | `screenshot full` | Capture all screens, save/copy, then annotate with Satty |
+| <kbd>Alt</kbd> + <kbd>Print</kbd> | `screenshot window` | Capture active window's visible screen area |
+| <kbd>Shift</kbd> + <kbd>Print</kbd> | `screenshot monitor` | Capture focused monitor |
 | `XF86AudioRaiseVolume` / `LowerVolume` | `wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+/-` | Increase / decrease volume in 5% steps (capped at 100%) |
 | `XF86AudioMute` / `XF86AudioMicMute` | `wpctl set-mute ... toggle` | Toggle speaker mute / microphone mute |
 | `XF86MonBrightnessUp` / `Down` | `brightnessctl -e4 -n2 set 5%+/-` | Increase / decrease screen brightness in 5% steps |
 
 ### Snipping Tool
 
-Install `grim`, `slurp`, `wl-clipboard` and `satty` (Arch:
-`sudo pacman -S --needed grim slurp wl-clipboard satty`). Run `adot links` to
-install the `screenshot` command and the **Screenshot** application entry in Fuzzel.
+The Hyprland package installs `grim`, `slurp`, `wl-clipboard` and `satty` as
+dependencies, along with the `screenshot` command and the **Screenshot** application
+entry in Fuzzel. No additional screenshot daemon is needed.
 
 Press **Print**, draw a rectangle, and use Satty to add arrows, text, highlights
 or blur. **Enter / Ctrl+C** copies the edited image, saves it and closes Satty;
@@ -173,7 +177,14 @@ the editor without saving retains the original.
 Files go to `~/Downloads/screenshot-*.png` (override with `SCREENSHOT_DIR`).
 If Satty is not installed, capture/save/copy still work without annotation.
 `screenshot` or `screenshot region` selects a region; `screenshot full` captures
-all screens.
+all screens. `screenshot window` captures the active window's visible screen area
+(not obscured content); `screenshot monitor` captures the focused monitor.
+
+Satty opens as a centered floating editor. Its desktop-matching palette, arrow
+tool and copy/save behavior are configured in `~/.config/hypr/satty.toml`.
+This file is managed like other Hyprland defaults: user changes are preserved,
+and conflicting updates arrive as `.pacnew`. While editing text, Enter confirms
+the text first; press it again to copy/save the image.
 
 ---
 
